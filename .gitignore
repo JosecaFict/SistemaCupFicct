@@ -1,0 +1,61 @@
+# Sistema CUP FICCT — monorepo gitignore
+
+# Composer local
+/tools/composer.phar
+/tools/composer-setup.php
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Builds
+dist/
+build/
+.vite/
+
+# Laravel
+backend/vendor/
+backend/.env
+backend/storage/*.key
+backend/storage/logs/*
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/testing/*
+backend/storage/framework/views/*
+backend/bootstrap/cache/*
+!backend/bootstrap/cache/.gitkeep
+
+# Frontend
+frontend/.env
+frontend/.env.local
+
+# Editores / SO
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Logs
+*.log
+
+# === Adiciones para primer push ===
+
+# Documentacion interna (decision del autor)
+docs/
+
+# Backups de BD
+backups/
+*.sql
+
+# Backups de edicion durante desarrollo
+*.bak.*
+
+# Backup de .env
+backend/.env.bak*
+
+# Asistentes y config local
+.claude/
+.sixth/

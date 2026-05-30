@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+| Estilos base Sistema CUP FICCT
+| - Tipografia Inter via system font fallback (limpio, academico).
+| - Color base institucional aplicado a body.
+| - Print-friendly para imprimir Boleta y Formulario.
+*/
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #f7f8fa;          /* muted-50 */
+  color: #363b46;                     /* muted-700 */
+  font-family: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Estilos especificos para impresion de Boleta / Formulario */
+@media print {
+  body { background: white; }
+  .no-print { display: none !important; }
+  .print-page { page-break-after: always; }
+}
