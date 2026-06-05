@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\PagoController;
 use App\Http\Controllers\Api\PingController;
 use App\Http\Controllers\Api\PostulanteController;
 use App\Http\Controllers\Api\PreinscripcionController;
+use App\Http\Controllers\Api\ReporteController;
 use App\Http\Controllers\Api\RequisitoVerificacionController;
 use App\Http\Controllers\Api\ResultadoAdminController;
 use App\Http\Controllers\Api\ResultadoController;
@@ -175,6 +176,19 @@ Route::middleware('auth:sanctum')->group(function () {
         '/calculo/despublicar',
         [CalculoController::class, 'despublicar']
     );
+
+    // ------- REPORTES (Ciclo 2) -------
+    // 8 reportes obligatorios del documento docente. ADMIN + COORDINADOR.
+    Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('reportes')->group(function () {
+        Route::get('/lista-general',         [ReporteController::class, 'listaGeneral']);
+        Route::get('/aprobados',             [ReporteController::class, 'aprobados']);
+        Route::get('/reprobados',            [ReporteController::class, 'reprobados']);
+        Route::get('/promedios',             [ReporteController::class, 'promedios']);
+        Route::get('/grupos',                [ReporteController::class, 'grupos']);
+        Route::get('/estadisticas-materia',  [ReporteController::class, 'estadisticasMateria']);
+        Route::get('/docentes-grupos',       [ReporteController::class, 'docentesGrupos']);
+        Route::get('/grupos-aprobados',      [ReporteController::class, 'gruposAprobados']);
+    });
 
     // ------- ASIGNACIONES DOCENTE (Ciclo 2 CU12-CU13) -------
     // ADMINISTRADOR + COORDINADOR pueden gestionar asignaciones.

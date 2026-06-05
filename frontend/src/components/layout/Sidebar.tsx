@@ -21,6 +21,7 @@ const ITEMS_POR_ROL: Record<RolCodigo, Item[]> = {
     { to: "/admin/notas-pendientes", label: "Notas pendientes" },
     { to: "/admin/calculo",          label: "Calculo de resultados" },
     { to: "/admin/resultados",       label: "Resultados" },
+    { to: "/admin/reportes",         label: "Reportes" },
     { to: "/admin/bitacora",         label: "Bitacora" },
   ],
   ENCARGADO: [
@@ -37,6 +38,7 @@ const ITEMS_POR_ROL: Record<RolCodigo, Item[]> = {
     { to: "/coordinador/notas-pendientes",  label: "Notas pendientes" },
     { to: "/coordinador/calculo",           label: "Calculo de resultados" },
     { to: "/coordinador/resultados",        label: "Resultados" },
+    { to: "/coordinador/reportes",          label: "Reportes" },
   ],
 };
 

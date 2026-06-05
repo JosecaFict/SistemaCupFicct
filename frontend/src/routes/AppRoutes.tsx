@@ -37,6 +37,7 @@ import { AsignacionesPage }     from "../pages/asignaciones/AsignacionesPage";
 import { CargaNotasPage }       from "../pages/docente/CargaNotasPage";
 import { NotasPendientesPage }  from "../pages/coordinador/NotasPendientesPage";
 import { CalculoResultadosPage } from "../pages/calculo/CalculoResultadosPage";
+import { ReportesPage }         from "../pages/reportes/ReportesPage";
 
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute }      from "./RoleRoute";
@@ -132,6 +133,12 @@ export function AppRoutes() {
                element={<RoleRoute roles={["ADMINISTRADOR","COORDINADOR"]}><CalculoResultadosPage /></RoleRoute>} />
         <Route path="/coordinador/calculo"
                element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><CalculoResultadosPage /></RoleRoute>} />
+
+        {/* REPORTES (Ciclo 2) */}
+        <Route path="/admin/reportes"
+               element={<RoleRoute roles={["ADMINISTRADOR","COORDINADOR"]}><ReportesPage /></RoleRoute>} />
+        <Route path="/coordinador/reportes"
+               element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><ReportesPage /></RoleRoute>} />
 
         <Route path="/sin-acceso" element={<div className="p-6">No tienes acceso a esta seccion.</div>} />
       </Route>
