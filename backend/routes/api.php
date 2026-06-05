@@ -79,7 +79,8 @@ Route::prefix('auth')->group(function () {
 // =========================
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('/dashboard/resumen', [DashboardController::class, 'resumen']);
+    Route::get('/dashboard/resumen',    [DashboardController::class, 'resumen']);
+    Route::get('/dashboard/gestiones',  [DashboardController::class, 'gestionesParaDashboard']);
     Route::get('/catalogos/ambientes', [CatalogoController::class, 'ambientes']);
     Route::get('/catalogos/turnos',    [CatalogoController::class, 'turnos']);
     Route::get('/catalogos/carreras',  [CatalogoController::class, 'carreras']);
