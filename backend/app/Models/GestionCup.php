@@ -20,6 +20,8 @@ class GestionCup extends Model
         'fecha_inicio_preinscripcion', 'fecha_cierre_preinscripcion',
         'cantidad_examenes', 'capacidad_maxima_grupo',
         'estimado_postulantes', 'turnos_habilitados', 'estado',
+        // Ciclo 2
+        'nota_minima_aprobacion',
     ];
 
     protected $casts = [
@@ -28,6 +30,8 @@ class GestionCup extends Model
         'cantidad_examenes'           => 'integer',
         'capacidad_maxima_grupo'      => 'integer',
         'estimado_postulantes'        => 'integer',
+        // Ciclo 2
+        'nota_minima_aprobacion'      => 'decimal:2',
     ];
 
     public function fechasExamenes(): HasMany
@@ -53,6 +57,13 @@ class GestionCup extends Model
     public function postulaciones(): HasMany
     {
         return $this->hasMany(Postulacion::class);
+    }
+
+    // ----- Ciclo 2 -----
+
+    public function asignacionesDocente(): HasMany
+    {
+        return $this->hasMany(AsignacionDocente::class);
     }
 
     /** Turnos habilitados como array, ej. ['M','T','N']. */

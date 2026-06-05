@@ -84,6 +84,18 @@ class Postulacion extends Model
         return $this->hasOne(Inscripcion::class);
     }
 
+    // ----- Ciclo 2 -----
+
+    public function notas(): HasMany
+    {
+        return $this->hasMany(Nota::class);
+    }
+
+    public function resultado(): HasOne
+    {
+        return $this->hasOne(Resultado::class);
+    }
+
     /** True si existe AL MENOS un pago en estado APROBADO. */
     public function tienePagoAprobado(): bool
     {

@@ -12,10 +12,12 @@ class TurnoSeeder extends Seeder
 {
     public function run(): void
     {
+        // Ciclo 2 (2026-06-04): horarios ajustados al patron del CUP
+        // (2 materias por turno por dia, bloques de 2 hs).
         $turnos = [
-            ['codigo' => 'M', 'nombre' => 'Manana', 'hora_inicio' => '07:00', 'hora_fin' => '11:30'],
-            ['codigo' => 'T', 'nombre' => 'Tarde',  'hora_inicio' => '14:00', 'hora_fin' => '18:30'],
-            ['codigo' => 'N', 'nombre' => 'Noche',  'hora_inicio' => '19:00', 'hora_fin' => '22:30'],
+            ['codigo' => 'M', 'nombre' => 'Manana', 'hora_inicio' => '08:00', 'hora_fin' => '12:00'],
+            ['codigo' => 'T', 'nombre' => 'Tarde',  'hora_inicio' => '13:00', 'hora_fin' => '17:00'],
+            ['codigo' => 'N', 'nombre' => 'Noche',  'hora_inicio' => '18:00', 'hora_fin' => '22:00'],
         ];
 
         foreach ($turnos as $t) {
