@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AsignacionDocenteController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BitacoraController;
+use App\Http\Controllers\Api\CalculoController;
 use App\Http\Controllers\Api\CatalogoController;
 use App\Http\Controllers\Api\DocenteController;
 use App\Http\Controllers\Api\NotaValidacionController;
@@ -161,6 +162,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:ADMINISTRADOR')->patch(
         '/notas/{nota}/override',
         [NotaValidacionController::class, 'override']
+    );
+
+    // ------- CALCULO Y PUBLICACION DE RESULTADOS (Ciclo 2 - CU16, CU17) -------
+    Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('calculo')->group(function () {
+        Route::get('/estado',     [CalculoController::class, 'estado']);
+        Route::post('/calcular',  [CalculoController::class, 'calcular']);
+        Route::post('/publicar',  [CalculoController::class, 'publicar']);
+    });
+    // Despublicar: solo ADMIN
+    Route::middleware('role:ADMINISTRADOR')->post(
+        '/calculo/despublicar',
+        [CalculoController::class, 'despublicar']
     );
 
     // ------- ASIGNACIONES DOCENTE (Ciclo 2 CU12-CU13) -------
