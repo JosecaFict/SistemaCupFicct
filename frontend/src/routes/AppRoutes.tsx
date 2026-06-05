@@ -34,6 +34,8 @@ import { CoordinadorDashboard } from "../pages/coordinador/CoordinadorDashboard"
 
 import { ResultadosPage }       from "../pages/resultados/ResultadosPage";
 import { AsignacionesPage }     from "../pages/asignaciones/AsignacionesPage";
+import { CargaNotasPage }       from "../pages/docente/CargaNotasPage";
+import { NotasPendientesPage }  from "../pages/coordinador/NotasPendientesPage";
 
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute }      from "./RoleRoute";
@@ -115,6 +117,14 @@ export function AppRoutes() {
                element={<RoleRoute roles={["ADMINISTRADOR","COORDINADOR"]}><AsignacionesPage /></RoleRoute>} />
         <Route path="/coordinador/asignaciones"
                element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><AsignacionesPage /></RoleRoute>} />
+
+        {/* NOTAS (Ciclo 2 CU14-CU15) */}
+        <Route path="/docente/notas/:grupoId/:gmId/:examen"
+               element={<RoleRoute roles={["DOCENTE","ADMINISTRADOR"]}><CargaNotasPage /></RoleRoute>} />
+        <Route path="/coordinador/notas-pendientes"
+               element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><NotasPendientesPage /></RoleRoute>} />
+        <Route path="/admin/notas-pendientes"
+               element={<RoleRoute roles={["ADMINISTRADOR","COORDINADOR"]}><NotasPendientesPage /></RoleRoute>} />
 
         <Route path="/sin-acceso" element={<div className="p-6">No tienes acceso a esta seccion.</div>} />
       </Route>

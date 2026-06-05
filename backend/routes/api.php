@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\AsignacionDocenteController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BitacoraController;
 use App\Http\Controllers\Api\CatalogoController;
+use App\Http\Controllers\Api\DocenteController;
+use App\Http\Controllers\Api\NotaValidacionController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\GestionCupController;
 use App\Http\Controllers\Api\GrupoController;
@@ -133,14 +135,33 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/grupos/{grupo}',  [GrupoController::class, 'update']);
     });
 
-    // ------- DOCENTE / COORDINADOR (estructura preparada para Ciclo 2) -------
+    // ------- DOCENTE (Ciclo 2 - CU14) -------
     Route::middleware('role:ADMINISTRADOR,DOCENTE')->prefix('docente')->group(function () {
-        Route::get('/_placeholder', fn () => response()->json(['ciclo' => 2, 'modulo' => 'docente']));
+        Route::get('/_placeholder',     fn () => response()->json(['ciclo' => 2, 'modulo' => 'docente']));
+        Route::get('/mis-asignaciones', [DocenteController::class, 'misAsignaciones']);
+        Route::get('/grupo/{grupo}/materia/{gm}/examen/{examen}',
+            [DocenteController::class, 'notasDelExamen']);
+        Route::post('/notas/guardar',   [DocenteController::class, 'guardarNotas']);
     });
 
     Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('coordinador')->group(function () {
         Route::get('/_placeholder', fn () => response()->json(['ciclo' => 2, 'modulo' => 'coordinador']));
     });
+
+    // ------- VALIDACION DE NOTAS (Ciclo 2 - CU15) -------
+    // COORDINADOR + ADMINISTRADOR pueden validar/rechazar bloques de notas.
+    Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('notas')->group(function () {
+        Route::get('/bloques-pendientes', [NotaValidacionController::class, 'bloquesPendientes']);
+        Route::get('/bloque-detalle',     [NotaValidacionController::class, 'bloqueDetalle']);
+        Route::post('/validar-bloque',    [NotaValidacionController::class, 'validarBloque']);
+        Route::post('/rechazar-bloque',   [NotaValidacionController::class, 'rechazarBloque']);
+    });
+
+    // Override de ADMIN (autoridad maxima sobre notas validadas)
+    Route::middleware('role:ADMINISTRADOR')->patch(
+        '/notas/{nota}/override',
+        [NotaValidacionController::class, 'override']
+    );
 
     // ------- ASIGNACIONES DOCENTE (Ciclo 2 CU12-CU13) -------
     // ADMINISTRADOR + COORDINADOR pueden gestionar asignaciones.
