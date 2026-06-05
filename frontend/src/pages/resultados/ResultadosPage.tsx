@@ -341,8 +341,12 @@ function ListaCompacta({
           {items.length} cdigos publicados
         </div>
       </div>
-      <div className="border border-muted-100 bg-white rounded-md p-4 font-mono text-sm leading-7 text-institutional-800 text-justify break-words">
-        {codigos.join(" -- ")}
+      <div className="border border-muted-100 bg-white rounded-md p-4 font-mono text-sm text-institutional-800 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-4 gap-y-2">
+        {codigos.map((c, i) => (
+          <span key={i} className="whitespace-nowrap">
+            {c}{i < codigos.length - 1 ? " --" : ""}
+          </span>
+        ))}
       </div>
     </div>
   );
