@@ -52,11 +52,57 @@ class AsignacionDocenteController extends Controller
         if ($g = $request->query('gestion_id')) $q->where('gestion_cup_id', $g);
         if ($g = $request->query('grupo_id'))   $q->where('grupo_id', $g);
         if ($d = $request->query('docente_id')) $q->where('docente_user_id', $d);
+        if ($t = $request->query('turno_id')) {
+            $q->whereHas('grupo', fn ($pp) => $pp->where('turno_id', $t));
+        }
         if ($m = $request->query('materia_id')) {
             $q->whereHas('gestionMateria', fn ($pp) => $pp->where('materia_id', $m));
         }
 
         return response()->json($q->orderBy('grupo_id')->orderBy('hora_inicio')->paginate(50));
+    }
+
+    /**
+     * Catalogos para los filtros de la lista: turnos habilitados, materias
+     * de la gestion y docentes que ya tienen asignaciones en la gestion.
+     */
+    public function catalogosFiltros(Request $request): JsonResponse
+    {
+        $request->validate(['gestion_id' => ['required', 'exists:gestiones_cup,id']]);
+        $gestionId = (int) $request->query('gestion_id');
+
+        $turnos = \App\Models\Turno::where('activo', true)
+            ->orderBy('id')
+            ->select('id', 'codigo', 'nombre')
+            ->get();
+
+        $materias = GestionMateria::where('gestion_cup_id', $gestionId)
+            ->with('materia:id,codigo,nombre')
+            ->select('id', 'materia_id', 'gestion_cup_id')
+            ->get()
+            ->map(fn ($gm) => [
+                'gestion_materia_id' => $gm->id,
+                'materia_id'         => $gm->materia_id,
+                'codigo'             => $gm->materia?->codigo,
+                'nombre'             => $gm->materia?->nombre,
+            ]);
+
+        // Docentes que tienen al menos una asignacion en esta gestion
+        $docenteIds = AsignacionDocente::where('gestion_cup_id', $gestionId)
+            ->pluck('docente_user_id')
+            ->unique()
+            ->all();
+
+        $docentes = User::whereIn('id', $docenteIds)
+            ->orderBy('apellidos')
+            ->select('id', 'nombre', 'apellidos', 'email')
+            ->get();
+
+        return response()->json([
+            'turnos'   => $turnos,
+            'materias' => $materias,
+            'docentes' => $docentes,
+        ]);
     }
 
     public function store(Request $request): JsonResponse

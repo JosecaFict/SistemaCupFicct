@@ -10,6 +10,7 @@ import { api } from "../../services/api";
 import {
   asignacionesService,
   type AsignacionDocente,
+  type CatalogosFiltros,
   type DatosIniciales,
   type RecursosDisponibles,
   type PayloadAsignacion,
@@ -43,7 +44,13 @@ export function AsignacionesPage() {
   const [gestionId, setGestionId] = useState<number | "">("");
   const [asignaciones, setAsignaciones] = useState<AsignacionDocente[]>([]);
   const [cargandoLista, setCargandoLista] = useState(false);
-  const [filtros, setFiltros] = useState<{ grupo_id?: number; docente_id?: number; materia_id?: number }>({});
+  const [filtros, setFiltros] = useState<{
+    grupo_id?: number;
+    docente_id?: number;
+    materia_id?: number;
+    turno_id?: number;
+  }>({});
+  const [catalogos, setCatalogos] = useState<CatalogosFiltros | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editando, setEditando] = useState<AsignacionDocente | null>(null);
 
@@ -56,6 +63,12 @@ export function AsignacionesPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Cargar catalogos de filtros al cambiar gestion
+  useEffect(() => {
+    if (!gestionId) { setCatalogos(null); return; }
+    asignacionesService.catalogosFiltros(gestionId as number).then(setCatalogos);
+  }, [gestionId]);
+
   // Cargar asignaciones cuando cambia gestion o filtros
   useEffect(() => {
     if (!gestionId) return;
@@ -65,6 +78,10 @@ export function AsignacionesPage() {
       .then((r) => setAsignaciones(r.data))
       .finally(() => setCargandoLista(false));
   }, [gestionId, filtros]);
+
+  function setFiltro<K extends keyof typeof filtros>(k: K, v: (typeof filtros)[K]) {
+    setFiltros((f) => ({ ...f, [k]: v }));
+  }
 
   function recargar() {
     if (!gestionId) return;
@@ -111,6 +128,60 @@ export function AsignacionesPage() {
           </Button>
         </div>
       </div>
+
+      {/* Filtros */}
+      {catalogos && (
+        <Card>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div>
+              <label className="text-xs text-muted-500">Turno</label>
+              <Select
+                value={String(filtros.turno_id ?? "")}
+                onChange={(e) => setFiltro("turno_id", e.target.value ? Number(e.target.value) : undefined)}
+              >
+                <option value="">Todos</option>
+                {catalogos.turnos.map((t) => (
+                  <option key={t.id} value={t.id}>{t.codigo}  {t.nombre}</option>
+                ))}
+              </Select>
+            </div>
+            <div>
+              <label className="text-xs text-muted-500">Materia</label>
+              <Select
+                value={String(filtros.materia_id ?? "")}
+                onChange={(e) => setFiltro("materia_id", e.target.value ? Number(e.target.value) : undefined)}
+              >
+                <option value="">Todas</option>
+                {catalogos.materias.map((m) => (
+                  <option key={m.materia_id} value={m.materia_id}>{m.codigo}  {m.nombre}</option>
+                ))}
+              </Select>
+            </div>
+            <div>
+              <label className="text-xs text-muted-500">Docente</label>
+              <Select
+                value={String(filtros.docente_id ?? "")}
+                onChange={(e) => setFiltro("docente_id", e.target.value ? Number(e.target.value) : undefined)}
+              >
+                <option value="">Todos</option>
+                {catalogos.docentes.map((d) => (
+                  <option key={d.id} value={d.id}>{d.nombre} {d.apellidos}</option>
+                ))}
+              </Select>
+            </div>
+            <div className="flex items-end">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setFiltros({})}
+                disabled={!filtros.turno_id && !filtros.materia_id && !filtros.docente_id}
+              >
+                Limpiar filtros
+              </Button>
+            </div>
+          </div>
+        </Card>
+      )}
 
       <Card>
         <DataTable

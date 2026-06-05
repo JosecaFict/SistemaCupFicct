@@ -147,6 +147,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('asignaciones-docente')->group(function () {
         Route::get('/datos-iniciales',     [AsignacionDocenteController::class, 'datosIniciales']);
         Route::get('/recursos-disponibles',[AsignacionDocenteController::class, 'recursosDisponibles']);
+        Route::get('/catalogos-filtros',   [AsignacionDocenteController::class, 'catalogosFiltros']);
         Route::get('/',                    [AsignacionDocenteController::class, 'index']);
         Route::post('/',                   [AsignacionDocenteController::class, 'store']);
         Route::put('/{asignacion}',        [AsignacionDocenteController::class, 'update']);

@@ -66,6 +66,18 @@ export interface FiltrosAsignaciones {
   grupo_id?: number;
   docente_id?: number;
   materia_id?: number;
+  turno_id?: number;
+}
+
+export interface CatalogosFiltros {
+  turnos: Array<{ id: number; codigo: "M" | "T" | "N"; nombre: string }>;
+  materias: Array<{
+    gestion_materia_id: number;
+    materia_id: number;
+    codigo: string;
+    nombre: string;
+  }>;
+  docentes: Array<{ id: number; nombre: string; apellidos: string; email: string }>;
 }
 
 export interface PayloadAsignacion {
@@ -98,6 +110,13 @@ export const asignacionesService = {
   datosIniciales: (gestionId: number) =>
     api
       .get<DatosIniciales>("/api/asignaciones-docente/datos-iniciales", {
+        params: { gestion_id: gestionId },
+      })
+      .then((r) => r.data),
+
+  catalogosFiltros: (gestionId: number) =>
+    api
+      .get<CatalogosFiltros>("/api/asignaciones-docente/catalogos-filtros", {
         params: { gestion_id: gestionId },
       })
       .then((r) => r.data),
