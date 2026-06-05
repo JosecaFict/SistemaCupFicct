@@ -323,9 +323,17 @@ function ListaCompacta({
   // Solo mostramos los que tienen codigo publicado.
   const items = data.data.filter((r) => r.publicado && r.postulacion?.codigo_postulante);
 
+  const codigos = items.map((r) => {
+    const codigo = r.postulacion?.codigo_postulante;
+    const sufijo =
+      r.opcion_aceptada === "PRIMERA" ? "1ra" :
+      r.opcion_aceptada === "SEGUNDA" ? "2da" : "";
+    return sufijo ? `${codigo}-${sufijo}` : codigo;
+  });
+
   return (
     <div>
-      <div className="mb-3 text-center">
+      <div className="mb-4 text-center">
         <div className="text-base font-semibold text-institutional-800">
           LISTA DE APROBADOS
         </div>
@@ -333,24 +341,8 @@ function ListaCompacta({
           {items.length} cdigos publicados
         </div>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-        {items.map((r) => {
-          const codigo = r.postulacion?.codigo_postulante;
-          const sufijo =
-            r.opcion_aceptada === "PRIMERA" ? "1ra" :
-            r.opcion_aceptada === "SEGUNDA" ? "2da" : "";
-          return (
-            <div
-              key={r.id}
-              className="border border-muted-100 bg-white rounded-md px-3 py-2 text-center font-mono text-sm text-institutional-800 hover:bg-institutional-50"
-              title={r.carrera_asignada
-                ? `${r.carrera_asignada.codigo}  ${r.carrera_asignada.nombre}`
-                : ""}
-            >
-              {codigo}{sufijo ? `-${sufijo}` : ""}
-            </div>
-          );
-        })}
+      <div className="border border-muted-100 bg-white rounded-md p-4 font-mono text-sm leading-7 text-institutional-800 text-justify break-words">
+        {codigos.join(" -- ")}
       </div>
     </div>
   );
