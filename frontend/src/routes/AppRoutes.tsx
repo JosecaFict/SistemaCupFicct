@@ -33,6 +33,7 @@ import { DocenteDashboard }     from "../pages/docente/DocenteDashboard";
 import { CoordinadorDashboard } from "../pages/coordinador/CoordinadorDashboard";
 
 import { ResultadosPage }       from "../pages/resultados/ResultadosPage";
+import { AsignacionesPage }     from "../pages/asignaciones/AsignacionesPage";
 
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute }      from "./RoleRoute";
@@ -108,6 +109,12 @@ export function AppRoutes() {
                element={<RoleRoute roles={["ADMINISTRADOR","COORDINADOR"]}><ResultadosPage /></RoleRoute>} />
         <Route path="/coordinador/resultados"
                element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><ResultadosPage /></RoleRoute>} />
+
+        {/* ASIGNACIONES DOCENTE (Ciclo 2 CU12-CU13) -- ADMIN + COORDINADOR */}
+        <Route path="/admin/asignaciones"
+               element={<RoleRoute roles={["ADMINISTRADOR","COORDINADOR"]}><AsignacionesPage /></RoleRoute>} />
+        <Route path="/coordinador/asignaciones"
+               element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><AsignacionesPage /></RoleRoute>} />
 
         <Route path="/sin-acceso" element={<div className="p-6">No tienes acceso a esta seccion.</div>} />
       </Route>

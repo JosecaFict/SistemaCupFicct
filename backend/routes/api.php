@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AsignacionDocenteController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BitacoraController;
 use App\Http\Controllers\Api\CatalogoController;
@@ -139,6 +140,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('coordinador')->group(function () {
         Route::get('/_placeholder', fn () => response()->json(['ciclo' => 2, 'modulo' => 'coordinador']));
+    });
+
+    // ------- ASIGNACIONES DOCENTE (Ciclo 2 CU12-CU13) -------
+    // ADMINISTRADOR + COORDINADOR pueden gestionar asignaciones.
+    Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('asignaciones-docente')->group(function () {
+        Route::get('/datos-iniciales',     [AsignacionDocenteController::class, 'datosIniciales']);
+        Route::get('/recursos-disponibles',[AsignacionDocenteController::class, 'recursosDisponibles']);
+        Route::get('/',                    [AsignacionDocenteController::class, 'index']);
+        Route::post('/',                   [AsignacionDocenteController::class, 'store']);
+        Route::put('/{asignacion}',        [AsignacionDocenteController::class, 'update']);
+        Route::delete('/{asignacion}',     [AsignacionDocenteController::class, 'destroy']);
     });
 
     // ------- VISTA DE RESULTADOS (ADMINISTRADOR + COORDINADOR) -------
