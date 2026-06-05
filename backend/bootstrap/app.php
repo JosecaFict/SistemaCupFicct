@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnsureUserHasRole;
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -26,6 +27,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Sanctum: convertir requests del SPA en stateful para usar cookies de sesion
         $middleware->statefulApi();
+
+        // Headers de seguridad para TODAS las respuestas (web + api)
+        $middleware->append(SecurityHeaders::class);
 
         // Alias 'role' para usar como: Route::middleware('role:ADMINISTRADOR')
         $middleware->alias([

@@ -44,34 +44,42 @@ use Illuminate\Support\Facades\Route;
 Route::get('/ping', PingController::class);
 
 Route::prefix('public')->group(function () {
-    Route::get('/carreras',       [CatalogoController::class, 'carreras']);
-    Route::get('/materias',       [CatalogoController::class, 'materias']);
-    Route::get('/turnos',         [CatalogoController::class, 'turnos']);
-    Route::get('/requisitos',     [CatalogoController::class, 'requisitos']);
-    Route::get('/gestion-activa', [CatalogoController::class, 'gestionActiva']);
+    // Catalogos publicos (cacheados, throttle generoso)
+    Route::middleware('throttle:60,1')->group(function () {
+        Route::get('/carreras',       [CatalogoController::class, 'carreras']);
+        Route::get('/materias',       [CatalogoController::class, 'materias']);
+        Route::get('/turnos',         [CatalogoController::class, 'turnos']);
+        Route::get('/requisitos',     [CatalogoController::class, 'requisitos']);
+        Route::get('/gestion-activa', [CatalogoController::class, 'gestionActiva']);
+    });
 
-    // Preinscripcion (CU5, CU6)
-    Route::post('/preinscripciones',                 [PreinscripcionController::class, 'store']);
-    Route::post('/preinscripciones/buscar',          [PreinscripcionController::class, 'buscarPorDocumento']);
-    Route::get('/preinscripciones/{postulacion}',    [PreinscripcionController::class, 'show']);
-    Route::post('/preinscripciones/{postulacion}/generar-formulario',
-        [PreinscripcionController::class, 'generarFormulario']);
+    // Preinscripcion (CU5, CU6) - throttle moderado para evitar spam
+    Route::middleware('throttle:20,1')->group(function () {
+        Route::post('/preinscripciones',                 [PreinscripcionController::class, 'store']);
+        Route::post('/preinscripciones/buscar',          [PreinscripcionController::class, 'buscarPorDocumento']);
+        Route::get('/preinscripciones/{postulacion}',    [PreinscripcionController::class, 'show']);
+        Route::post('/preinscripciones/{postulacion}/generar-formulario',
+            [PreinscripcionController::class, 'generarFormulario']);
 
-    // Pago (CU7)
-    Route::post('/pagos/iniciar',           [PagoController::class, 'iniciar']);
-    Route::post('/pagos/{pago}/confirmar',  [PagoController::class, 'confirmar']);
+        // Pago (CU7)
+        Route::post('/pagos/iniciar',           [PagoController::class, 'iniciar']);
+        Route::post('/pagos/{pago}/confirmar',  [PagoController::class, 'confirmar']);
 
-    // Consulta publica de resultados (preparada en Ciclo 1)
-    Route::get('/resultados',  [ResultadoController::class, 'consultar']);
+        // Consulta publica de resultados (preparada en Ciclo 1)
+        Route::get('/resultados',  [ResultadoController::class, 'consultar']);
+    });
 });
 
 // =========================
 // AUTH (CU1)
 // =========================
 Route::prefix('auth')->group(function () {
-    Route::post('/login',            [AuthController::class, 'login']);
-    Route::post('/forgot-password',  [AuthController::class, 'forgotPassword']);
-    Route::post('/reset-password',   [AuthController::class, 'resetPassword']);
+    // Hardening: limita login y reset a 5 intentos por minuto por IP
+    Route::middleware('throttle:5,1')->group(function () {
+        Route::post('/login',            [AuthController::class, 'login']);
+        Route::post('/forgot-password',  [AuthController::class, 'forgotPassword']);
+        Route::post('/reset-password',   [AuthController::class, 'resetPassword']);
+    });
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
