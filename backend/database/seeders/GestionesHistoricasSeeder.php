@@ -585,14 +585,16 @@ class GestionesHistoricasSeeder extends Seeder
         // 7. Crear filas de resultados (bulk insert)
         $rows = [];
         foreach ($calculos as $postId => $calc) {
-            $estadoFinal = EstadoResultado::SIN_CUPO;
+            $estadoFinal = EstadoResultado::REPROBADO;
             $opcion = OpcionAceptada::NINGUNA;
             $carreraAsignadaId = null;
             $motivo = '';
 
             if ($calc['descalificado']) {
+                $estadoFinal = EstadoResultado::REPROBADO;
                 $motivo = 'Descalificado: nota menor a la minima en al menos un examen.';
             } elseif (!$calc['aprobado_promedio']) {
+                $estadoFinal = EstadoResultado::REPROBADO;
                 $motivo = 'Promedio final menor a la nota minima de aprobacion.';
             } elseif (isset($aceptados[$postId])) {
                 $estadoFinal = EstadoResultado::ACEPTADO;
@@ -602,13 +604,18 @@ class GestionesHistoricasSeeder extends Seeder
                     ? 'Aceptado en su primera opcion de carrera.'
                     : 'Aceptado en su segunda opcion de carrera (1ra estaba llena).';
             } else {
-                $motivo = 'Sin cupo: ambas carreras estaban llenas en su rango de ranking.';
+                // Aprobo el CUP pero sus carreras estaban llenas
+                $estadoFinal = EstadoResultado::SIN_CUPO;
+                $motivo = 'Aprobado pero sin cupo: sus carreras elegidas estaban llenas.';
             }
 
-            // Actualizar estado de postulacion segun resultado
-            $nuevoEstadoPost = $estadoFinal === EstadoResultado::ACEPTADO
-                ? EstadoPostulacion::ACEPTADO
-                : EstadoPostulacion::SIN_CUPO;
+            // Actualizar estado de postulacion segun resultado final
+            $nuevoEstadoPost = match ($estadoFinal) {
+                EstadoResultado::ACEPTADO  => EstadoPostulacion::ACEPTADO,
+                EstadoResultado::REPROBADO => EstadoPostulacion::REPROBADO,
+                EstadoResultado::SIN_CUPO  => EstadoPostulacion::SIN_CUPO,
+                default                    => EstadoPostulacion::REPROBADO,
+            };
             $calc['postulacion']->update(['estado' => $nuevoEstadoPost]);
 
             $rows[] = [

@@ -179,7 +179,7 @@ export interface Paginated<T> {
 
 /* -------- Ciclo 2: Resultados -------- */
 
-export type EstadoResultado = "PENDIENTE_DESEMPATE" | "ACEPTADO" | "SIN_CUPO";
+export type EstadoResultado = "PENDIENTE_DESEMPATE" | "ACEPTADO" | "REPROBADO" | "SIN_CUPO";
 export type OpcionAceptada = "PRIMERA" | "SEGUNDA" | "NINGUNA";
 
 export interface Resultado {
@@ -210,6 +210,7 @@ export interface ResultadoKPIs {
     aceptados: number;
     primera_opcion: number;
     segunda_opcion: number;
+    reprobados: number;
     sin_cupo: number;
     pendiente_desempate: number;
     total: number;

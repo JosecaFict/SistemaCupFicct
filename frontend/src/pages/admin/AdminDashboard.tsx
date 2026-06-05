@@ -45,6 +45,7 @@ interface DashboardData {
     total_aprobados: number;
     total_reprobados: number;
     total_grupos_habilitados: number;
+    total_sin_cupo: number;
   };
   postulaciones: {
     total: number;
@@ -55,6 +56,7 @@ interface DashboardData {
     inscritos: number;
     anulados: number;
     aceptados: number;
+    reprobados: number;
     sin_cupo: number;
   };
   pagos: { aprobados: number; pendientes: number; rechazados: number; cancelados: number };
@@ -134,13 +136,23 @@ export function AdminDashboard() {
           label="Total reprobados"
           value={cargando ? "..." : k.total_reprobados}
           accent="warning"
-          helper="Sin cupo o descalificados"
+          helper="No alcanzaron la nota minima"
         />
         <StatCard
           label="Total grupos habilitados"
           value={cargando ? "..." : k.total_grupos_habilitados}
           accent="institutional"
           helper="Grupos activos en la gestion"
+        />
+      </div>
+
+      {/* KPI extra: sin cupo (aprobados que no entraron) */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <StatCard
+          label="Sin cupo"
+          value={cargando ? "..." : k.total_sin_cupo}
+          accent="warning"
+          helper="Aprobaron pero sus carreras estaban llenas"
         />
       </div>
 
@@ -204,6 +216,7 @@ export function AdminDashboard() {
             <li>Inscritos: <b className="text-institutional-700">{data.postulaciones.inscritos}</b></li>
             <li>Anulados: <b>{data.postulaciones.anulados}</b></li>
             <li className="pt-1 border-t border-muted-100">Aceptados: <b className="text-success-600">{data.postulaciones.aceptados}</b></li>
+            <li>Reprobados: <b className="text-warning-600">{data.postulaciones.reprobados}</b></li>
             <li>Sin cupo: <b className="text-warning-600">{data.postulaciones.sin_cupo}</b></li>
           </ul>
         </Card>

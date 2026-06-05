@@ -10,9 +10,9 @@ namespace App\Enums;
 |   ANULADO puede llegar desde cualquier estado anterior a INSCRITO.
 |
 | Ciclo 2 (despues del calculo de resultados):
-|   INSCRITO -> ACEPTADO   (entro a una carrera)
-|   INSCRITO -> SIN_CUPO   (no entro: cupos llenos, nota insuficiente
-|                           o descalificacion).
+|   INSCRITO -> ACEPTADO    (entro a una carrera)
+|   INSCRITO -> REPROBADO   (no alcanzo nota minima)
+|   INSCRITO -> SIN_CUPO    (aprobo pero sus carreras estaban llenas)
 */
 enum EstadoPostulacion: string
 {
@@ -25,5 +25,6 @@ enum EstadoPostulacion: string
 
     // Ciclo 2 - estados finales tras el calculo
     case ACEPTADO            = 'ACEPTADO';
+    case REPROBADO           = 'REPROBADO';
     case SIN_CUPO            = 'SIN_CUPO';
 }

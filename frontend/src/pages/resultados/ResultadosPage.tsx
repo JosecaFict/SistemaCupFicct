@@ -96,9 +96,10 @@ export function ResultadosPage() {
     return sufijo ? `${c}-${sufijo}` : c;
   };
 
-  const tonoEstado: Record<EstadoResultado, "success" | "neutral" | "warning"> = {
+  const tonoEstado: Record<EstadoResultado, "success" | "neutral" | "warning" | "danger"> = {
     ACEPTADO: "success",
-    SIN_CUPO: "neutral",
+    REPROBADO: "danger",
+    SIN_CUPO: "warning",
     PENDIENTE_DESEMPATE: "warning",
   };
 
@@ -119,12 +120,13 @@ export function ResultadosPage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
         <StatCard label="Total" value={kpis?.totales.total ?? "-"} />
         <StatCard label="Aceptados" value={kpis?.totales.aceptados ?? "-"} accent="success" />
         <StatCard label="1ra opcion" value={kpis?.totales.primera_opcion ?? "-"} accent="success" helper="Aceptados en su 1ra carrera" />
         <StatCard label="2da opcion" value={kpis?.totales.segunda_opcion ?? "-"} accent="success" helper="Aceptados en su 2da carrera" />
-        <StatCard label="Sin cupo" value={kpis?.totales.sin_cupo ?? "-"} accent="warning" />
+        <StatCard label="Reprobados" value={kpis?.totales.reprobados ?? "-"} accent="danger" helper="No alcanzaron nota minima" />
+        <StatCard label="Sin cupo" value={kpis?.totales.sin_cupo ?? "-"} accent="warning" helper="Aprobaron pero sin cupo" />
       </div>
 
       {/* Aceptados por carrera */}
@@ -184,6 +186,7 @@ export function ResultadosPage() {
             >
               <option value="TODOS">Todos</option>
               <option value="ACEPTADO">Aceptados</option>
+              <option value="REPROBADO">Reprobados</option>
               <option value="SIN_CUPO">Sin cupo</option>
               <option value="PENDIENTE_DESEMPATE">Pendiente desempate</option>
             </Select>

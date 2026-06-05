@@ -71,21 +71,22 @@ class ResultadoAdminController extends Controller
         $totalAceptados = 0;
         $primera = 0;
         $segunda = 0;
+        $reprobados = 0;
         $sinCupo = 0;
         $pendienteDesempate = 0;
 
         foreach ($rows as $r) {
+            $cant = (int) $r->cant;
             if ($r->estado_final === EstadoResultado::ACEPTADO->value) {
-                $totalAceptados += (int) $r->cant;
-                if ($r->opcion_aceptada === OpcionAceptada::PRIMERA->value) {
-                    $primera += (int) $r->cant;
-                } elseif ($r->opcion_aceptada === OpcionAceptada::SEGUNDA->value) {
-                    $segunda += (int) $r->cant;
-                }
+                $totalAceptados += $cant;
+                if ($r->opcion_aceptada === OpcionAceptada::PRIMERA->value)      $primera += $cant;
+                elseif ($r->opcion_aceptada === OpcionAceptada::SEGUNDA->value)  $segunda += $cant;
+            } elseif ($r->estado_final === EstadoResultado::REPROBADO->value) {
+                $reprobados += $cant;
             } elseif ($r->estado_final === EstadoResultado::SIN_CUPO->value) {
-                $sinCupo += (int) $r->cant;
+                $sinCupo += $cant;
             } elseif ($r->estado_final === EstadoResultado::PENDIENTE_DESEMPATE->value) {
-                $pendienteDesempate += (int) $r->cant;
+                $pendienteDesempate += $cant;
             }
         }
 
@@ -108,9 +109,10 @@ class ResultadoAdminController extends Controller
                 'aceptados'           => $totalAceptados,
                 'primera_opcion'      => $primera,
                 'segunda_opcion'      => $segunda,
+                'reprobados'          => $reprobados,
                 'sin_cupo'            => $sinCupo,
                 'pendiente_desempate' => $pendienteDesempate,
-                'total'               => $totalAceptados + $sinCupo + $pendienteDesempate,
+                'total'               => $totalAceptados + $reprobados + $sinCupo + $pendienteDesempate,
             ],
             'por_carrera' => $porCarrera,
         ]);

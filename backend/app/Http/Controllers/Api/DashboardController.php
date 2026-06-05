@@ -66,14 +66,18 @@ class DashboardController extends Controller
 
         // ----- KPIs OBLIGATORIOS (documento de la docente) -----
         // Total inscritos: postulaciones que llegaron a inscribirse
-        //   (INSCRITO + las que ya pasaron al estado final ACEPTADO/SIN_CUPO).
+        //   (INSCRITO + las que ya pasaron a un estado final).
         $totalInscritos = (int) (
-            ($countsPostulaciones['INSCRITO'] ?? 0)
-          + ($countsPostulaciones['ACEPTADO'] ?? 0)
-          + ($countsPostulaciones['SIN_CUPO'] ?? 0)
+            ($countsPostulaciones['INSCRITO']  ?? 0)
+          + ($countsPostulaciones['ACEPTADO']  ?? 0)
+          + ($countsPostulaciones['REPROBADO'] ?? 0)
+          + ($countsPostulaciones['SIN_CUPO']  ?? 0)
         );
-        $totalAprobados  = (int) ($countsPostulaciones['ACEPTADO'] ?? 0);
-        $totalReprobados = (int) ($countsPostulaciones['SIN_CUPO'] ?? 0);
+        $totalAprobados  = (int) ($countsPostulaciones['ACEPTADO']  ?? 0);
+        // "Reprobados" oficial (documento docente) = los que no alcanzaron nota.
+        $totalReprobados = (int) ($countsPostulaciones['REPROBADO'] ?? 0);
+        // "Sin cupo" extra: aprobaron pero no tenian cupo libre.
+        $totalSinCupo    = (int) ($countsPostulaciones['SIN_CUPO']  ?? 0);
 
         return response()->json([
             'gestion' => $gestion ? [
@@ -90,12 +94,14 @@ class DashboardController extends Controller
                 'turnos_habilitados'          => $gestion->turnos_habilitados,
             ] : null,
 
-            // KPIs obligatorios del documento docente
+            // KPIs obligatorios del documento docente + extra sin_cupo
             'kpis' => [
                 'total_inscritos'           => $totalInscritos,
                 'total_aprobados'           => $totalAprobados,
                 'total_reprobados'          => $totalReprobados,
                 'total_grupos_habilitados'  => $gruposActivos,
+                // Extra Ciclo 2: separa los que aprobaron pero no tenian cupo
+                'total_sin_cupo'            => $totalSinCupo,
             ],
 
             'postulaciones' => [
@@ -106,8 +112,9 @@ class DashboardController extends Controller
                 'observados'    => (int) ($countsPostulaciones['OBSERVADO'] ?? 0),
                 'inscritos'     => (int) ($countsPostulaciones['INSCRITO'] ?? 0),
                 'anulados'      => (int) ($countsPostulaciones['ANULADO'] ?? 0),
-                'aceptados'     => (int) ($countsPostulaciones['ACEPTADO'] ?? 0),
-                'sin_cupo'      => (int) ($countsPostulaciones['SIN_CUPO'] ?? 0),
+                'aceptados'     => (int) ($countsPostulaciones['ACEPTADO']  ?? 0),
+                'reprobados'    => (int) ($countsPostulaciones['REPROBADO'] ?? 0),
+                'sin_cupo'      => (int) ($countsPostulaciones['SIN_CUPO']  ?? 0),
             ],
             'pagos' => [
                 'aprobados'  => (int) ($countsPagos['APROBADO']  ?? 0),
