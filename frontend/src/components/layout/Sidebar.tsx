@@ -12,12 +12,13 @@ interface Item { to: string; label: string; }
 
 const ITEMS_POR_ROL: Record<RolCodigo, Item[]> = {
   ADMINISTRADOR: [
-    { to: "/admin",            label: "Dashboard" },
-    { to: "/admin/usuarios",   label: "Usuarios y roles" },
-    { to: "/admin/gestiones",  label: "Gestion CUP" },
-    { to: "/admin/grupos",     label: "Grupos" },
-    { to: "/admin/postulantes",label: "Postulantes" },
-    { to: "/admin/bitacora",   label: "Bitacora" },
+    { to: "/admin",             label: "Dashboard" },
+    { to: "/admin/usuarios",    label: "Usuarios y roles" },
+    { to: "/admin/gestiones",   label: "Gestion CUP" },
+    { to: "/admin/grupos",      label: "Grupos" },
+    { to: "/admin/postulantes", label: "Postulantes" },
+    { to: "/admin/resultados",  label: "Resultados" },
+    { to: "/admin/bitacora",    label: "Bitacora" },
   ],
   ENCARGADO: [
     { to: "/encargado",                  label: "Dashboard" },
@@ -28,7 +29,8 @@ const ITEMS_POR_ROL: Record<RolCodigo, Item[]> = {
     { to: "/docente", label: "Dashboard (Ciclo 2)" },
   ],
   COORDINADOR: [
-    { to: "/coordinador", label: "Dashboard (Ciclo 2)" },
+    { to: "/coordinador",            label: "Dashboard (Ciclo 2)" },
+    { to: "/coordinador/resultados", label: "Resultados" },
   ],
 };
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\PingController;
 use App\Http\Controllers\Api\PostulanteController;
 use App\Http\Controllers\Api\PreinscripcionController;
 use App\Http\Controllers\Api\RequisitoVerificacionController;
+use App\Http\Controllers\Api\ResultadoAdminController;
 use App\Http\Controllers\Api\ResultadoController;
 use App\Http\Controllers\Api\RolController;
 use App\Http\Controllers\Api\UsuarioController;
@@ -137,5 +138,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('coordinador')->group(function () {
         Route::get('/_placeholder', fn () => response()->json(['ciclo' => 2, 'modulo' => 'coordinador']));
+    });
+
+    // ------- VISTA DE RESULTADOS (ADMINISTRADOR + COORDINADOR) -------
+    // Ciclo 2: lista de resultados con filtros y KPIs.
+    Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('resultados')->group(function () {
+        Route::get('/',          [ResultadoAdminController::class, 'index']);
+        Route::get('/kpis',      [ResultadoAdminController::class, 'kpis']);
+        // Listado de gestiones (para llenar el filtro)
+        Route::get('/gestiones', function () {
+            return response()->json(
+                \App\Models\GestionCup::orderByDesc('id')
+                    ->select('id', 'codigo', 'nombre', 'estado')
+                    ->get()
+            );
+        });
     });
 });

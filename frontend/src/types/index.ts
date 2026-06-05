@@ -176,3 +176,56 @@ export interface Paginated<T> {
   per_page: number;
   total: number;
 }
+
+/* -------- Ciclo 2: Resultados -------- */
+
+export type EstadoResultado = "PENDIENTE_DESEMPATE" | "ACEPTADO" | "SIN_CUPO";
+export type OpcionAceptada = "PRIMERA" | "SEGUNDA" | "NINGUNA";
+
+export interface Resultado {
+  id: number;
+  postulacion_id: number;
+  nota_final: string | number;
+  ranking_global: number | null;
+  carrera_asignada_id: number | null;
+  opcion_aceptada: OpcionAceptada | null;
+  estado_final: EstadoResultado;
+  motivo: string | null;
+  fecha_calculo: string;
+  publicado: boolean;
+  fecha_publicacion: string | null;
+  postulacion?: {
+    id: number;
+    codigo_postulante: string | null;
+    persona?: Persona;
+    gestion?: GestionCup;
+    carrera_primera?: Carrera;
+    carrera_segunda?: Carrera | null;
+  };
+  carrera_asignada?: Carrera | null;
+}
+
+export interface ResultadoKPIs {
+  totales: {
+    aceptados: number;
+    primera_opcion: number;
+    segunda_opcion: number;
+    sin_cupo: number;
+    pendiente_desempate: number;
+    total: number;
+  };
+  por_carrera: Array<{
+    carrera_id: number;
+    carrera_codigo: string | null;
+    carrera_nombre: string | null;
+    cantidad: number;
+  }>;
+}
+
+export interface FiltrosResultados {
+  gestion_id?: number | "";
+  carrera_id?: number | "";
+  estado?: EstadoResultado | "TODOS" | "";
+  opcion?: OpcionAceptada | "";
+  q?: string;
+}

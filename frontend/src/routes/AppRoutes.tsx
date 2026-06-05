@@ -32,6 +32,8 @@ import { BoletaPage }           from "../pages/encargado/BoletaPage";
 import { DocenteDashboard }     from "../pages/docente/DocenteDashboard";
 import { CoordinadorDashboard } from "../pages/coordinador/CoordinadorDashboard";
 
+import { ResultadosPage }       from "../pages/resultados/ResultadosPage";
+
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute }      from "./RoleRoute";
 
@@ -100,6 +102,12 @@ export function AppRoutes() {
         {/* DOCENTE / COORDINADOR (Ciclo 2) */}
         <Route path="/docente"     element={<RoleRoute roles={["DOCENTE","ADMINISTRADOR"]}><DocenteDashboard /></RoleRoute>} />
         <Route path="/coordinador" element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><CoordinadorDashboard /></RoleRoute>} />
+
+        {/* RESULTADOS (Ciclo 2) -- ADMIN + COORDINADOR */}
+        <Route path="/admin/resultados"
+               element={<RoleRoute roles={["ADMINISTRADOR","COORDINADOR"]}><ResultadosPage /></RoleRoute>} />
+        <Route path="/coordinador/resultados"
+               element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><ResultadosPage /></RoleRoute>} />
 
         <Route path="/sin-acceso" element={<div className="p-6">No tienes acceso a esta seccion.</div>} />
       </Route>
