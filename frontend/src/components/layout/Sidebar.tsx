@@ -42,7 +42,11 @@ const ITEMS_POR_ROL: Record<RolCodigo, Item[]> = {
 };
 
 export function Sidebar({ rolCodigo }: { rolCodigo: RolCodigo }) {
-  const items = ITEMS_POR_ROL[rolCodigo] ?? [];
+  // "Mi cuenta" esta disponible para todos los roles.
+  const items = [
+    ...(ITEMS_POR_ROL[rolCodigo] ?? []),
+    { to: "/mi-cuenta", label: "Mi cuenta" },
+  ];
 
   return (
     <aside className="w-60 shrink-0 bg-institutional-800 text-institutional-100 min-h-screen sticky top-0">

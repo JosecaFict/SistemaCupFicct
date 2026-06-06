@@ -38,6 +38,7 @@ import { CargaNotasPage }       from "../pages/docente/CargaNotasPage";
 import { NotasPendientesPage }  from "../pages/coordinador/NotasPendientesPage";
 import { CalculoResultadosPage } from "../pages/calculo/CalculoResultadosPage";
 import { ReportesPage }         from "../pages/reportes/ReportesPage";
+import { MiCuentaPage }         from "../pages/perfil/MiCuentaPage";
 
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute }      from "./RoleRoute";
@@ -139,6 +140,9 @@ export function AppRoutes() {
                element={<RoleRoute roles={["ADMINISTRADOR","COORDINADOR"]}><ReportesPage /></RoleRoute>} />
         <Route path="/coordinador/reportes"
                element={<RoleRoute roles={["COORDINADOR","ADMINISTRADOR"]}><ReportesPage /></RoleRoute>} />
+
+        {/* CUENTA PROPIA -- cualquier usuario autenticado */}
+        <Route path="/mi-cuenta" element={<MiCuentaPage />} />
 
         <Route path="/sin-acceso" element={<div className="p-6">No tienes acceso a esta seccion.</div>} />
       </Route>

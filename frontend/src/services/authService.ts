@@ -46,4 +46,28 @@ export const authService = {
       return data;
     });
   },
+
+  /** Actualiza los datos personales del usuario autenticado. */
+  async actualizarPerfil(payload: {
+    nombre: string;
+    apellidos: string;
+    email: string;
+  }): Promise<User> {
+    return withCsrf(async () => {
+      const { data } = await api.put("/api/auth/perfil", payload);
+      return data.user as User;
+    });
+  },
+
+  /** Cambia la contrasena del usuario autenticado (pide la actual). */
+  async cambiarPassword(payload: {
+    current_password: string;
+    password: string;
+    password_confirmation: string;
+  }): Promise<{ message: string }> {
+    return withCsrf(async () => {
+      const { data } = await api.put("/api/auth/password", payload);
+      return data;
+    });
+  },
 };

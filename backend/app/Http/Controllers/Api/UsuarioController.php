@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 
 /*
 | UsuarioController (CU2)
@@ -39,7 +40,7 @@ class UsuarioController extends Controller
             'nombre'    => ['required', 'string', 'max:100'],
             'apellidos' => ['required', 'string', 'max:100'],
             'email'     => ['required', 'email', 'unique:users,email'],
-            'password'  => ['required', 'string', 'min:8'],
+            'password'  => ['required', PasswordRule::min(8)->mixedCase()->numbers()],
             'activo'    => ['boolean'],
         ]);
 
@@ -61,7 +62,7 @@ class UsuarioController extends Controller
             'nombre'    => ['sometimes', 'string', 'max:100'],
             'apellidos' => ['sometimes', 'string', 'max:100'],
             'email'     => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-            'password'  => ['sometimes', 'nullable', 'string', 'min:8'],
+            'password'  => ['sometimes', 'nullable', PasswordRule::min(8)->mixedCase()->numbers()],
             'activo'    => ['sometimes', 'boolean'],
         ]);
 

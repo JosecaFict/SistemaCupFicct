@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\GestionCupController;
 use App\Http\Controllers\Api\GrupoController;
 use App\Http\Controllers\Api\InscripcionController;
 use App\Http\Controllers\Api\PagoController;
+use App\Http\Controllers\Api\PerfilController;
 use App\Http\Controllers\Api\PingController;
 use App\Http\Controllers\Api\PostulanteController;
 use App\Http\Controllers\Api\PreinscripcionController;
@@ -84,6 +85,10 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me',      [AuthController::class, 'me']);
+
+        // Autogestion de la cuenta (cualquier rol autenticado)
+        Route::put('/perfil',   [PerfilController::class, 'actualizarDatos']);
+        Route::put('/password', [PerfilController::class, 'cambiarPassword']);
     });
 });
 
