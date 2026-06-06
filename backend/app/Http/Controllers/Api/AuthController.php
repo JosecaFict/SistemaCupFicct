@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\CodigoRecuperacion;
 use App\Models\User;
 use App\Services\BitacoraService;
+use App\Services\CorreoService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -105,7 +104,7 @@ class AuthController extends Controller
                 ['token' => Hash::make($codigo), 'created_at' => now()]
             );
 
-            Mail::to($user->email)->send(new CodigoRecuperacion($codigo, self::OTP_MINUTOS));
+            CorreoService::enviarCodigoRecuperacion($user->email, $codigo, self::OTP_MINUTOS);
 
             BitacoraService::registrar('PASSWORD_OTP_SOLICITADO', 'user', $user->id);
         }
