@@ -51,6 +51,21 @@ class RebalancearGestionesHistoricas extends Command
 
     protected $description = 'Reparte turnos, llena grupos en orden, borra grupos vacios y aprueba requisitos (demo)';
 
+    /**
+     * Estados que cuentan como "inscrito" (ocupan grupo/turno). Tras publicar
+     * resultados, la postulacion deja de estar en INSCRITO y pasa a un estado
+     * final (ACEPTADO/REPROBADO/SIN_CUPO), pero la persona ocupo su grupo igual.
+     */
+    private function estadosInscrito(): array
+    {
+        return [
+            EstadoPostulacion::INSCRITO->value,
+            EstadoPostulacion::ACEPTADO->value,
+            EstadoPostulacion::REPROBADO->value,
+            EstadoPostulacion::SIN_CUPO->value,
+        ];
+    }
+
     public function handle(): int
     {
         $codigos = collect(explode(',', (string) $this->option('codigos')))
@@ -124,7 +139,7 @@ class RebalancearGestionesHistoricas extends Command
         }
 
         $inscritos = Postulacion::where('gestion_cup_id', $gestion->id)
-            ->where('estado', EstadoPostulacion::INSCRITO)
+            ->whereIn('estado', $this->estadosInscrito())
             ->orderBy('codigo_postulante')->orderBy('id')
             ->get();
 
@@ -208,7 +223,7 @@ class RebalancearGestionesHistoricas extends Command
 
             $postulaciones = Postulacion::where('gestion_cup_id', $gestion->id)
                 ->where('turno_id', $turnoId)
-                ->where('estado', EstadoPostulacion::INSCRITO)
+                ->whereIn('estado', $this->estadosInscrito())
                 ->orderBy('codigo_postulante')->orderBy('id')
                 ->get();
 
@@ -289,7 +304,7 @@ class RebalancearGestionesHistoricas extends Command
         }
 
         $postulaciones = Postulacion::where('gestion_cup_id', $gestion->id)
-            ->where('estado', EstadoPostulacion::INSCRITO)
+            ->whereIn('estado', $this->estadosInscrito())
             ->get();
 
         $creados = 0;
