@@ -19,8 +19,8 @@ export function DataTable<T extends { id: number | string }>({
   }
   return (
     <>
-      {/* Escritorio / tablet: tabla clasica con scroll horizontal de respaldo. */}
-      <div className="hidden md:block overflow-x-auto">
+      {/* Escritorio: tabla clasica con scroll horizontal de respaldo. */}
+      <div className="hidden lg:block overflow-x-auto">
         <table className="min-w-full text-sm">
           <thead>
             <tr className="bg-muted-50 text-muted-600 text-left">
@@ -42,8 +42,8 @@ export function DataTable<T extends { id: number | string }>({
         </table>
       </div>
 
-      {/* Movil: cada fila se muestra como tarjeta etiqueta/valor. */}
-      <div className="md:hidden space-y-3">
+      {/* Movil y celular en horizontal: cada fila se muestra como tarjeta etiqueta/valor. */}
+      <div className="lg:hidden space-y-3">
         {rows.map((row) => (
           <div key={row.id} className="rounded-lg border border-muted-100 bg-white p-3 space-y-2">
             {columns.map((c, i) => {

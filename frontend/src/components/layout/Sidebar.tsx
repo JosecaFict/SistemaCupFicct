@@ -67,7 +67,7 @@ export function Sidebar({ rolCodigo, abierto, onClose }: SidebarProps) {
           type="button"
           onClick={onClose}
           aria-label="Cerrar menu"
-          className="md:hidden text-institutional-300 hover:text-white"
+          className="lg:hidden text-institutional-300 hover:text-white"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <path d="M6 6l12 12M18 6l-12 12" />
@@ -98,14 +98,14 @@ export function Sidebar({ rolCodigo, abierto, onClose }: SidebarProps) {
   return (
     <>
       {/* Escritorio: sidebar fijo. */}
-      <aside className="hidden md:block w-60 shrink-0 bg-institutional-800 text-institutional-100 min-h-screen sticky top-0">
+      <aside className="hidden lg:block w-60 shrink-0 bg-institutional-800 text-institutional-100 min-h-screen sticky top-0">
         {contenido}
       </aside>
 
-      {/* Movil: drawer deslizable con fondo oscuro. */}
+      {/* Movil y celular en horizontal: drawer deslizable con fondo oscuro. */}
       <div
         className={clsx(
-          "md:hidden fixed inset-0 z-40 transition-opacity duration-200",
+          "lg:hidden fixed inset-0 z-40 transition-opacity duration-200",
           abierto ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >
