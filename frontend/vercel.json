@@ -8,6 +8,10 @@
     {
       "source": "/sanctum/:path*",
       "destination": "https://sistemacupficct-production.up.railway.app/sanctum/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
     }
   ]
 }
