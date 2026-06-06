@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Validation\ValidationException;
 
 /*
@@ -123,7 +124,11 @@ class AuthController extends Controller
         $data = $request->validate([
             'email'    => ['required', 'email'],
             'codigo'   => ['required', 'string', 'size:6'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // Politica: 8+ caracteres, mayuscula, minuscula y numero.
+            'password' => [
+                'required', 'confirmed',
+                PasswordRule::min(8)->mixedCase()->numbers(),
+            ],
         ]);
 
         $registro = DB::table('password_reset_tokens')->where('email', $data['email'])->first();

@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Input } from "../../components/ui/Input";
+import { PasswordInput } from "../../components/ui/PasswordInput";
 import { Button } from "../../components/ui/Button";
 import { Alert } from "../../components/ui/Alert";
 import { authService } from "../../services/authService";
+
+// Politica: minimo 8 caracteres, al menos 1 minuscula, 1 mayuscula y 1 numero.
+const POLITICA_PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
 /*
  * ResetPassword
@@ -24,6 +28,17 @@ export function ResetPassword() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Validacion de la politica antes de enviar (el backend tambien la valida).
+    if (!POLITICA_PASSWORD.test(password)) {
+      setError("La contraseña debe tener mínimo 8 caracteres, e incluir al menos una mayúscula, una minúscula y un número.");
+      return;
+    }
+    if (password !== confirmacion) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
     setEnviando(true);
     try {
       await authService.resetPassword({
@@ -64,10 +79,13 @@ export function ResetPassword() {
       <Input label="Código de 6 dígitos" inputMode="numeric" maxLength={6}
              value={codigo} onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ""))}
              placeholder="------" required />
-      <Input label="Nueva contraseña" type="password" value={password}
-             onChange={(e) => setPassword(e.target.value)} required minLength={8} />
-      <Input label="Confirmar contraseña" type="password" value={confirmacion}
-             onChange={(e) => setConfirmacion(e.target.value)} required minLength={8} />
+      <PasswordInput label="Nueva contraseña" value={password}
+             onChange={(e) => setPassword(e.target.value)} required minLength={8}
+             autoComplete="new-password"
+             hint="Mínimo 8 caracteres, con al menos una mayúscula, una minúscula y un número." />
+      <PasswordInput label="Confirmar contraseña" value={confirmacion}
+             onChange={(e) => setConfirmacion(e.target.value)} required minLength={8}
+             autoComplete="new-password" />
 
       <Button type="submit" loading={enviando} className="w-full">Reestablecer</Button>
       <div className="flex justify-between text-sm">
