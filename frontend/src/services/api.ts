@@ -9,6 +9,14 @@ import axios from "axios";
  * - Antes de cada peticion no-GET pasamos por /sanctum/csrf-cookie para
  *   refrescar el token CSRF (XSRF-TOKEN).
  */
+/*
+ * En produccion (Vercel) el frontend usa URL relativa para que las requests
+ * a /api/* y /sanctum/* pasen por el proxy configurado en vercel.json. Asi
+ * el navegador trata las cookies como mismo origen y CSRF funciona bien.
+ *
+ * En desarrollo (Laragon o artisan serve) se usa VITE_API_URL apuntando al
+ * backend local. Si no esta definida, se cae al default localhost:8000.
+ */
 const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
 export const api = axios.create({
