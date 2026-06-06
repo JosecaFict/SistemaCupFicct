@@ -26,12 +26,14 @@ export function PostulantesPage() {
   const [data, setData] = useState<Paginated<Postulacion> | null>(null);
   const [gestiones, setGestiones] = useState<GestionCup[]>([]);
   const [gestionId, setGestionId] = useState<string>("");
+  const [gestionEstado, setGestionEstado] = useState<string>("");
   const [q, setQ] = useState("");
 
-  const cargar = (busq = q, gid = gestionId) => {
+  const cargar = (busq = q, gid = gestionId, gest = gestionEstado) => {
     const params: Record<string, string | number> = {};
     if (busq) params.q = busq;
     if (gid)  params.gestion_cup_id = Number(gid);
+    if (gest) params.gestion_estado = gest;
     encargadoService.postulaciones(params).then(setData);
   };
 
@@ -39,8 +41,8 @@ export function PostulantesPage() {
     encargadoService.gestiones().then(setGestiones).catch(() => {});
   }, []);
 
-  // Recarga al cambiar la gestion (y en el montaje inicial).
-  useEffect(() => { cargar(q, gestionId); /* eslint-disable-line */ }, [gestionId]);
+  // Recarga al cambiar gestion o estado (y en el montaje inicial).
+  useEffect(() => { cargar(q, gestionId, gestionEstado); /* eslint-disable-line */ }, [gestionId, gestionEstado]);
 
   return (
     <div className="space-y-5">
@@ -48,7 +50,7 @@ export function PostulantesPage() {
 
       <Card>
         <div className="flex flex-wrap gap-2 items-end mb-4">
-          <div className="w-56">
+          <div className="w-52">
             <Select label="Filtrar por gestion" value={gestionId} onChange={(e) => setGestionId(e.target.value)}>
               <option value="">Todas las gestiones</option>
               {gestiones.map((g) => (
@@ -56,7 +58,14 @@ export function PostulantesPage() {
               ))}
             </Select>
           </div>
-          <Input label="Buscar" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Documento, nombre, codigo" className="flex-1 min-w-[200px]" />
+          <div className="w-44">
+            <Select label="Filtrar por estado" value={gestionEstado} onChange={(e) => setGestionEstado(e.target.value)}>
+              <option value="">Todos</option>
+              <option value="ACTIVA">Activa</option>
+              <option value="CERRADA">Cerrada</option>
+            </Select>
+          </div>
+          <Input label="Buscar" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Documento, nombre, codigo" className="flex-1 min-w-[180px]" />
           <Button variant="secondary" onClick={() => cargar()}>Buscar</Button>
         </div>
 

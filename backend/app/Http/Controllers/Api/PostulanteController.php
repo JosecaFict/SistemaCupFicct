@@ -39,6 +39,11 @@ class PostulanteController extends Controller
             $q->where('gestion_cup_id', $gestionId);
         }
 
+        // Filtro por estado de la gestion (ACTIVA / CERRADA / BORRADOR).
+        if ($gestionEstado = $request->query('gestion_estado')) {
+            $q->whereHas('gestion', fn ($qq) => $qq->where('estado', $gestionEstado));
+        }
+
         return response()->json($q->orderByDesc('id')->paginate(20));
     }
 
