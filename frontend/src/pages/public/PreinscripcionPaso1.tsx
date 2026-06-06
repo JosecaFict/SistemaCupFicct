@@ -30,7 +30,9 @@ export function PreinscripcionPaso1() {
 
   useEffect(() => {
     publicService.gestionActiva()
-      .then((g) => setGestion(g))
+      // El backend puede devolver {} (objeto vacio) cuando no hay gestion real.
+      // Solo la tomamos como valida si trae un id; si no, es "sin gestion".
+      .then((g) => setGestion(g && g.id ? g : null))
       .finally(() => setCargando(false));
   }, []);
 
