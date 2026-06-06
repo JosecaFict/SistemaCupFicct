@@ -6,7 +6,6 @@ import type { RolCodigo } from "../../types";
  * Sidebar
  * --------------------------------------------------------------------------
  * Menu lateral. El conjunto de items depende del rol del usuario.
- * Items de Docente y Coordinador estan PREPARADOS para Ciclo 2.
  */
 interface Item { to: string; label: string; }
 
@@ -33,7 +32,7 @@ const ITEMS_POR_ROL: Record<RolCodigo, Item[]> = {
     { to: "/docente", label: "Mis asignaciones" },
   ],
   COORDINADOR: [
-    { to: "/coordinador",                   label: "Dashboard (Ciclo 2)" },
+    { to: "/coordinador",                   label: "Dashboard" },
     { to: "/coordinador/asignaciones",      label: "Asignaciones docente" },
     { to: "/coordinador/notas-pendientes",  label: "Notas pendientes" },
     { to: "/coordinador/calculo",           label: "Calculo de resultados" },
