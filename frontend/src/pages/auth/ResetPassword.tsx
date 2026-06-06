@@ -26,7 +26,7 @@ export function ResetPassword() {
       setMensaje(r.message);
     } catch (e: unknown) {
       const er = e as { response?: { data?: { message?: string } } };
-      setError(er?.response?.data?.message ?? "No fue posible reestablecer la contrasena.");
+      setError(er?.response?.data?.message ?? "No fue posible reestablecer la contraseña.");
     } finally {
       setEnviando(false);
     }
@@ -34,16 +34,16 @@ export function ResetPassword() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold text-institutional-800">Reestablecer contrasena</h2>
+      <h2 className="text-xl font-semibold text-institutional-800">Reestablecer contraseña</h2>
 
       {mensaje && <Alert tone="success">{mensaje}</Alert>}
       {error && <Alert tone="danger">{error}</Alert>}
 
       <Input label="Correo" type="email" value={email}
              onChange={(e) => setEmail(e.target.value)} required />
-      <Input label="Nueva contrasena" type="password" value={password}
+      <Input label="Nueva contraseña" type="password" value={password}
              onChange={(e) => setPassword(e.target.value)} required minLength={8} />
-      <Input label="Confirmar contrasena" type="password" value={confirmacion}
+      <Input label="Confirmar contraseña" type="password" value={confirmacion}
              onChange={(e) => setConfirmacion(e.target.value)} required minLength={8} />
 
       <Button type="submit" loading={enviando} className="w-full">Reestablecer</Button>

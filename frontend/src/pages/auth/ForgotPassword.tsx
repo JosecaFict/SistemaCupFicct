@@ -28,8 +28,8 @@ export function ForgotPassword() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold text-institutional-800">Recuperar contrasena</h2>
-      <p className="text-sm text-muted-500">Te enviaremos un enlace para reestablecer tu contrasena.</p>
+      <h2 className="text-xl font-semibold text-institutional-800">Recuperar contraseña</h2>
+      <p className="text-sm text-muted-500">Te enviaremos un enlace para reestablecer tu contraseña.</p>
 
       {mensaje && <Alert tone="success">{mensaje}</Alert>}
       {error && <Alert tone="danger">{error}</Alert>}
