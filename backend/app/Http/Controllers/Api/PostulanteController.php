@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\EstadoPostulacion;
 use App\Http\Controllers\Controller;
+use App\Models\GestionCup;
 use App\Models\Persona;
 use App\Models\Postulacion;
 use App\Services\BitacoraService;
@@ -35,13 +36,24 @@ class PostulanteController extends Controller
             $q->where('estado', $estado);
         }
 
-        if ($gestionId = $request->query('gestion_cup_id')) {
-            $q->where('gestion_cup_id', $gestionId);
-        }
+        // Alcance por rol: el ENCARGADO (rol acotado y rotativo) solo ve la
+        // gestion ACTIVA, sin importar los filtros que lleguen por API. El
+        // ADMINISTRADOR (supervision) ve todas y respeta los filtros.
+        $user = $request->user();
+        $esAdmin = $user && $user->rol && $user->rol->codigo === 'ADMINISTRADOR';
 
-        // Filtro por estado de la gestion (ACTIVA / CERRADA / BORRADOR).
-        if ($gestionEstado = $request->query('gestion_estado')) {
-            $q->whereHas('gestion', fn ($qq) => $qq->where('estado', $gestionEstado));
+        if ($esAdmin) {
+            if ($gestionId = $request->query('gestion_cup_id')) {
+                $q->where('gestion_cup_id', $gestionId);
+            }
+            // Filtro por estado de la gestion (ACTIVA / CERRADA / BORRADOR).
+            if ($gestionEstado = $request->query('gestion_estado')) {
+                $q->whereHas('gestion', fn ($qq) => $qq->where('estado', $gestionEstado));
+            }
+        } else {
+            $activa = GestionCup::where('estado', 'ACTIVA')->latest()->first();
+            // Sin gestion activa, el encargado no debe ver ningun postulante.
+            $activa ? $q->where('gestion_cup_id', $activa->id) : $q->whereRaw('1 = 0');
         }
 
         return response()->json($q->orderByDesc('id')->paginate(20));
