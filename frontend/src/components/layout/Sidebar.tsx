@@ -57,7 +57,7 @@ export function Sidebar({ rolCodigo, abierto, onClose }: SidebarProps) {
   // Contenido compartido por la version escritorio y el drawer movil.
   const contenido = (
     <>
-      <div className="px-5 py-4 border-b border-institutional-700 flex items-center justify-between">
+      <div className="shrink-0 px-5 py-4 border-b border-institutional-700 flex items-center justify-between">
         <div>
           <div className="text-xs uppercase tracking-widest text-institutional-300">FICCT</div>
           <div className="font-semibold text-white">Sistema CUP</div>
@@ -74,7 +74,7 @@ export function Sidebar({ rolCodigo, abierto, onClose }: SidebarProps) {
           </svg>
         </button>
       </div>
-      <nav className="p-3 space-y-1 text-sm">
+      <nav className="flex-1 min-h-0 overflow-y-auto p-3 space-y-1 text-sm">
         {items.map((it) => (
           <NavLink
             key={it.to}
@@ -112,7 +112,7 @@ export function Sidebar({ rolCodigo, abierto, onClose }: SidebarProps) {
         <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden="true" />
         <aside
           className={clsx(
-            "absolute left-0 top-0 h-full w-64 bg-institutional-800 text-institutional-100 shadow-xl transition-transform duration-200",
+            "absolute left-0 top-0 h-full w-64 flex flex-col bg-institutional-800 text-institutional-100 shadow-xl transition-transform duration-200",
             abierto ? "translate-x-0" : "-translate-x-full",
           )}
         >
