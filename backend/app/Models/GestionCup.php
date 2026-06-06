@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -70,5 +71,21 @@ class GestionCup extends Model
     public function getTurnosArrayAttribute(): array
     {
         return array_filter(array_map('trim', explode(',', $this->turnos_habilitados ?? '')));
+    }
+
+    /**
+     * Gestiones con la preinscripcion realmente ABIERTA: estado ACTIVA, con
+     * codigo y fechas cargadas, y con HOY dentro del rango de preinscripcion.
+     * Evita que una gestion fantasma/mal configurada habilite la preinscripcion.
+     */
+    public function scopeAbiertaPreinscripcion(Builder $q): Builder
+    {
+        $hoy = now()->toDateString();
+        return $q->where('estado', 'ACTIVA')
+            ->whereNotNull('codigo')
+            ->whereNotNull('fecha_inicio_preinscripcion')
+            ->whereNotNull('fecha_cierre_preinscripcion')
+            ->whereDate('fecha_inicio_preinscripcion', '<=', $hoy)
+            ->whereDate('fecha_cierre_preinscripcion', '>=', $hoy);
     }
 }

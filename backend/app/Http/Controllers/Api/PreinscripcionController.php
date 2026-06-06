@@ -62,15 +62,14 @@ class PreinscripcionController extends Controller
             'carrera_segunda_id'  => ['nullable', 'different:carrera_primera_id', 'exists:carreras,id'],
         ]);
 
-        // La gestion debe estar ACTIVA y dentro de fechas
+        // La gestion debe tener la preinscripcion abierta: estado ACTIVA, con
+        // codigo y fechas cargadas, y hoy dentro del rango (mismo criterio que
+        // usa la pantalla). Bloquea gestiones fantasma o fuera de periodo.
         $gestion = GestionCup::findOrFail($data['gestion_cup_id']);
-        if ($gestion->estado !== 'ACTIVA') {
-            return response()->json(['message' => 'La gestion no esta activa para preinscripciones.'], 422);
-        }
-        $hoy = now()->toDateString();
-        if ($hoy < $gestion->fecha_inicio_preinscripcion->toDateString()
-            || $hoy > $gestion->fecha_cierre_preinscripcion->toDateString()) {
-            return response()->json(['message' => 'Estamos fuera del periodo de preinscripcion.'], 422);
+        if (!GestionCup::abiertaPreinscripcion()->whereKey($gestion->id)->exists()) {
+            return response()->json([
+                'message' => 'La gestion no esta abierta para preinscripciones (estado o fechas).',
+            ], 422);
         }
 
         return DB::transaction(function () use ($data) {

@@ -67,10 +67,14 @@ class CatalogoController extends Controller
         return response()->json($data);
     }
 
-    /** Gestion CUP en estado ACTIVA. No se cachea (cambia con frecuencia). */
+    /**
+     * Gestion CUP con la preinscripcion realmente abierta (estado ACTIVA, con
+     * codigo y fechas, y hoy dentro del rango). Devuelve null si no hay ninguna,
+     * para que el frontend bloquee la preinscripcion. No se cachea.
+     */
     public function gestionActiva(): JsonResponse
     {
-        $gestion = GestionCup::where('estado', 'ACTIVA')->latest()->first();
+        $gestion = GestionCup::abiertaPreinscripcion()->latest()->first();
         return response()->json($gestion);
     }
 }
