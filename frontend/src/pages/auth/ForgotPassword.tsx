@@ -29,16 +29,22 @@ export function ForgotPassword() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <h2 className="text-xl font-semibold text-institutional-800">Recuperar contraseña</h2>
-      <p className="text-sm text-muted-500">Te enviaremos un enlace para reestablecer tu contraseña.</p>
+      <p className="text-sm text-muted-500">Te enviaremos un código de 6 dígitos a tu correo para reestablecer tu contraseña.</p>
 
-      {mensaje && <Alert tone="success">{mensaje}</Alert>}
+      {mensaje && (
+        <Alert tone="success">
+          {mensaje} Revisa tu bandeja de entrada (y la carpeta de spam).
+        </Alert>
+      )}
       {error && <Alert tone="danger">{error}</Alert>}
 
       <Input label="Correo electronico" type="email" value={email}
              onChange={(e) => setEmail(e.target.value)} required />
-      <Button type="submit" loading={enviando} className="w-full">Enviar enlace</Button>
-      <div className="text-sm text-center">
-        <Link to="/login" className="text-institutional-700 hover:underline">Volver al login</Link>
+      <Button type="submit" loading={enviando} className="w-full">Enviar código</Button>
+      <div className="flex justify-between text-sm">
+        <Link to={`/reset-password${email ? `?email=${encodeURIComponent(email)}` : ""}`}
+              className="text-institutional-700 hover:underline">Ya tengo un código</Link>
+        <Link to="/login" className="text-muted-500 hover:underline">Volver al login</Link>
       </div>
     </form>
   );

@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CodigoRecuperacion;
 use App\Models\User;
 use App\Services\BitacoraService;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 /*
@@ -20,11 +24,14 @@ use Illuminate\Validation\ValidationException;
 |   POST /api/auth/login              -> inicia sesion
 |   POST /api/auth/logout             -> cierra sesion (requiere auth)
 |   GET  /api/auth/me                 -> devuelve el usuario autenticado
-|   POST /api/auth/forgot-password    -> envia correo con token de reset
-|   POST /api/auth/reset-password     -> aplica el reset usando el token
+|   POST /api/auth/forgot-password    -> envia un codigo OTP al correo
+|   POST /api/auth/reset-password     -> valida el codigo OTP y cambia la clave
 */
 class AuthController extends Controller
 {
+    /** Minutos de validez del codigo OTP de recuperacion. */
+    private const OTP_MINUTOS = 15;
+
     public function login(Request $request): JsonResponse
     {
         $credenciales = $request->validate([
@@ -77,44 +84,76 @@ class AuthController extends Controller
         return response()->json(['user' => $request->user()->load('rol')]);
     }
 
-    /** Envia el correo con el link de recuperacion. */
+    /**
+     * Genera un codigo OTP de 6 digitos y lo envia al correo registrado.
+     * El codigo se guarda hasheado en password_reset_tokens con su fecha,
+     * para validarlo y expirarlo luego. Responde siempre de forma generica
+     * para no revelar si el correo existe (evita enumeracion de usuarios).
+     */
     public function forgotPassword(Request $request): JsonResponse
     {
         $request->validate(['email' => ['required', 'email']]);
 
-        $status = Password::sendResetLink($request->only('email'));
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && $user->activo) {
+            // Codigo de 6 digitos (random_int es criptograficamente seguro).
+            $codigo = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+            DB::table('password_reset_tokens')->updateOrInsert(
+                ['email' => $user->email],
+                ['token' => Hash::make($codigo), 'created_at' => now()]
+            );
+
+            Mail::to($user->email)->send(new CodigoRecuperacion($codigo, self::OTP_MINUTOS));
+
+            BitacoraService::registrar('PASSWORD_OTP_SOLICITADO', 'user', $user->id);
+        }
 
         return response()->json([
-            'status' => $status,
-            'message' => $status === Password::RESET_LINK_SENT
-                ? 'Se envio un correo con instrucciones para reestablecer la contrasena.'
-                : 'No fue posible enviar el correo de recuperacion.',
-        ], $status === Password::RESET_LINK_SENT ? 200 : 422);
+            'message' => 'Si el correo esta registrado, te enviamos un codigo de recuperacion.',
+        ]);
     }
 
-    /** Aplica el reset usando el token recibido en el correo. */
+    /**
+     * Valida el codigo OTP y, si es correcto y no expiro, cambia la contrasena.
+     * El codigo es de un solo uso: se elimina al usarse (o al expirar).
+     */
     public function resetPassword(Request $request): JsonResponse
     {
-        $request->validate([
-            'token'                 => ['required'],
-            'email'                 => ['required', 'email'],
-            'password'              => ['required', 'string', 'min:8', 'confirmed'],
+        $data = $request->validate([
+            'email'    => ['required', 'email'],
+            'codigo'   => ['required', 'string', 'size:6'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password) {
-                $user->password = Hash::make($password);
-                $user->setRememberToken(\Illuminate\Support\Str::random(60));
-                $user->save();
-            }
-        );
+        $registro = DB::table('password_reset_tokens')->where('email', $data['email'])->first();
 
-        return response()->json([
-            'status' => $status,
-            'message' => $status === Password::PASSWORD_RESET
-                ? 'Contrasena reestablecida correctamente.'
-                : 'No fue posible reestablecer la contrasena.',
-        ], $status === Password::PASSWORD_RESET ? 200 : 422);
+        // Mensaje generico para codigo inexistente o que no coincide.
+        if (!$registro || !Hash::check($data['codigo'], $registro->token)) {
+            return response()->json(['message' => 'Codigo invalido o ya utilizado.'], 422);
+        }
+
+        // Expiracion del codigo.
+        if (Carbon::parse($registro->created_at)->addMinutes(self::OTP_MINUTOS)->isPast()) {
+            DB::table('password_reset_tokens')->where('email', $data['email'])->delete();
+            return response()->json(['message' => 'El codigo expiro. Solicita uno nuevo.'], 422);
+        }
+
+        $user = User::where('email', $data['email'])->first();
+        if (!$user) {
+            return response()->json(['message' => 'Codigo invalido o ya utilizado.'], 422);
+        }
+
+        $user->password = Hash::make($data['password']);
+        $user->setRememberToken(Str::random(60));
+        $user->save();
+
+        // Un solo uso: el codigo se invalida tras cambiar la contrasena.
+        DB::table('password_reset_tokens')->where('email', $data['email'])->delete();
+
+        BitacoraService::registrar('PASSWORD_REESTABLECIDO', 'user', $user->id);
+
+        return response()->json(['message' => 'Contrasena reestablecida correctamente.']);
     }
 }

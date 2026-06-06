@@ -36,8 +36,8 @@ export const authService = {
   },
 
   async resetPassword(payload: {
-    token: string;
     email: string;
+    codigo: string;
     password: string;
     password_confirmation: string;
   }): Promise<{ message: string }> {
