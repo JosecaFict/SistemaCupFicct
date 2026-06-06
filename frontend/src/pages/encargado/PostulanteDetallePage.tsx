@@ -78,6 +78,12 @@ export function PostulanteDetallePage() {
 
   return (
     <div className="space-y-5">
+      <div>
+        <Button variant="ghost" size="sm" onClick={() => navigate("/encargado/postulantes")}>
+          ← Volver a postulantes
+        </Button>
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold text-institutional-800">
@@ -113,7 +119,7 @@ export function PostulanteDetallePage() {
         </Card>
       </div>
 
-      <Card title="Requisitos (CU8)">
+      <Card title="Requisitos">
         {!tienePagoAprobado && (
           <Alert tone="warning">El pago aun no esta aprobado. La inscripcion no puede confirmarse.</Alert>
         )}
@@ -144,7 +150,7 @@ export function PostulanteDetallePage() {
       </Card>
 
       {!yaInscrito && (
-        <Card title="Confirmar inscripcion (CU9 + CU10)">
+        <Card title="Confirmar inscripcion">
           {!todosOk && <Alert tone="warning">Aun hay requisitos sin validar.</Alert>}
           <div className="flex flex-wrap gap-3 items-end mt-3">
             <Select label="Turno" value={turno} onChange={(e) => setTurno(e.target.value)}>
