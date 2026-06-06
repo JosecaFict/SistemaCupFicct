@@ -50,7 +50,7 @@ export function PostulantesPage() {
 
       <Card>
         <div className="flex flex-wrap gap-2 items-end mb-4">
-          <div className="w-52">
+          <div className="w-full sm:w-52">
             <Select label="Filtrar por gestion" value={gestionId} onChange={(e) => setGestionId(e.target.value)}>
               <option value="">Todas las gestiones</option>
               {gestiones.map((g) => (
@@ -58,7 +58,7 @@ export function PostulantesPage() {
               ))}
             </Select>
           </div>
-          <div className="w-44">
+          <div className="w-full sm:w-44">
             <Select label="Filtrar por estado" value={gestionEstado} onChange={(e) => setGestionEstado(e.target.value)}>
               <option value="">Todos</option>
               <option value="ACTIVA">Activa</option>

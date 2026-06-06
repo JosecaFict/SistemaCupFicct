@@ -36,7 +36,7 @@ export function GruposPage() {
 
       <Card>
         <div className="flex flex-wrap items-end gap-3">
-          <div className="w-56">
+          <div className="w-full sm:w-56">
             <Select label="Filtrar por gestion" value={gestionId} onChange={(e) => setGestionId(e.target.value)}>
               <option value="">Todas las gestiones</option>
               {gestiones.map((g) => (
@@ -44,7 +44,7 @@ export function GruposPage() {
               ))}
             </Select>
           </div>
-          <div className="w-56">
+          <div className="w-full sm:w-56">
             <Select label="Filtrar por turno" value={turnoId} onChange={(e) => setTurnoId(e.target.value)}>
               <option value="">Todos los turnos</option>
               {turnos.map((t) => (

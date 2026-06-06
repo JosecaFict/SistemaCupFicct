@@ -41,24 +41,45 @@ const ITEMS_POR_ROL: Record<RolCodigo, Item[]> = {
   ],
 };
 
-export function Sidebar({ rolCodigo }: { rolCodigo: RolCodigo }) {
+interface SidebarProps {
+  rolCodigo: RolCodigo;
+  abierto: boolean;
+  onClose: () => void;
+}
+
+export function Sidebar({ rolCodigo, abierto, onClose }: SidebarProps) {
   // "Mi cuenta" esta disponible para todos los roles.
   const items = [
     ...(ITEMS_POR_ROL[rolCodigo] ?? []),
     { to: "/mi-cuenta", label: "Mi cuenta" },
   ];
 
-  return (
-    <aside className="w-60 shrink-0 bg-institutional-800 text-institutional-100 min-h-screen sticky top-0">
-      <div className="px-5 py-4 border-b border-institutional-700">
-        <div className="text-xs uppercase tracking-widest text-institutional-300">FICCT</div>
-        <div className="font-semibold text-white">Sistema CUP</div>
+  // Contenido compartido por la version escritorio y el drawer movil.
+  const contenido = (
+    <>
+      <div className="px-5 py-4 border-b border-institutional-700 flex items-center justify-between">
+        <div>
+          <div className="text-xs uppercase tracking-widest text-institutional-300">FICCT</div>
+          <div className="font-semibold text-white">Sistema CUP</div>
+        </div>
+        {/* Boton cerrar: solo visible en el drawer movil. */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Cerrar menu"
+          className="md:hidden text-institutional-300 hover:text-white"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M6 6l12 12M18 6l-12 12" />
+          </svg>
+        </button>
       </div>
       <nav className="p-3 space-y-1 text-sm">
         {items.map((it) => (
           <NavLink
             key={it.to}
             to={it.to}
+            onClick={onClose}
             end={it.to.endsWith("/admin") || it.to.endsWith("/encargado") || it.to.endsWith("/docente") || it.to.endsWith("/coordinador")}
             className={({ isActive }) =>
               clsx(
@@ -71,6 +92,33 @@ export function Sidebar({ rolCodigo }: { rolCodigo: RolCodigo }) {
           </NavLink>
         ))}
       </nav>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Escritorio: sidebar fijo. */}
+      <aside className="hidden md:block w-60 shrink-0 bg-institutional-800 text-institutional-100 min-h-screen sticky top-0">
+        {contenido}
+      </aside>
+
+      {/* Movil: drawer deslizable con fondo oscuro. */}
+      <div
+        className={clsx(
+          "md:hidden fixed inset-0 z-40 transition-opacity duration-200",
+          abierto ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
+      >
+        <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden="true" />
+        <aside
+          className={clsx(
+            "absolute left-0 top-0 h-full w-64 bg-institutional-800 text-institutional-100 shadow-xl transition-transform duration-200",
+            abierto ? "translate-x-0" : "-translate-x-full",
+          )}
+        >
+          {contenido}
+        </aside>
+      </div>
+    </>
   );
 }
