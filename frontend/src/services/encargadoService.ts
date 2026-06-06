@@ -1,5 +1,5 @@
 import { api, withCsrf } from "./api";
-import type { BoletaPayload, Grupo, Paginated, Postulacion, PostulacionRequisito } from "../types";
+import type { BoletaPayload, GestionCup, Grupo, Paginated, Postulacion, PostulacionRequisito } from "../types";
 
 /*
  * encargadoService -- endpoints /api/encargado/* (ADMINISTRADOR + ENCARGADO).
@@ -40,6 +40,10 @@ export const encargadoService = {
 
   boleta: (postulacionId: number) =>
     api.get<BoletaPayload>(`/api/encargado/postulaciones/${postulacionId}/boleta`).then((r) => r.data),
+
+  /** Gestiones para llenar el filtro (ENCARGADO + ADMINISTRADOR). */
+  gestiones: () =>
+    api.get<GestionCup[]>("/api/encargado/gestiones").then((r) => r.data),
 
   grupos: (filtros: { gestion_cup_id?: number; turno_id?: number } = {}) => {
     const params: Record<string, number> = {};

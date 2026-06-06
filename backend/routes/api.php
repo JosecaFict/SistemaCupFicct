@@ -143,6 +143,17 @@ Route::middleware('auth:sanctum')->group(function () {
         // Grupos
         Route::get  ('/grupos',          [GrupoController::class, 'index']);
         Route::patch('/grupos/{grupo}',  [GrupoController::class, 'update']);
+
+        // Listado de gestiones (para llenar el filtro del panel encargado).
+        // El endpoint /api/admin/gestiones es solo ADMINISTRADOR, por eso el
+        // ENCARGADO necesita esta ruta propia para poder filtrar por gestion.
+        Route::get('/gestiones', function () {
+            return response()->json(
+                \App\Models\GestionCup::orderByDesc('id')
+                    ->select('id', 'codigo', 'nombre', 'estado')
+                    ->get()
+            );
+        });
     });
 
     // ------- DOCENTE (Ciclo 2 - CU14) -------

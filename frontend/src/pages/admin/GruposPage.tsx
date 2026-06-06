@@ -5,7 +5,6 @@ import { Badge } from "../../components/ui/Badge";
 import { Select } from "../../components/ui/Select";
 import { encargadoService } from "../../services/encargadoService";
 import { publicService } from "../../services/publicService";
-import { adminService } from "../../services/adminService";
 import type { GestionCup, Grupo, Turno } from "../../types";
 
 /*
@@ -21,7 +20,7 @@ export function GruposPage() {
 
   useEffect(() => {
     publicService.turnos().then(setTurnos);
-    adminService.gestiones().then((p) => setGestiones(p.data)).catch(() => {});
+    encargadoService.gestiones().then(setGestiones).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -67,7 +66,12 @@ export function GruposPage() {
             { header: "Capacidad",cell: (g) => g.capacidad },
             { header: "Inscritos",cell: (g) => g.inscritos_actuales },
             { header: "Libres",   cell: (g) => g.capacidad - g.inscritos_actuales },
-            { header: "Estado",   cell: (g) => <Badge tone={g.estado === "ACTIVO" ? "success" : "neutral"}>{g.estado}</Badge> },
+            { header: "Estado",   cell: (g) => {
+              // Si la gestion esta CERRADA, el grupo no esta operativo aunque su
+              // propio campo 'estado' siga en ACTIVO: reflejamos el estado real.
+              const efectivo = g.gestion?.estado === "CERRADA" ? "CERRADO" : g.estado;
+              return <Badge tone={efectivo === "ACTIVO" ? "success" : "neutral"}>{efectivo}</Badge>;
+            } },
           ]}
           footer={
             <tr className="border-t-2 border-muted-200 bg-muted-50 font-semibold text-institutional-800">
