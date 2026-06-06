@@ -10,14 +10,22 @@ import axios from "axios";
  *   refrescar el token CSRF (XSRF-TOKEN).
  */
 /*
- * En produccion (Vercel) el frontend usa URL relativa para que las requests
- * a /api/* y /sanctum/* pasen por el proxy configurado en vercel.json. Asi
- * el navegador trata las cookies como mismo origen y CSRF funciona bien.
+ * Resolucion de baseURL del backend:
  *
- * En desarrollo (Laragon o artisan serve) se usa VITE_API_URL apuntando al
- * backend local. Si no esta definida, se cae al default localhost:8000.
+ * 1. Si VITE_API_URL esta definida y NO vacia, usar ese valor.
+ *    (caso: dev local con artisan serve, dev local apuntando al backend
+ *    en otra IP, etc.)
+ *
+ * 2. Si VITE_API_URL no esta definida o esta vacia:
+ *    - En DEV (npm run dev): caer a http://localhost:8000 como default.
+ *    - En PROD (build): usar "" (URL relativa) para que las requests
+ *      pasen por el proxy de vercel.json y eviten el problema de cookies
+ *      cross-origin con Sanctum.
  */
-const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const VITE_API = import.meta.env.VITE_API_URL;
+const BASE = VITE_API && VITE_API !== ""
+  ? VITE_API
+  : (import.meta.env.DEV ? "http://localhost:8000" : "");
 
 export const api = axios.create({
   baseURL: BASE,
