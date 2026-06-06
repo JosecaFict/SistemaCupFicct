@@ -52,6 +52,9 @@ export interface NotasExamenResponse {
 }
 
 export interface BloquePendiente {
+  // ID sintetico para DataTable (no viene del backend, se genera en el frontend
+  // combinando grupo+materia+examen).
+  id: string;
   grupo_id: number;
   grupo_codigo: string;
   turno_codigo: string;
@@ -90,8 +93,14 @@ export const notasService = {
   // -------- COORD + ADMIN --------
   bloquesPendientes: (gestion_id: number) =>
     api
-      .get<BloquePendiente[]>("/api/notas/bloques-pendientes", { params: { gestion_id } })
-      .then((r) => r.data),
+      .get<Omit<BloquePendiente, "id">[]>("/api/notas/bloques-pendientes", { params: { gestion_id } })
+      .then((r) =>
+        r.data.map<BloquePendiente>((b) => ({
+          ...b,
+          // ID sintetico: el backend no devuelve uno, lo armamos aqui.
+          id: `${b.grupo_id}-${b.gestion_materia_id}-${b.numero_examen}`,
+        }))
+      ),
 
   validarBloque: (payload: {
     gestion_id: number;

@@ -91,7 +91,7 @@ export interface PayloadAsignacion {
   hora_fin: string;
 }
 
-function limpiar(p: Record<string, unknown>): Record<string, string | number> {
+function limpiar(p: Record<string, unknown> | object): Record<string, string | number> {
   const out: Record<string, string | number> = {};
   for (const [k, v] of Object.entries(p)) {
     if (v !== undefined && v !== null && v !== "") {
