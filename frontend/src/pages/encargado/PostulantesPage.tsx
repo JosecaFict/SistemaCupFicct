@@ -36,13 +36,14 @@ export function PostulantesPage() {
   const [gestionId, setGestionId] = useState<string>("");
   const [gestionEstado, setGestionEstado] = useState<string>("");
   const [q, setQ] = useState("");
+  const [pagina, setPagina] = useState(1);
   const [cargandoGestiones, setCargandoGestiones] = useState(true);
 
   // Gestion ACTIVA (solo relevante para el encargado).
   const gestionActiva = gestiones.find((g) => g.estado === "ACTIVA") ?? null;
 
-  const cargar = (busq = q, gid = gestionId, gest = gestionEstado) => {
-    const params: Record<string, string | number> = {};
+  const cargar = (busq = q, gid = gestionId, gest = gestionEstado, pag = pagina) => {
+    const params: Record<string, string | number> = { page: pag };
     if (busq) params.q = busq;
 
     if (esAdmin) {
@@ -57,6 +58,9 @@ export function PostulantesPage() {
     }
   };
 
+  // Reinicia a la pagina 1 al cambiar un filtro o la busqueda.
+  const buscar = () => { setPagina(1); cargar(q, gestionId, gestionEstado, 1); };
+
   useEffect(() => {
     encargadoService.gestiones()
       .then(setGestiones)
@@ -65,11 +69,11 @@ export function PostulantesPage() {
   }, []);
 
   // Recarga: admin al cambiar filtros; encargado cuando ya se conoce la activa.
+  // Tambien al cambiar de pagina.
   useEffect(() => {
-    if (esAdmin) cargar(q, gestionId, gestionEstado);
-    else if (!cargandoGestiones) cargar(q);
+    if (esAdmin || !cargandoGestiones) cargar(q, gestionId, gestionEstado, pagina);
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [gestionId, gestionEstado, esAdmin, cargandoGestiones, gestionActiva?.id]);
+  }, [gestionId, gestionEstado, esAdmin, cargandoGestiones, gestionActiva?.id, pagina]);
 
   const sinGestionActiva = !esAdmin && !cargandoGestiones && !gestionActiva;
 
@@ -87,7 +91,7 @@ export function PostulantesPage() {
             {esAdmin ? (
               <>
                 <div className="w-full sm:w-52">
-                  <Select label="Filtrar por gestion" value={gestionId} onChange={(e) => setGestionId(e.target.value)}>
+                  <Select label="Filtrar por gestion" value={gestionId} onChange={(e) => { setPagina(1); setGestionId(e.target.value); }}>
                     <option value="">Todas las gestiones</option>
                     {gestiones.map((g) => (
                       <option key={g.id} value={g.id}>{g.codigo}</option>
@@ -95,7 +99,7 @@ export function PostulantesPage() {
                   </Select>
                 </div>
                 <div className="w-full sm:w-44">
-                  <Select label="Filtrar por estado" value={gestionEstado} onChange={(e) => setGestionEstado(e.target.value)}>
+                  <Select label="Filtrar por estado" value={gestionEstado} onChange={(e) => { setPagina(1); setGestionEstado(e.target.value); }}>
                     <option value="">Todos</option>
                     <option value="ACTIVA">Activa</option>
                     <option value="CERRADA">Cerrada</option>
@@ -111,7 +115,7 @@ export function PostulantesPage() {
               )
             )}
             <Input label="Buscar" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Documento o nombre" className="flex-1 min-w-[180px]" />
-            <Button variant="secondary" onClick={() => cargar()}>Buscar</Button>
+            <Button variant="secondary" onClick={buscar}>Buscar</Button>
           </div>
 
           <DataTable
@@ -120,11 +124,36 @@ export function PostulantesPage() {
             columns={[
               { header: "Nombre",    cell: (p) => p.persona ? `${p.persona.nombre} ${p.persona.apellido_paterno ?? ""}` : "-" },
               { header: "Documento", cell: (p) => p.persona ? `${p.persona.documento}${p.persona.expedido ? " "+p.persona.expedido : ""}` : "-" },
-              { header: "Primera op",cell: (p) => p.carrera_primera?.nombre ?? "-" },
+              { header: "Carreras",  cell: (p) => {
+                  const c1 = p.carrera_primera?.nombre;
+                  const c2 = p.carrera_segunda?.nombre;
+                  return c1 ? (c2 ? `${c1}/${c2}` : c1) : "-";
+                } },
               { header: "Estado",    cell: (p) => { const e = estadoEncargado(p.estado); return <Badge tone={e.tone}>{e.label}</Badge>; } },
               { header: "",          cell: (p) => <Link to={`/encargado/postulantes/${p.id}`} className="text-institutional-700 hover:underline text-sm">Ver</Link> },
             ]}
           />
+
+          {data && data.last_page > 1 && (
+            <div className="flex items-center justify-between mt-4 text-sm">
+              <div className="text-muted-500">
+                <div>Pagina {data.current_page} de {data.last_page}</div>
+                <div>{data.total} registros</div>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="secondary" size="sm"
+                        onClick={() => setPagina((p) => Math.max(1, p - 1))}
+                        disabled={data.current_page <= 1}>
+                  Anterior
+                </Button>
+                <Button variant="secondary" size="sm"
+                        onClick={() => setPagina((p) => Math.min(data.last_page, p + 1))}
+                        disabled={data.current_page >= data.last_page}>
+                  Siguiente
+                </Button>
+              </div>
+            </div>
+          )}
         </Card>
       )}
     </div>
