@@ -73,8 +73,15 @@ export function PostulanteDetallePage() {
   if (!post) return <div className="flex justify-center py-10"><Spinner /></div>;
 
   const p = post.persona!;
-  const yaInscrito = post.estado === "INSCRITO";
-  const tienePagoAprobado = post.estado === "PAGO_APROBADO" || post.estado === "INSCRITO" || post.estado === "OBSERVADO";
+  // Estados que implican que el postulante YA fue inscrito: INSCRITO y los
+  // estados finales que asigna el calculo de resultados (la postulacion deja
+  // de estar en INSCRITO y pasa a ACEPTADO/REPROBADO/SIN_CUPO). En todos ellos
+  // la inscripcion ya ocurrio, asi que no se debe volver a "confirmar".
+  const ESTADOS_PROCESADO = ["INSCRITO", "ACEPTADO", "REPROBADO", "SIN_CUPO"];
+  const yaInscrito = ESTADOS_PROCESADO.includes(post.estado);
+  // El pago ya esta cubierto en cualquiera de esos estados (para llegar a
+  // INSCRITO el pago tuvo que aprobarse), ademas de PAGO_APROBADO y OBSERVADO.
+  const tienePagoAprobado = ["PAGO_APROBADO", "OBSERVADO", ...ESTADOS_PROCESADO].includes(post.estado);
 
   return (
     <div className="space-y-5">
