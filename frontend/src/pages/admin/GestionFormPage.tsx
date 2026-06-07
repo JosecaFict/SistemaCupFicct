@@ -39,6 +39,7 @@ export function GestionFormPage() {
     estimado_postulantes: "100",
     turnos_habilitados: "M,T,N",
     estado: "BORRADOR",
+    costo_inscripcion: "700",
   });
   const [fechas, setFechas]   = useState<{ numero: number; fecha: string; ponderacion: number }[]>([]);
   const [pondMat, setPondMat] = useState<Record<number, number>>({});
@@ -64,6 +65,7 @@ export function GestionFormPage() {
           estimado_postulantes: String(ge.estimado_postulantes),
           turnos_habilitados: String(ge.turnos_habilitados),
           estado: String(ge.estado),
+          costo_inscripcion: String(ge.costo_inscripcion ?? 700),
         });
         setFechas(ge.fechas_examenes ?? []);
         setPondMat(Object.fromEntries((ge.gestion_materias ?? []).map((m) => [m.materia_id, m.ponderacion])));
@@ -97,6 +99,7 @@ export function GestionFormPage() {
         cantidad_examenes: Number(g.cantidad_examenes),
         capacidad_maxima_grupo: Number(g.capacidad_maxima_grupo),
         estimado_postulantes: Number(g.estimado_postulantes),
+        costo_inscripcion: Number(g.costo_inscripcion),
         fechas_examenes: fechas,
         materias: materias.map((m) => ({ materia_id: m.id, ponderacion: Number(pondMat[m.id] ?? 0) })),
         cupos_carrera: carreras.map((c) => ({ carrera_id: c.id, cupos: Number(cupos[c.id] ?? 0) })),
@@ -197,6 +200,12 @@ export function GestionFormPage() {
         <Input label="Turnos habilitados (M,T,N)" value={g.turnos_habilitados}
                onChange={(e) => setG({ ...g, turnos_habilitados: e.target.value.toUpperCase() })}
                hint="Combina M (Manana), T (Tarde), N (Noche)" />
+      </FormSection>
+
+      <FormSection title="Pago de inscripcion">
+        <Input label="Costo de inscripcion (Bs)" type="number" min={0} step="0.01" value={g.costo_inscripcion}
+               onChange={(e) => setG({ ...g, costo_inscripcion: e.target.value })}
+               hint="Monto que paga cada postulante en esta gestion (ej. 700)" />
       </FormSection>
 
       <Card>

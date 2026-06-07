@@ -50,6 +50,7 @@ class GestionCupController extends Controller
                 'estimado_postulantes'         => $data['estimado_postulantes'],
                 'turnos_habilitados'           => $data['turnos_habilitados'],
                 'estado'                       => $data['estado'] ?? 'BORRADOR',
+                'costo_inscripcion'            => $data['costo_inscripcion'] ?? 700.00,
             ]);
 
             $this->syncRelaciones($gestion, $data);
@@ -74,6 +75,7 @@ class GestionCupController extends Controller
                 'estimado_postulantes'         => $data['estimado_postulantes'],
                 'turnos_habilitados'           => $data['turnos_habilitados'],
                 'estado'                       => $data['estado'] ?? $gestion->estado,
+                'costo_inscripcion'            => $data['costo_inscripcion'] ?? $gestion->costo_inscripcion,
             ]);
 
             // Reemplazar relaciones detalle
@@ -118,6 +120,7 @@ class GestionCupController extends Controller
             'estimado_postulantes'         => ['required', 'integer', 'min:1'],
             'turnos_habilitados'           => ['required', 'string', 'regex:/^([MTN])(,[MTN])*$/'],
             'estado'                       => ['nullable', 'in:BORRADOR,ACTIVA,CERRADA'],
+            'costo_inscripcion'            => ['nullable', 'numeric', 'min:0', 'max:99999.99'],
 
             'fechas_examenes'              => ['array'],
             'fechas_examenes.*.numero'     => ['required_with:fechas_examenes', 'integer', 'min:1', 'max:3'],

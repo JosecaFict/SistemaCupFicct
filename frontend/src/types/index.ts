@@ -55,6 +55,7 @@ export interface GestionCup {
   estimado_postulantes: number;
   turnos_habilitados: string;
   estado: "BORRADOR" | "ACTIVA" | "CERRADA";
+  costo_inscripcion?: number | string;
 }
 
 export interface Grupo {

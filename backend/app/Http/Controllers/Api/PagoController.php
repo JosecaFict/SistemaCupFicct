@@ -40,11 +40,12 @@ class PagoController extends Controller
             return response()->json(['message' => 'Genere primero el formulario de preinscripcion.'], 422);
         }
 
-        $pago = PagoService::iniciar(
-            $postulacion,
-            (float) ($data['monto'] ?? 100.00),
-            $data['moneda'] ?? 'BOB'
-        );
+        // El monto es AUTORITATIVO del servidor: lo define la gestion
+        // (costo_inscripcion), no el cliente. Default 700 si no estuviera cargado.
+        $postulacion->loadMissing('gestion');
+        $monto = (float) ($postulacion->gestion?->costo_inscripcion ?? 700.00);
+
+        $pago = PagoService::iniciar($postulacion, $monto, 'BOB');
 
         return response()->json([
             'pago' => $pago,

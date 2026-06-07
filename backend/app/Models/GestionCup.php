@@ -23,6 +23,8 @@ class GestionCup extends Model
         'estimado_postulantes', 'turnos_habilitados', 'estado',
         // Ciclo 2
         'nota_minima_aprobacion',
+        // Pago
+        'costo_inscripcion',
     ];
 
     protected $casts = [
@@ -33,6 +35,8 @@ class GestionCup extends Model
         'estimado_postulantes'        => 'integer',
         // Ciclo 2
         'nota_minima_aprobacion'      => 'decimal:2',
+        // Pago
+        'costo_inscripcion'           => 'decimal:2',
     ];
 
     public function fechasExamenes(): HasMany
