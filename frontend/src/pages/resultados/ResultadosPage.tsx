@@ -111,12 +111,7 @@ export function ResultadosPage() {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-institutional-800">Resultados CUP</h1>
-          <p className="text-sm text-muted-500">
-            Histrico de aceptados y sin cupo por gestion. Filtros, KPIs y exportacion.
-          </p>
-        </div>
+        <h1 className="text-2xl font-semibold text-institutional-800">Resultados CUP</h1>
       </div>
 
       {/* KPIs */}
@@ -283,7 +278,8 @@ export function ResultadosPage() {
         {modo === "detalle" && data && data.last_page > 1 && (
           <div className="flex items-center justify-between mt-4 text-sm">
             <div className="text-muted-500">
-              Pagina {data.current_page} de {data.last_page}  {data.total} registros
+              <div>Pagina {data.current_page} de {data.last_page}</div>
+              <div>{data.total} registros</div>
             </div>
             <div className="flex gap-2">
               <Button

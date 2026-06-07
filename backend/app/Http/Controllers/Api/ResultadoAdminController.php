@@ -60,7 +60,9 @@ class ResultadoAdminController extends Controller
     public function kpis(Request $request): JsonResponse
     {
         $q = Resultado::query();
-        $this->aplicarFiltros($q, $request);
+        // Los KPIs muestran el DESGLOSE COMPLETO por estado, por eso ignoran los
+        // filtros de estado y opcion (esos solo aplican a la tabla de abajo).
+        $this->aplicarFiltros($q, $request, incluirEstadoOpcion: false);
 
         // 1 query agrupada por estado_final y opcion_aceptada
         $rows = (clone $q)
@@ -77,15 +79,20 @@ class ResultadoAdminController extends Controller
 
         foreach ($rows as $r) {
             $cant = (int) $r->cant;
-            if ($r->estado_final === EstadoResultado::ACEPTADO->value) {
+            // estado_final / opcion_aceptada vienen casteados a enum por el modelo:
+            // normalizamos a su ->value para comparar de forma segura.
+            $estado = $r->estado_final instanceof EstadoResultado ? $r->estado_final->value : $r->estado_final;
+            $opcion = $r->opcion_aceptada instanceof OpcionAceptada ? $r->opcion_aceptada->value : $r->opcion_aceptada;
+
+            if ($estado === EstadoResultado::ACEPTADO->value) {
                 $totalAceptados += $cant;
-                if ($r->opcion_aceptada === OpcionAceptada::PRIMERA->value)      $primera += $cant;
-                elseif ($r->opcion_aceptada === OpcionAceptada::SEGUNDA->value)  $segunda += $cant;
-            } elseif ($r->estado_final === EstadoResultado::REPROBADO->value) {
+                if ($opcion === OpcionAceptada::PRIMERA->value)      $primera += $cant;
+                elseif ($opcion === OpcionAceptada::SEGUNDA->value)  $segunda += $cant;
+            } elseif ($estado === EstadoResultado::REPROBADO->value) {
                 $reprobados += $cant;
-            } elseif ($r->estado_final === EstadoResultado::SIN_CUPO->value) {
+            } elseif ($estado === EstadoResultado::SIN_CUPO->value) {
                 $sinCupo += $cant;
-            } elseif ($r->estado_final === EstadoResultado::PENDIENTE_DESEMPATE->value) {
+            } elseif ($estado === EstadoResultado::PENDIENTE_DESEMPATE->value) {
                 $pendienteDesempate += $cant;
             }
         }
@@ -118,8 +125,12 @@ class ResultadoAdminController extends Controller
         ]);
     }
 
-    /** Aplica filtros de query string a una query de Resultado. */
-    private function aplicarFiltros($q, Request $request): void
+    /**
+     * Aplica filtros de query string a una query de Resultado.
+     * $incluirEstadoOpcion=false -> omite estado/opcion (lo usan los KPIs para
+     * mostrar el desglose completo sin que el filtro de la tabla los recorte).
+     */
+    private function aplicarFiltros($q, Request $request, bool $incluirEstadoOpcion = true): void
     {
         if ($gestionId = $request->query('gestion_id')) {
             $q->whereHas('postulacion', fn ($pp) => $pp->where('gestion_cup_id', $gestionId));
@@ -129,13 +140,15 @@ class ResultadoAdminController extends Controller
             $q->where('carrera_asignada_id', $carreraId);
         }
 
-        $estado = $request->query('estado');
-        if ($estado && $estado !== 'TODOS') {
-            $q->where('estado_final', $estado);
-        }
+        if ($incluirEstadoOpcion) {
+            $estado = $request->query('estado');
+            if ($estado && $estado !== 'TODOS') {
+                $q->where('estado_final', $estado);
+            }
 
-        if ($opcion = $request->query('opcion')) {
-            $q->where('opcion_aceptada', $opcion);
+            if ($opcion = $request->query('opcion')) {
+                $q->where('opcion_aceptada', $opcion);
+            }
         }
 
         if ($soloPublicados = $request->query('solo_publicados')) {
