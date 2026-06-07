@@ -161,6 +161,7 @@ export interface BoletaPayload {
   gestion: { codigo: string; nombre: string };
   turno: { codigo: string; nombre: string; horario: string };
   grupo: { codigo: string; capacidad: number };
+  horario: { materia: string; dias: string; hora: string; aula: string }[];
   carrera_primera: string;
   carrera_segunda: string | null;
   modalidad: string | null;
