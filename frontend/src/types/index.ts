@@ -171,6 +171,26 @@ export interface BoletaPayload {
   confirmada_por: string | null;
 }
 
+export interface NotasPostulante {
+  codigo: string | null;
+  nombre: string | null;
+  gestion: string | null;
+  cantidad_examenes: number;
+  resultado: {
+    nota_final: string | number;
+    ranking_global: number | null;
+    estado_final: string;
+    motivo: string | null;
+  } | null;
+  materias: {
+    materia_codigo: string;
+    materia_nombre: string;
+    ponderacion: number | null;
+    examenes: Record<string, number>;
+    promedio: number | null;
+  }[];
+}
+
 export interface Paginated<T> {
   data: T[];
   current_page: number;

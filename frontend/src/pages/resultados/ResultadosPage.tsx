@@ -6,6 +6,7 @@ import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
 import { DataTable } from "../../components/tables/DataTable";
 import { StatCard } from "../../components/cards/StatCard";
+import { Modal } from "../../components/ui/Modal";
 import { resultadosService } from "../../services/resultadosService";
 import { publicService } from "../../services/publicService";
 import type {
@@ -13,6 +14,7 @@ import type {
   EstadoResultado,
   FiltrosResultados,
   GestionCup,
+  NotasPostulante,
   Paginated,
   Resultado,
   ResultadoKPIs,
@@ -36,6 +38,18 @@ export function ResultadosPage() {
   const [carreras, setCarreras] = useState<Carrera[]>([]);
   const [cargando, setCargando] = useState(false);
   const [modo, setModo] = useState<"detalle" | "compacto">("detalle");
+  const [notas, setNotas] = useState<NotasPostulante | null>(null);
+  const [notasOpen, setNotasOpen] = useState(false);
+  const [cargandoNotas, setCargandoNotas] = useState(false);
+
+  const verNotas = (r: Resultado) => {
+    const pid = r.postulacion?.id;
+    if (!pid) return;
+    setNotasOpen(true);
+    setCargandoNotas(true);
+    setNotas(null);
+    resultadosService.notasPostulante(pid).then(setNotas).finally(() => setCargandoNotas(false));
+  };
 
   // Cargar catalogos (gestiones + carreras) una sola vez
   useEffect(() => {
@@ -271,6 +285,11 @@ export function ResultadosPage() {
                   ? <Badge tone="success">Si</Badge>
                   : <Badge tone="neutral">No</Badge>
               ) },
+            { header: "", cell: (r: Resultado) => (
+                <button onClick={() => verNotas(r)} className="text-institutional-700 hover:underline text-sm">
+                  Ver notas
+                </button>
+              ) },
           ]}
         />
         )}
@@ -302,6 +321,67 @@ export function ResultadosPage() {
           </div>
         )}
       </Card>
+
+      <Modal open={notasOpen} onClose={() => setNotasOpen(false)} title="Notas del postulante">
+        {cargandoNotas ? (
+          <div className="py-6 text-center text-muted-500">Cargando...</div>
+        ) : !notas ? (
+          <div className="py-6 text-center text-muted-500">Sin datos.</div>
+        ) : (
+          <div className="space-y-3">
+            <div className="text-sm">
+              <div className="font-semibold text-institutional-800">{notas.nombre ?? "-"}</div>
+              <div className="text-muted-500">
+                {notas.codigo ?? "-"} · Gestion {notas.gestion ?? "-"}
+                {notas.resultado && <> · {notas.resultado.estado_final}</>}
+              </div>
+              {notas.resultado && (
+                <div className="text-muted-600 mt-1">
+                  Nota final: <b>{Number(notas.resultado.nota_final).toFixed(2)}</b>
+                  {notas.resultado.ranking_global != null && <> · Ranking: <b>{notas.resultado.ranking_global}</b></>}
+                </div>
+              )}
+            </div>
+
+            {notas.materias.length === 0 ? (
+              <div className="text-sm italic text-muted-500">Sin notas registradas.</div>
+            ) : (
+              <table className="w-full text-sm border border-muted-200">
+                <thead>
+                  <tr className="bg-muted-50 text-muted-600">
+                    <th className="px-2 py-1 text-left">Materia</th>
+                    {Array.from({ length: notas.cantidad_examenes }, (_, i) => (
+                      <th key={i} className="px-2 py-1 text-center">Ex {i + 1}</th>
+                    ))}
+                    <th className="px-2 py-1 text-center">Promedio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {notas.materias.map((m, idx) => (
+                    <tr key={idx} className="border-t border-muted-100">
+                      <td className="px-2 py-1">
+                        <span className="font-semibold text-institutional-700">{m.materia_codigo}</span>{" "}
+                        <span className="text-muted-500">{m.materia_nombre}</span>
+                      </td>
+                      {Array.from({ length: notas.cantidad_examenes }, (_, i) => {
+                        const v = m.examenes[String(i + 1)];
+                        return (
+                          <td key={i} className="px-2 py-1 text-center font-mono">
+                            {v != null ? Number(v).toFixed(2) : "-"}
+                          </td>
+                        );
+                      })}
+                      <td className="px-2 py-1 text-center font-mono font-semibold">
+                        {m.promedio != null ? Number(m.promedio).toFixed(2) : "-"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

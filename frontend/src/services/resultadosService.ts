@@ -2,6 +2,7 @@ import { api } from "./api";
 import type {
   FiltrosResultados,
   GestionCup,
+  NotasPostulante,
   Paginated,
   Resultado,
   ResultadoKPIs,
@@ -38,4 +39,9 @@ export const resultadosService = {
 
   gestiones: () =>
     api.get<GestionCup[]>("/api/resultados/gestiones").then((r) => r.data),
+
+  notasPostulante: (postulacionId: number) =>
+    api
+      .get<NotasPostulante>(`/api/resultados/${postulacionId}/notas`)
+      .then((r) => r.data),
 };

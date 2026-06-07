@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Enums\EstadoResultado;
 use App\Enums\OpcionAceptada;
 use App\Http\Controllers\Controller;
+use App\Models\Nota;
+use App\Models\Postulacion;
 use App\Models\Resultado;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -122,6 +124,54 @@ class ResultadoAdminController extends Controller
                 'total'               => $totalAceptados + $reprobados + $sinCupo + $pendienteDesempate,
             ],
             'por_carrera' => $porCarrera,
+        ]);
+    }
+
+    /**
+     * Detalle de notas de un postulante: por materia y examen, con su promedio,
+     * mas el resumen del resultado (nota final, ranking, estado).
+     * GET /api/resultados/{postulacion}/notas
+     */
+    public function notasPostulante(Postulacion $postulacion): JsonResponse
+    {
+        $postulacion->loadMissing(['persona', 'gestion']);
+
+        $materias = Nota::where('postulacion_id', $postulacion->id)
+            ->with('gestionMateria.materia')
+            ->get()
+            ->groupBy(fn (Nota $n) => $n->gestion_materia_id)
+            ->map(function ($grupo) {
+                $gm = $grupo->first()->gestionMateria;
+                $examenes = [];
+                foreach ($grupo as $n) {
+                    $examenes[(int) $n->numero_examen] = (float) $n->valor;
+                }
+                ksort($examenes);
+                $prom = count($examenes) ? round(array_sum($examenes) / count($examenes), 2) : null;
+                return [
+                    'materia_codigo' => $gm?->materia?->codigo ?? '-',
+                    'materia_nombre' => $gm?->materia?->nombre ?? '-',
+                    'ponderacion'    => $gm?->ponderacion,
+                    'examenes'       => $examenes,
+                    'promedio'       => $prom,
+                ];
+            })
+            ->values();
+
+        $resultado = Resultado::where('postulacion_id', $postulacion->id)->first();
+
+        return response()->json([
+            'codigo'            => $postulacion->codigo_postulante,
+            'nombre'            => $postulacion->persona?->nombre_completo,
+            'gestion'           => $postulacion->gestion?->codigo,
+            'cantidad_examenes' => (int) ($postulacion->gestion?->cantidad_examenes ?? 0),
+            'resultado'         => $resultado ? [
+                'nota_final'     => $resultado->nota_final,
+                'ranking_global' => $resultado->ranking_global,
+                'estado_final'   => $resultado->estado_final,
+                'motivo'         => $resultado->motivo,
+            ] : null,
+            'materias' => $materias,
         ]);
     }
 

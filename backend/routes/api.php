@@ -231,6 +231,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('resultados')->group(function () {
         Route::get('/',          [ResultadoAdminController::class, 'index']);
         Route::get('/kpis',      [ResultadoAdminController::class, 'kpis']);
+        // Detalle de notas por examen de un postulante (modal "Ver notas").
+        Route::get('/{postulacion}/notas', [ResultadoAdminController::class, 'notasPostulante']);
         // Listado de gestiones (para llenar el filtro)
         Route::get('/gestiones', function () {
             return response()->json(
