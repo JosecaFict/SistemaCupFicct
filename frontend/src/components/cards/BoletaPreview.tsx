@@ -32,23 +32,16 @@ export function BoletaPreview({ data }: { data: BoletaPayload }) {
         {data.carrera_segunda && <Item label="Segunda opcion" value={data.carrera_segunda} />}
       </div>
 
-      <div className="mt-6">
-        <div className="text-[11px] uppercase tracking-wide text-muted-500 mb-1">Horario</div>
+      <div className="mt-4">
+        <div className="text-[11px] uppercase tracking-wide text-muted-500">Horario</div>
         {data.horario && data.horario.length > 0 ? (
-          <table className="w-full text-sm border border-muted-200">
-            <tbody>
-              {data.horario.map((h, i) => (
-                <tr key={i} className="border-b border-muted-100 last:border-0">
-                  <td className="px-2 py-1 font-semibold text-institutional-700 w-14">{h.materia}</td>
-                  <td className="px-2 py-1 text-muted-700 whitespace-nowrap">{h.dias}</td>
-                  <td className="px-2 py-1 text-muted-700 whitespace-nowrap">{h.hora}</td>
-                  <td className="px-2 py-1 text-muted-600">{h.aula}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="font-medium text-muted-700 leading-snug">
+            {data.horario.map((h, i) => (
+              <div key={i}>{h.materia}|{h.dias}|{h.hora}|{h.aula}</div>
+            ))}
+          </div>
         ) : (
-          <div className="text-sm italic text-muted-500">Horario por asignar</div>
+          <div className="font-medium italic text-muted-700">Horario por asignar</div>
         )}
       </div>
 

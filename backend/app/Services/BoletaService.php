@@ -96,7 +96,8 @@ class BoletaService
                 'materia' => $a->gestionMateria?->materia?->codigo ?? '-',
                 'dias'    => self::formatDias($a->dias_semana),
                 'hora'    => self::formatHora($a->hora_inicio) . '–' . self::formatHora($a->hora_fin),
-                'aula'    => $a->ambiente?->nombre ?? '-',
+                // Aula corta y sin espacios para el formato compacto: "Aula-12".
+                'aula'    => str_replace(' ', '-', $a->ambiente?->nombre ?? '-'),
             ])
             ->values()
             ->all();
@@ -113,12 +114,13 @@ class BoletaService
         return implode(',', $out);
     }
 
-    /** Hora a "H:i" (sin segundos), tolerante a Carbon o string. */
+    /** Hora a "08:00am" (12h, sin segundos), tolerante a Carbon o string. */
     private static function formatHora($t): string
     {
         if (!$t) {
             return '';
         }
-        return $t instanceof Carbon ? $t->format('H:i') : substr((string) $t, 0, 5);
+        $c = $t instanceof Carbon ? $t : Carbon::parse((string) $t);
+        return $c->format('h:ia');
     }
 }
