@@ -87,13 +87,18 @@ class BoletaService
             return [];
         }
 
-        return AsignacionDocente::where('grupo_id', $grupoId)
+        $asigs = AsignacionDocente::where('grupo_id', $grupoId)
             ->with(['gestionMateria.materia', 'ambiente'])
             ->orderBy('dias_semana')
             ->orderBy('hora_inicio')
-            ->get()
+            ->get();
+
+        // Ancho del codigo de materia para alinear los "|" (ING -> "ING ").
+        $ancho = (int) $asigs->max(fn (AsignacionDocente $a) => mb_strlen($a->gestionMateria?->materia?->codigo ?? '-'));
+
+        return $asigs
             ->map(fn (AsignacionDocente $a) => [
-                'materia' => $a->gestionMateria?->materia?->codigo ?? '-',
+                'materia' => str_pad($a->gestionMateria?->materia?->codigo ?? '-', $ancho),
                 'dias'    => self::formatDias($a->dias_semana),
                 'hora'    => self::formatHora($a->hora_inicio) . '–' . self::formatHora($a->hora_fin),
                 // Aula corta y sin espacios para el formato compacto: "Aula-12".

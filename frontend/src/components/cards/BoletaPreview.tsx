@@ -35,7 +35,7 @@ export function BoletaPreview({ data }: { data: BoletaPayload }) {
       <div className="mt-4">
         <div className="text-[11px] uppercase tracking-wide text-muted-500">Horario</div>
         {data.horario && data.horario.length > 0 ? (
-          <div className="font-medium text-muted-700 leading-snug">
+          <div className="font-mono text-[13px] text-muted-700 leading-snug whitespace-pre">
             {data.horario.map((h, i) => (
               <div key={i}>{h.materia}|{h.dias}|{h.hora}|{h.aula}</div>
             ))}
