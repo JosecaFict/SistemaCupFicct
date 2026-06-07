@@ -41,15 +41,16 @@ export const publicService = {
       return data;
     }),
 
-  // CU7 -- pago simulado
-  iniciarPago: (postulacionId: number, monto = 100) =>
+  // CU7 -- pago (simulado o Stripe segun STRIPE_MODE del backend)
+  iniciarPago: (postulacionId: number) =>
     withCsrf(async () => {
       const { data } = await api.post<{
         pago: Pago;
         modo: string;
         client_secret: string;
+        checkout_url: string | null;
         tarjetas_de_prueba: Record<string, string>;
-      }>("/api/public/pagos/iniciar", { postulacion_id: postulacionId, monto });
+      }>("/api/public/pagos/iniciar", { postulacion_id: postulacionId });
       return data;
     }),
 

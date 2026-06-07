@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Card } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
@@ -12,39 +12,68 @@ import type { Pago } from "../../types";
 /*
  * PagoSimulado (CU7)
  * --------------------------------------------------------------------------
- * Pantalla estilo Stripe Test Mode. Inicia un Pago en estado PENDIENTE y
- * permite al postulante "pagar" con tarjetas simuladas:
- *   4242 4242 4242 4242  -> APROBADO
- *   XXXX XXXX XXXX 0000  -> RECHAZADO
- *   XXXX XXXX XXXX 9999  -> CANCELADO
+ * Pantalla de pago. Funciona en dos modos segun STRIPE_MODE del backend:
  *
- * Cuando Stripe Test Mode real este activo, esta pantalla se reemplaza por
- * Stripe Elements (el flujo del backend ya esta listo para eso).
+ *  - simulated: pantalla estilo Stripe Test con tarjetas ficticias
+ *      4242 4242 4242 4242 -> APROBADO | ...0000 -> RECHAZADO | ...9999 -> CANCELADO
+ *
+ *  - test/live (Stripe real): al iniciar, el backend devuelve checkout_url y
+ *      redirigimos a Stripe. Al volver (success_url/cancel_url) llegamos aqui
+ *      con ?estado=exito|cancelado&pago=ID y verificamos el pago contra Stripe.
  */
 export function PagoSimulado() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const estadoRetorno = searchParams.get("estado");   // exito | cancelado | null
+  const pagoIdRetorno = searchParams.get("pago");
+
   const [pago, setPago] = useState<Pago | null>(null);
   const [tarjetas, setTarjetas] = useState<Record<string, string>>({});
   const [tarjeta, setTarjeta] = useState("4242 4242 4242 4242");
+  const [mostrarTarjeta, setMostrarTarjeta] = useState(false); // solo modo simulado
   const [confirmando, setConfirmando] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [iniciando, setIniciando] = useState(true);
+  const [cargando, setCargando] = useState(true);
+  const [redirigiendo, setRedirigiendo] = useState(false);
 
   useEffect(() => {
     if (!id) return;
     (async () => {
       try {
+        // Caso A: volvemos de Stripe (success_url / cancel_url).
+        if (estadoRetorno && pagoIdRetorno) {
+          if (estadoRetorno === "exito") {
+            const { pago: actualizado } = await publicService.confirmarPago(Number(pagoIdRetorno), "");
+            setPago(actualizado);
+          }
+          // 'cancelado' no necesita llamada: se muestra aviso de cancelacion.
+          return;
+        }
+
+        // Caso B: inicio del pago.
         const r = await publicService.iniciarPago(Number(id));
+
+        // Modo Stripe: el backend devolvio la URL de la pasarela -> redirigir.
+        if (r.checkout_url) {
+          setRedirigiendo(true);
+          window.location.href = r.checkout_url;
+          return;
+        }
+
+        // Modo simulado: mostrar formulario de tarjeta ficticia.
         setPago(r.pago);
         setTarjetas(r.tarjetas_de_prueba);
+        setMostrarTarjeta(true);
       } catch (e: unknown) {
         const er = e as { response?: { data?: { message?: string } } };
         setError(er?.response?.data?.message ?? "No fue posible iniciar el pago.");
       } finally {
-        setIniciando(false);
+        setCargando(false);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const onConfirmar = async () => {
@@ -62,7 +91,29 @@ export function PagoSimulado() {
     }
   };
 
-  if (iniciando) return <div className="flex justify-center py-10"><Spinner /></div>;
+  if (cargando || redirigiendo) {
+    return (
+      <div className="flex flex-col items-center gap-3 py-10">
+        <Spinner />
+        {redirigiendo && <div className="text-sm text-muted-500">Redirigiendo a la pasarela de pago...</div>}
+      </div>
+    );
+  }
+
+  // Volvimos cancelados desde Stripe.
+  if (estadoRetorno === "cancelado" && !pago) {
+    return (
+      <div className="max-w-xl mx-auto space-y-4">
+        <Alert tone="warning" title="Pago cancelado">
+          Cancelaste el pago. Podes volver a intentarlo desde tu formulario.
+        </Alert>
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" onClick={() => navigate(`/preinscripcion/${id}/formulario`)}>Volver al formulario</Button>
+        </div>
+      </div>
+    );
+  }
+
   if (error && !pago) return <Alert tone="danger">{error}</Alert>;
   if (!pago) return null;
 
@@ -80,27 +131,25 @@ export function PagoSimulado() {
         </div>
       </Card>
 
-      <Card title="Tarjeta simulada (Stripe Test)">
-        <Input label="Numero de tarjeta"
-               value={tarjeta}
-               onChange={(e) => setTarjeta(e.target.value)}
-               hint="Usa una de las tarjetas de prueba para simular distintos resultados." />
-        <div className="mt-3 text-xs text-muted-500 space-y-0.5">
-          {Object.entries(tarjetas).map(([k, v]) => (
-            <div key={k}><b>{k}:</b> {v}</div>
-          ))}
-        </div>
-        {error && <div className="mt-3"><Alert tone="danger">{error}</Alert></div>}
+      {mostrarTarjeta && pago.estado === "PENDIENTE" && (
+        <Card title="Tarjeta simulada (Stripe Test)">
+          <Input label="Numero de tarjeta"
+                 value={tarjeta}
+                 onChange={(e) => setTarjeta(e.target.value)}
+                 hint="Usa una de las tarjetas de prueba para simular distintos resultados." />
+          <div className="mt-3 text-xs text-muted-500 space-y-0.5">
+            {Object.entries(tarjetas).map(([k, v]) => (
+              <div key={k}><b>{k}:</b> {v}</div>
+            ))}
+          </div>
+          {error && <div className="mt-3"><Alert tone="danger">{error}</Alert></div>}
 
-        <div className="mt-4 flex justify-between items-center">
-          <Button variant="ghost" onClick={() => navigate(`/preinscripcion/${id}/formulario`)}>Atras</Button>
-          {pago.estado === "PENDIENTE" ? (
+          <div className="mt-4 flex justify-between items-center">
+            <Button variant="ghost" onClick={() => navigate(`/preinscripcion/${id}/formulario`)}>Atras</Button>
             <Button onClick={onConfirmar} loading={confirmando}>Pagar ahora</Button>
-          ) : (
-            <Button variant="success" onClick={() => navigate("/")}>Volver al inicio</Button>
-          )}
-        </div>
-      </Card>
+          </div>
+        </Card>
+      )}
 
       {pago.estado === "APROBADO" && (
         <Alert tone="success" title="Pago aprobado">
@@ -114,6 +163,18 @@ export function PagoSimulado() {
       )}
       {pago.estado === "CANCELADO" && (
         <Alert tone="warning" title="Pago cancelado">El pago fue cancelado.</Alert>
+      )}
+      {/* Stripe: volvimos con exito pero el pago no quedo confirmado. */}
+      {pago.estado === "PENDIENTE" && !mostrarTarjeta && (
+        <Alert tone="warning" title="Pago no confirmado">
+          No pudimos confirmar el pago todavia. Si ya pagaste, espera unos segundos y refresca; si no, intenta de nuevo desde el formulario.
+        </Alert>
+      )}
+
+      {(pago.estado === "APROBADO" || (pago.estado !== "PENDIENTE" && !mostrarTarjeta)) && (
+        <div className="flex justify-end">
+          <Button variant="success" onClick={() => navigate("/")}>Volver al inicio</Button>
+        </div>
       )}
     </div>
   );

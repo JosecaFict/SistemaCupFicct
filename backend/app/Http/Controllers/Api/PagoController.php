@@ -50,8 +50,10 @@ class PagoController extends Controller
         return response()->json([
             'pago' => $pago,
             'modo' => $pago->modo,
-            // El frontend simula Stripe Elements con este secret
+            // El frontend simula Stripe Elements con este secret (modo simulado)
             'client_secret' => $pago->stripe_client_secret,
+            // En modo Stripe (test/live): URL de la Checkout Session para redirigir.
+            'checkout_url' => $pago->payload['checkout_url'] ?? null,
             // Sugerencias para la simulacion
             'tarjetas_de_prueba' => [
                 'aprueba'  => '4242 4242 4242 4242',
