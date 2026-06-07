@@ -69,19 +69,32 @@ export function ReportesPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function descargar(rep: ReporteItem) {
+  async function descargar(rep: ReporteItem, formato: "pdf" | "excel") {
     if (!gestionId) return;
-    setDescargando(rep.key);
+    const tag = `${rep.key}:${formato}`;
+    setDescargando(tag);
     try {
       const res = await api.get(rep.endpoint, {
-        params: { gestion_id: gestionId },
+        params: { gestion_id: gestionId, formato },
         responseType: "blob",
       });
-      const blob = new Blob([res.data], { type: "application/pdf" });
+      const tipo = formato === "excel"
+        ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        : "application/pdf";
+      const blob = new Blob([res.data], { type: tipo });
       const url = URL.createObjectURL(blob);
-      // Abrir en nueva pestana para visualizar
-      window.open(url, "_blank");
-      // Limpiar despues de un rato
+      if (formato === "excel") {
+        // Forzar descarga del .xlsx
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${rep.key}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        // PDF: abrir en nueva pestana para visualizar
+        window.open(url, "_blank");
+      }
       setTimeout(() => URL.revokeObjectURL(url), 60_000);
     } finally {
       setDescargando(null);
@@ -94,8 +107,8 @@ export function ReportesPage() {
         <div>
           <h1 className="text-2xl font-semibold text-institutional-800">Reportes</h1>
           <p className="text-sm text-muted-500">
-            8 reportes obligatorios del documento de la docente. Cada uno se genera
-            como PDF en base a los datos de la gestion seleccionada.
+            8 reportes obligatorios del documento de la docente. Cada uno se puede
+            descargar en PDF o Excel (.xlsx) segun la gestion seleccionada.
           </p>
         </div>
         <div className="min-w-[260px]">
@@ -117,13 +130,21 @@ export function ReportesPage() {
             <div className="space-y-2">
               <div className="text-base font-semibold text-institutional-800">{r.titulo}</div>
               <div className="text-sm text-muted-500">{r.descripcion}</div>
-              <div>
+              <div className="flex flex-wrap gap-2">
                 <Button
                   size="sm"
-                  onClick={() => descargar(r)}
-                  disabled={!gestionId || descargando === r.key}
+                  onClick={() => descargar(r, "pdf")}
+                  disabled={!gestionId || descargando === `${r.key}:pdf`}
                 >
-                  {descargando === r.key ? "Generando..." : " Descargar PDF"}
+                  {descargando === `${r.key}:pdf` ? "Generando..." : "Descargar PDF"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => descargar(r, "excel")}
+                  disabled={!gestionId || descargando === `${r.key}:excel`}
+                >
+                  {descargando === `${r.key}:excel` ? "Generando..." : "Descargar Excel"}
                 </Button>
               </div>
             </div>

@@ -9,6 +9,7 @@ use App\Models\GestionMateria;
 use App\Models\Grupo;
 use App\Models\Postulacion;
 use App\Models\Resultado;
+use App\Services\ExcelExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,17 @@ class ReporteController extends Controller
         return $pdf->stream($nombre . '.pdf');
     }
 
+    /** True si el cliente pidio el reporte en Excel (?formato=excel). */
+    private function esExcel(Request $r): bool
+    {
+        return strtolower((string) $r->query('formato', 'pdf')) === 'excel';
+    }
+
+    private function num($v, int $dec = 2): float
+    {
+        return round((float) $v, $dec);
+    }
+
     // 1. LISTA GENERAL DE POSTULANTES
     public function listaGeneral(Request $request): Response
     {
@@ -71,6 +83,16 @@ class ReporteController extends Controller
             'grupo'            => $p->grupo?->codigo,
             'estado'           => $p->estado?->value ?? $p->estado,
         ])->toArray();
+
+        if ($this->esExcel($request)) {
+            return ExcelExport::stream("lista-general-{$gestion->codigo}", array_merge(
+                [['Codigo', 'Nombre completo', 'Documento', '1ra carrera', '2da carrera', 'Grupo', 'Estado']],
+                array_map(fn ($f) => [
+                    $f['codigo'], $f['nombre_completo'], $f['documento'],
+                    $f['carrera_primera'], $f['carrera_segunda'], $f['grupo'], $f['estado'],
+                ], $filas)
+            ));
+        }
 
         return $this->descarga('reportes.lista-general', [
             'titulo'  => 'Lista general de postulantes',
@@ -112,6 +134,16 @@ class ReporteController extends Controller
             ];
         })->toArray();
 
+        if ($this->esExcel($request)) {
+            return ExcelExport::stream("aprobados-{$gestion->codigo}", array_merge(
+                [['Ranking', 'Codigo', 'Nombre completo', 'Carrera', 'Opcion', 'Nota final']],
+                array_map(fn ($f) => [
+                    $f['ranking'], $f['codigo_publico'], $f['nombre_completo'],
+                    $f['carrera'], $f['opcion'], $this->num($f['nota_final']),
+                ], $filas)
+            ));
+        }
+
         return $this->descarga('reportes.aprobados', [
             'titulo'  => 'Postulantes aprobados',
             'gestion' => $gestion,
@@ -149,6 +181,16 @@ class ReporteController extends Controller
                 'motivo'           => $r->motivo,
             ];
         })->toArray();
+
+        if ($this->esExcel($request)) {
+            return ExcelExport::stream("reprobados-{$gestion->codigo}", array_merge(
+                [['Codigo', 'Nombre completo', 'Documento', 'Carrera', 'Nota final', 'Motivo']],
+                array_map(fn ($f) => [
+                    $f['codigo'], $f['nombre_completo'], $f['documento'],
+                    $f['carrera_primera'], $this->num($f['nota_final']), $f['motivo'],
+                ], $filas)
+            ));
+        }
 
         return $this->descarga('reportes.reprobados', [
             'titulo'  => 'Postulantes reprobados',
@@ -198,6 +240,23 @@ class ReporteController extends Controller
                 'max'      => (float) $c->nmax,
             ])->toArray();
 
+        if ($this->esExcel($request)) {
+            $matrix = [
+                ['Promedios generales - Gestion ' . $gestion->codigo],
+                [],
+                ['Total evaluados', $kpis['total']],
+                ['Promedio general', $this->num($kpis['promedio_general'])],
+                ['Nota minima', $this->num($kpis['nota_minima'])],
+                ['Nota maxima', $this->num($kpis['nota_maxima'])],
+                [],
+                ['Carrera', 'Nombre', 'Cantidad', 'Promedio', 'Minima', 'Maxima'],
+            ];
+            foreach ($porCarrera as $c) {
+                $matrix[] = [$c['codigo'], $c['nombre'], $c['cantidad'], $this->num($c['promedio']), $this->num($c['min']), $this->num($c['max'])];
+            }
+            return ExcelExport::stream("promedios-{$gestion->codigo}", $matrix);
+        }
+
         return $this->descarga('reportes.promedios', [
             'titulo'     => 'Promedios generales',
             'gestion'    => $gestion,
@@ -236,6 +295,16 @@ class ReporteController extends Controller
             'ocupacion' => $g->capacidad > 0 ? ($g->inscritos_actuales / $g->capacidad * 100) : 0,
             'estado'    => $g->estado,
         ])->toArray();
+
+        if ($this->esExcel($request)) {
+            return ExcelExport::stream("grupos-{$gestion->codigo}", array_merge(
+                [['Codigo', 'Turno', 'Ambiente', 'Capacidad', 'Inscritos', '% Ocupacion', 'Estado']],
+                array_map(fn ($f) => [
+                    $f['codigo'], $f['turno'], $f['ambiente'], $f['capacidad'],
+                    $f['inscritos'], $this->num($f['ocupacion']), $f['estado'],
+                ], $filas)
+            ));
+        }
 
         return $this->descarga('reportes.grupos', [
             'titulo'  => 'Grupos habilitados',
@@ -281,6 +350,17 @@ class ReporteController extends Controller
             'pct_descalifican' => $r->cantidad > 0 ? ($r->descalifican / $r->cantidad * 100) : 0,
         ])->toArray();
 
+        if ($this->esExcel($request)) {
+            return ExcelExport::stream("estadisticas-materia-{$gestion->codigo}", array_merge(
+                [['Materia', 'Nombre', 'Examen', 'Cantidad', 'Promedio', 'Minima', 'Maxima', 'Descalifican', '% Descalifican']],
+                array_map(fn ($f) => [
+                    $f['materia_codigo'], $f['materia_nombre'], $f['numero_examen'], $f['cantidad'],
+                    $this->num($f['promedio']), $this->num($f['min']), $this->num($f['max']),
+                    $f['descalifican'], $this->num($f['pct_descalifican']),
+                ], $filas)
+            ));
+        }
+
         return $this->descarga('reportes.estadisticas-materia', [
             'titulo'  => 'Estadisticas por materia',
             'gestion' => $gestion,
@@ -318,6 +398,19 @@ class ReporteController extends Controller
                 ])->values()->toArray(),
             ];
         })->values()->toArray();
+
+        if ($this->esExcel($request)) {
+            $matrix = [['Docente', 'Email', 'Grupo', 'Materia', 'Dias', 'Hora inicio', 'Hora fin', 'Ambiente']];
+            foreach ($filas as $d) {
+                foreach ($d['asignaciones'] as $a) {
+                    $matrix[] = [
+                        $d['docente_nombre'], $d['docente_email'], $a['grupo'], $a['materia'],
+                        $a['dias_semana'], substr((string) $a['hora_inicio'], 0, 5), substr((string) $a['hora_fin'], 0, 5), $a['ambiente'],
+                    ];
+                }
+            }
+            return ExcelExport::stream("docentes-grupos-{$gestion->codigo}", $matrix);
+        }
 
         return $this->descarga('reportes.docentes-grupos', [
             'titulo'  => 'Docentes por grupos',
@@ -358,6 +451,16 @@ class ReporteController extends Controller
             'sin_cupo'      => (int) $r->sin_cupo,
             'pct_aprobacion'=> $r->total > 0 ? ($r->aceptados / $r->total * 100) : 0,
         ])->toArray();
+
+        if ($this->esExcel($request)) {
+            return ExcelExport::stream("grupos-aprobados-{$gestion->codigo}", array_merge(
+                [['Grupo', 'Turno', 'Total', 'Aceptados', 'Reprobados', 'Sin cupo', '% Aprobacion']],
+                array_map(fn ($f) => [
+                    $f['grupo_codigo'], $f['turno_codigo'], $f['total'], $f['aceptados'],
+                    $f['reprobados'], $f['sin_cupo'], $this->num($f['pct_aprobacion']),
+                ], $filas)
+            ));
+        }
 
         return $this->descarga('reportes.grupos-aprobados', [
             'titulo'  => 'Grupos con mayor cantidad de aprobados',
