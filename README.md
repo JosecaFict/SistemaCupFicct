@@ -1,94 +1,108 @@
-# Sistema CUP FICCT                                                                                       
-                                                                                                            
-  Sistema web para gestionar el proceso de admisión del **Curso Preuniversitario CUP** de la Facultad de    
-  Ingeniería en Ciencias de la Computación y Telecomunicaciones (FICCT).                                    
-                                                                                                            
-  ## Stack                                                                                                  
-                                                                                                            
-  | Capa     | Tecnología |                                                                                 
-  |----------|------------|                                                                                 
-  | Frontend | React 18 + Vite + TypeScript + Tailwind CSS + React Router + Axios |                         
-  | Backend  | PHP 8.2 + Laravel 11 + Laravel Sanctum (API REST) |                                          
-  | BD       | PostgreSQL 17 |                                                                              
-                                                                                                            
-  ## Estructura del monorepo                                                                                
-                                                                                                            
-  ```                                                                                                       
-  SistemadeCup/                                                                                             
-  ├── frontend/     # React + Vite + TS + Tailwind                                                          
-  ├── backend/      # Laravel 11 (API REST)                                                                 
-  ├── docs/         # Documentación por ciclo                                                               
-  ├── tools/        # composer.phar y utilidades locales                                                    
-  ├── .gitignore                                                                                            
-  └── README.md                                                                                             
-  ```                                                                                                       
-                                                                                                            
-  ## Roles                                                                                                  
-                                                                                                            
-  - **Administrador** — gestiona usuarios, gestiones CUP, configuración global.                             
-  - **Encargado de inscripción** — verifica requisitos, confirma inscripciones.                             
-  - **Docente** — (Ciclo 2) carga de notas de sus grupos asignados.                                         
-  - **Coordinador / Autoridad** — (Ciclo 2) reportes y cupos.                                               
-  - **Postulante público (sin login)** — preinscripción, pago, consulta pública de resultados.              
-                                                                                                            
- ## Ciclos de desarrollo
+# Sistema CUP FICCT
 
-  | Ciclo | Estado | Alcance |
-  |-------|--------|---------|
-  | 1     | ✅ En curso | Autenticación, usuarios, gestión CUP, postulantes, preinscripción, pago Stripe
-  simulado, requisitos, inscripción, grupos, boleta, bitácora |
-  | 2     | ⏳ Pendiente | Módulo académico (docentes, materias, horarios, ambientes, carga y validación de
-  notas), cálculo de resultados finales, asignación de cupos, reportes y deploy productivo |                                
-           
-                                                                                                            
-  ## Arranque rápido (Ciclo 1)                                                                              
-                                                                                                            
-  Requisitos: PHP 8.2+, Node 18+, PostgreSQL 14+.                                                           
-                                                                                                            
-  ```powershell                                                                                             
-  # Backend                                                                                                 
-  cd backend                                                                                                
-  copy .env.example .env                                                                                    
-  php ..\tools\composer.phar install                                                                        
-  php artisan key:generate                                                                                  
-  php artisan migrate --seed                                                                                
-  php artisan serve  # http://localhost:8000                                                                
-                                                                                                            
-  # Frontend (otra terminal)                                                                                
-  cd frontend                                                                                               
-  copy .env.example .env                                                                                    
-  npm install                                                                                               
-  npm run dev        # http://localhost:5173                                                                
-  ```                                                                                                       
-                                                                                                            
-  Credenciales del administrador por defecto se documentan en `docs/CICLO                                   
-  asi lo tengo de descripcion                                                                               
-  pasame lo limpio que me dirias que deberia poner                                                          
-  solo es repuesta y no ejecucion                                                                           
+Sistema web para gestionar el proceso de admisión del **Curso Preuniversitario (CUP)** de la
+Facultad de Ingeniería en Ciencias de la Computación y Telecomunicaciones (**FICCT** – UAGRM).
 
-● Aquí tienes el README completo, listo para reemplazar el actual. Solo el texto, no ejecuto nada.
-                                                                                          
-  ---                                         
-  # Sistema CUP FICCT                         
-                                          
-  Sistema web para gestionar el proceso de admisión del **Curso Preuniversitario CUP** de la Facultad de    
-  Ingeniería en Ciencias de la Computación y Telecomunicaciones (FICCT).                                    
-                                                                                                            
-  ## Stack                                                                                                  
-                                                               
-  | Capa     | Tecnología |
-  |----------|------------|
-  | Frontend | React 18 + Vite + TypeScript + Tailwind CSS + React Router + Axios |
-  | Backend  | PHP 8.2+ + Laravel 11 + Laravel Sanctum (API REST con cookies SPA) |
-  | BD       | PostgreSQL 14+ |
+Aplicación full-stack en producción: preinscripción pública, pago en línea, gestión de
+inscripciones, módulo académico (notas y resultados) y reportes.
 
-  ## Estructura del monorepo
+## Demo en vivo
+- **Frontend:** https://sistema-cup-ficct.vercel.app
+- **API:** https://sistemacupficct-production.up.railway.app
 
-  ```
-  SistemadeCup/
-  ├── frontend/     # React + Vite + TypeScript + Tailwind
-  ├── backend/      # Laravel 11 (API REST)
-  ├── tools/        # Utilidades locales (ignorado por Git)
-  ├── .gitignore
-  └── README.md
-  ```
+## Pila tecnológica
+| Capa | Tecnología |
+|---|---|
+| Interfaz | React 18 + Vite + TypeScript + Tailwind CSS + React Router + Axios |
+| Backend | PHP 8.2 + Laravel 11 + Laravel Sanctum (API REST, auth SPA por cookies) |
+| Base de datos | PostgreSQL 14+ |
+| Pagos | Stripe Checkout (modo test) |
+| Correo | API HTTP de Brevo (OTP de recuperación de contraseña) |
+| Despliegue | Vercel (frontend) · Railway (backend + PostgreSQL) |
+
+## Estructura del monorepo
+```
+SistemadeCup/
+├── frontend/   # React + Vite + TypeScript + Tailwind
+├── backend/    # Laravel 11 (API REST)
+├── tools/      # Utilidades locales (ignorado por Git)
+├── .gitignore
+└── README.md
+```
+
+## Roles
+- **Administrador** — usuarios, gestiones CUP, configuración global y supervisión.
+- **Encargado de inscripción** — verifica requisitos y confirma inscripciones de la gestión activa (rol rotativo).
+- **Docente** — carga de notas de sus grupos asignados.
+- **Coordinador / Autoridad** — cálculo de resultados, asignación de cupos y reportes.
+- **Postulante público** (sin iniciar sesión) — preinscripción, pago en línea y consulta de resultados.
+
+## Funcionalidades
+**Gestión y administración**
+- Autenticación con Sanctum (SPA por cookies), recuperación de contraseña por OTP y política de contraseña.
+- Gestión de usuarios y roles.
+- Configuración de gestiones CUP: fechas, exámenes, ponderaciones, cupos por carrera, turnos y **costo de inscripción configurable**.
+- Generación automática de grupos por turno.
+
+**Preinscripción y pago (público)**
+- Preinscripción en línea y generación de formulario.
+- **Pago con Stripe Checkout** (modo test), con el monto definido por la gestión; modo simulado como respaldo.
+- Reimpresión de formulario.
+
+**Inscripción**
+- Verificación documental (checklist de requisitos).
+- Confirmación de inscripción con asignación de grupo y código de postulante.
+- **Boleta de inscripción** con horario semanal del grupo (materia, días, horario y aula).
+- Bitácora de auditoría.
+
+**Módulo académico y resultados**
+- Materias, horarios, ambientes y asignación de docentes a grupos.
+- Carga y validación de notas.
+- Cálculo de resultados finales (aceptados, reprobados, sin cupo), asignación de cupos por carrera y ranking.
+- Publicación y consulta pública de resultados.
+- Reportes e indicadores (KPIs).
+
+**Experiencia**
+- Diseño responsive (móvil y escritorio).
+
+## Arranque rápido (desarrollo local)
+**Requisitos:** PHP 8.2+, Composer, Node 18+, PostgreSQL 14+.
+
+```bash
+# Backend
+cd backend
+cp .env.example .env          # configurar conexión a PostgreSQL
+composer install
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve             # http://localhost:8000
+```
+
+```bash
+# Frontend (otra terminal)
+cd frontend
+cp .env.example .env          # VITE_API_URL=http://localhost:8000
+npm install
+npm run dev                   # http://localhost:5173
+```
+
+> En Windows usá `copy` en lugar de `cp`. Si no tenés Composer global, podés usar `php tools/composer.phar install`.
+
+## Variables de entorno (backend)
+| Variable | Descripción |
+|---|---|
+| `APP_URL`, `FRONTEND_URL` | URLs base de la API y del SPA |
+| `DB_*` | Conexión a PostgreSQL |
+| `SANCTUM_STATEFUL_DOMAINS`, `SESSION_DOMAIN` | Dominios para autenticación por cookies |
+| `STRIPE_MODE` | `simulated` o `test` |
+| `STRIPE_KEY`, `STRIPE_SECRET` | Claves de Stripe (modo test) |
+| `BREVO_API_KEY` | Envío de correo (OTP) por API HTTP |
+
+| `STRIPE_KEY`, `STRIPE_SECRET` | Claves de Stripe (modo test) |
+| `BREVO_API_KEY` | Envío de correo (OTP) por API HTTP |
+
+## Notas
+- **Pagos:** Stripe opera en **modo test** (no procesa dinero real). Stripe no soporta BOB, por lo que la sesión de prueba se cobra en USD mientras el sistema registra el monto en bolivianos. Tarjeta de prueba: `4242 4242 4242 4242`.
+- **Correo:** Railway bloquea SMTP saliente, por eso el envío de correo (OTP) se hace por la **API HTTP de Brevo**.
+- **Credenciales de demo:** el usuario administrador inicial se crea con el seeder (`AdminUserSeeder`).
+
