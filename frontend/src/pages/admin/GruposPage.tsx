@@ -3,6 +3,8 @@ import { Card } from "../../components/ui/Card";
 import { DataTable } from "../../components/tables/DataTable";
 import { Badge } from "../../components/ui/Badge";
 import { Select } from "../../components/ui/Select";
+import { Button } from "../../components/ui/Button";
+import { api } from "../../services/api";
 import { encargadoService } from "../../services/encargadoService";
 import { publicService } from "../../services/publicService";
 import type { GestionCup, Grupo, Turno } from "../../types";
@@ -17,6 +19,7 @@ export function GruposPage() {
   const [gestiones, setGestiones] = useState<GestionCup[]>([]);
   const [turnoId, setTurnoId] = useState<string>("");
   const [gestionId, setGestionId] = useState<string>("");
+  const [descargando, setDescargando] = useState<boolean>(false);
 
   useEffect(() => {
     publicService.turnos().then(setTurnos);
@@ -30,9 +33,45 @@ export function GruposPage() {
     }).then(setGrupos);
   }, [gestionId, turnoId]);
 
+  async function descargarExcel() {
+    if (!gestionId) return;
+    setDescargando(true);
+    try {
+      const res = await api.get("/api/reportes/grupos", {
+        params: { gestion_id: Number(gestionId), formato: "excel" },
+        responseType: "blob",
+      });
+      const blob = new Blob([res.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const codigoGestion = gestiones.find((g) => String(g.id) === gestionId)?.codigo ?? gestionId;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `grupos-${codigoGestion}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } finally {
+      setDescargando(false);
+    }
+  }
+
   return (
     <div className="space-y-5">
-      <h1 className="text-2xl font-semibold text-institutional-800">Grupos</h1>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <h1 className="text-2xl font-semibold text-institutional-800">Grupos</h1>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => descargarExcel()}
+          disabled={!gestionId || descargando}
+          title={!gestionId ? "Selecciona una gestion para exportar" : "Descargar listado de grupos en Excel"}
+        >
+          {descargando ? "Generando..." : "Descargar Excel"}
+        </Button>
+      </div>
 
       <Card>
         <div className="flex flex-wrap items-end gap-3">
