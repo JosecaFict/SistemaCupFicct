@@ -25,6 +25,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Confiar en el proxy de Railway para leer X-Forwarded-For y registrar la
+        // IP publica real del visitante (sin esto, Request::ip() da la IP interna
+        // del proxy, ej. 100.64.x.x). Seguro: la app solo se alcanza via Railway.
+        $middleware->trustProxies(at: '*');
+
         // Sanctum: convertir requests del SPA en stateful para usar cookies de sesion
         $middleware->statefulApi();
 

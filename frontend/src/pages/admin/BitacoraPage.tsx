@@ -8,6 +8,7 @@ interface Entry {
   evento: string;
   entidad: string | null;
   entidad_id: number | null;
+  entidad_nombre?: string | null;
   ip: string | null;
   created_at: string;
   user?: { nombre: string; apellidos: string; email: string } | null;
@@ -51,9 +52,9 @@ export function BitacoraPage() {
             { header: "Fecha",   cell: (e) => new Date(e.created_at).toLocaleString() },
             { header: "Evento",  cell: (e) => <b>{e.evento}</b> },
             { header: "Usuario", cell: (e) => e.user
-                ? <span>{e.user.email}<span className="text-muted-400"> · {e.user.nombre} {e.user.apellidos}</span></span>
+                ? e.user.email
                 : <span className="text-muted-400">Sistema</span> },
-            { header: "Entidad", cell: (e) => etiquetaEntidad(e.entidad) },
+            { header: "Entidad", cell: (e) => e.entidad_nombre ?? etiquetaEntidad(e.entidad) },
             { header: "IP",      cell: (e) => e.ip ?? "-" },
           ]}
         />
