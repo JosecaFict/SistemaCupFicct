@@ -72,13 +72,17 @@ class PagoService
         $secret   = config('stripe.secret');
         $currency = config('stripe.currency', 'usd');
         $frontend = config('stripe.frontend_url');
+        $fxBobUsd = (float) config('stripe.fx_bob_usd', 7.20);
         $postId   = $postulacion->id;
         $postulacion->loadMissing('gestion');
         $codigo = $postulacion->gestion?->codigo ?? '';
 
-        // Stripe no soporta BOB: la sesion va en la moneda configurada (USD por
-        // defecto). unit_amount es en centavos del monto numerico.
-        $unitAmount = (int) round($monto * 100);
+        // Stripe no soporta BOB: convertimos el monto a USD usando la tasa
+        // configurada (STRIPE_FX_BOB_USD). unit_amount va en centavos USD.
+        $montoEnMonedaStripe = ($currency === 'usd' && $fxBobUsd > 0)
+            ? $monto / $fxBobUsd
+            : $monto;
+        $unitAmount = (int) round($montoEnMonedaStripe * 100);
 
         $resp = Http::asForm()
             ->withBasicAuth($secret, '')

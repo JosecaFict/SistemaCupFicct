@@ -10,12 +10,14 @@
 |   - test|live -> Stripe Checkout real con las claves correspondientes.
 |
 | Stripe NO soporta BOB: la Checkout Session va en STRIPE_CURRENCY (usd por
-| defecto) aunque el sistema registre el monto en Bs.
+| defecto) aunque el sistema registre el monto en Bs. El backend convierte
+| BOB -> USD usando STRIPE_FX_BOB_USD antes de enviar el unit_amount.
 */
 return [
     'mode'         => env('STRIPE_MODE', 'simulated'),
     'key'          => env('STRIPE_KEY'),
     'secret'       => env('STRIPE_SECRET'),
     'currency'     => env('STRIPE_CURRENCY', 'usd'),
+    'fx_bob_usd'   => (float) env('STRIPE_FX_BOB_USD', 7.20),
     'frontend_url' => rtrim(env('FRONTEND_URL', 'https://sistema-cup-ficct.vercel.app'), '/'),
 ];
