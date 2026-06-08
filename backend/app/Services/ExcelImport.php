@@ -4,12 +4,13 @@ namespace App\Services;
 
 use RuntimeException;
 use SimpleXMLElement;
-use ZipArchive;
 
 /*
 | ExcelImport
 | --------------------------------------------------------------------------
-| Lee un .xlsx (sin librerias) y devuelve una matriz de filas. Soporta:
+| Lee un .xlsx (sin librerias) y devuelve una matriz de filas. El ZIP se abre
+| con el helper Zip (PHP puro + zlib), porque la extension `zip` NO esta en
+| produccion. Soporta:
 |   - sharedStrings.xml (como guarda Excel al re-guardar el archivo)
 |   - inlineStr (como genera nuestra plantilla)
 |   - numeros
@@ -20,15 +21,16 @@ class ExcelImport
     /** Devuelve [filas][celdas] (0-based, contiguo) del primer worksheet. */
     public static function rows(string $path): array
     {
-        $zip = new ZipArchive();
-        if ($zip->open($path) !== true) {
-            throw new RuntimeException('No se pudo abrir el archivo Excel.');
+        $bytes = @file_get_contents($path);
+        if ($bytes === false) {
+            throw new RuntimeException('No se pudo leer el archivo Excel.');
         }
+        $files = Zip::read($bytes);
 
         // Tabla de cadenas compartidas (si existe).
         $shared = [];
-        $ssXml = $zip->getFromName('xl/sharedStrings.xml');
-        if ($ssXml !== false && $ssXml !== '') {
+        $ssXml = $files['xl/sharedStrings.xml'] ?? null;
+        if ($ssXml !== null && $ssXml !== '') {
             $ss = @simplexml_load_string($ssXml);
             if ($ss !== false) {
                 foreach ($ss->si as $si) {
@@ -38,17 +40,15 @@ class ExcelImport
         }
 
         // Primer worksheet: sheet1.xml o el primero que aparezca.
-        $sheetXml = $zip->getFromName('xl/worksheets/sheet1.xml');
+        $sheetXml = $files['xl/worksheets/sheet1.xml'] ?? false;
         if ($sheetXml === false) {
-            for ($i = 0; $i < $zip->numFiles; $i++) {
-                $name = $zip->getNameIndex($i);
+            foreach ($files as $name => $content) {
                 if (preg_match('#^xl/worksheets/[^/]+\.xml$#', $name)) {
-                    $sheetXml = $zip->getFromName($name);
+                    $sheetXml = $content;
                     break;
                 }
             }
         }
-        $zip->close();
 
         if ($sheetXml === false || $sheetXml === '') {
             throw new RuntimeException('El Excel no tiene una hoja de calculo valida.');

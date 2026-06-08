@@ -3,15 +3,14 @@
 namespace App\Services;
 
 use Symfony\Component\HttpFoundation\Response;
-use ZipArchive;
 
 /*
 | ExcelExport
 | --------------------------------------------------------------------------
 | Genera un archivo .xlsx VALIDO sin librerias externas (un xlsx es un ZIP de
-| XMLs OOXML). Se usa la extension `zip` que ya trae PHP. Pensado para los
-| reportes: se pasa una matriz de filas (cada celda string|int|float|null) y
-| devuelve la descarga lista.
+| XMLs OOXML). El ZIP se arma con el helper Zip (PHP puro + zlib), porque la
+| extension `zip`/ZipArchive NO esta disponible en produccion. Se pasa una
+| matriz de filas (cada celda string|int|float|null) y devuelve la descarga.
 */
 class ExcelExport
 {
@@ -22,18 +21,13 @@ class ExcelExport
             $filename .= '.xlsx';
         }
 
-        $tmp = tempnam(sys_get_temp_dir(), 'xlsx');
-        $zip = new ZipArchive();
-        $zip->open($tmp, ZipArchive::OVERWRITE);
-        $zip->addFromString('[Content_Types].xml', self::contentTypes());
-        $zip->addFromString('_rels/.rels', self::rels());
-        $zip->addFromString('xl/workbook.xml', self::workbook());
-        $zip->addFromString('xl/_rels/workbook.xml.rels', self::workbookRels());
-        $zip->addFromString('xl/worksheets/sheet1.xml', self::sheetXml($matrix));
-        $zip->close();
-
-        $contents = file_get_contents($tmp);
-        @unlink($tmp);
+        $contents = Zip::create([
+            '[Content_Types].xml'         => self::contentTypes(),
+            '_rels/.rels'                 => self::rels(),
+            'xl/workbook.xml'             => self::workbook(),
+            'xl/_rels/workbook.xml.rels'  => self::workbookRels(),
+            'xl/worksheets/sheet1.xml'    => self::sheetXml($matrix),
+        ]);
 
         return new Response($contents, 200, [
             'Content-Type'        => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
