@@ -75,7 +75,8 @@ export function GruposPage() {
           ]}
           footer={
             <tr className="border-t-2 border-muted-200 bg-muted-50 font-semibold text-institutional-800">
-              <td className="px-4 py-2 text-right" colSpan={4}>Totales:</td>
+              <td className="px-4 py-2 text-right" colSpan={3}>Totales ({grupos.length} grupos):</td>
+              <td className="px-4 py-2">{grupos.reduce((s, g) => s + g.capacidad, 0)}</td>
               <td className="px-4 py-2">{grupos.reduce((s, g) => s + g.inscritos_actuales, 0)}</td>
               <td className="px-4 py-2">{grupos.reduce((s, g) => s + (g.capacidad - g.inscritos_actuales), 0)}</td>
               <td></td>
