@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Card } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
@@ -28,7 +28,58 @@ export function CargaNotasPage() {
   const [filas, setFilas] = useState<NotaFila[]>([]);
   const [valores, setValores] = useState<Record<number, string>>({});
   const [guardando, setGuardando] = useState(false);
+  const [importando, setImportando] = useState(false);
   const [mensaje, setMensaje] = useState<{ tone: "success" | "danger"; text: string } | null>(null);
+
+  function recargar() {
+    notasService.notasDelExamen(Number(grupoId), Number(gmId), Number(examen)).then((d) => {
+      setData(d);
+      setFilas(d.postulantes);
+      const init: Record<number, string> = {};
+      d.postulantes.forEach((p) => { init[p.postulacion_id] = p.valor !== null ? String(p.valor) : ""; });
+      setValores(init);
+    });
+  }
+
+  async function descargarPlantilla() {
+    if (!grupoId || !gmId || !examen) return;
+    const blob = await notasService.descargarPlantilla(Number(grupoId), Number(gmId), Number(examen));
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `plantilla-notas-ex${examen}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  }
+
+  async function importarExcel(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // permite resubir el mismo archivo
+    if (!file || !grupoId || !gmId || !examen) return;
+    setMensaje(null);
+    setImportando(true);
+    try {
+      const res = await notasService.importarNotas({
+        grupo_id: Number(grupoId),
+        gestion_materia_id: Number(gmId),
+        numero_examen: Number(examen),
+        archivo: file,
+      });
+      setMensaje({
+        tone: "success",
+        text: `${res.mensaje} Insertadas: ${res.insertados}, actualizadas: ${res.actualizados}` +
+          (res.ignoradas ? `, ignoradas: ${res.ignoradas}` : "") + ".",
+      });
+      recargar();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setMensaje({ tone: "danger", text: String(err?.response?.data?.message ?? "No se pudo importar el Excel.") });
+    } finally {
+      setImportando(false);
+    }
+  }
 
   useEffect(() => {
     if (!grupoId || !gmId || !examen) return;
@@ -152,6 +203,21 @@ export function CargaNotasPage() {
       </div>
 
       {mensaje && <Alert tone={mensaje.tone}>{mensaje.text}</Alert>}
+
+      <Card>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="text-sm text-muted-600">
+            <b>Plantilla Excel:</b> descarga la plantilla con tus alumnos, completa la columna <i>Nota</i> y subila para cargar en bloque.
+          </div>
+          <div className="flex gap-2 sm:ml-auto">
+            <Button variant="secondary" size="sm" onClick={descargarPlantilla}>Descargar plantilla</Button>
+            <label className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border border-muted-200 cursor-pointer ${importando ? "opacity-60 pointer-events-none" : "hover:bg-muted-100"}`}>
+              {importando ? "Importando..." : "Subir Excel"}
+              <input type="file" accept=".xlsx" className="hidden" onChange={importarExcel} disabled={importando} />
+            </label>
+          </div>
+        </div>
+      </Card>
 
       <Card>
         <div className="text-xs text-muted-500 mb-2">

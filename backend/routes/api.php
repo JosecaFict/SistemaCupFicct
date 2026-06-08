@@ -168,6 +168,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/grupo/{grupo}/materia/{gm}/examen/{examen}',
             [DocenteController::class, 'notasDelExamen']);
         Route::post('/notas/guardar',   [DocenteController::class, 'guardarNotas']);
+        // CU17: plantillas Excel de notas (bajar plantilla / subir cargadas).
+        Route::get('/notas/plantilla',  [DocenteController::class, 'plantillaNotas']);
+        Route::post('/notas/importar',  [DocenteController::class, 'importarNotas']);
     });
 
     Route::middleware('role:ADMINISTRADOR,COORDINADOR')->prefix('coordinador')->group(function () {

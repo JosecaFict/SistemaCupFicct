@@ -90,6 +90,25 @@ export const notasService = {
   }) =>
     withCsrf(async () => (await api.post("/api/docente/notas/guardar", payload)).data),
 
+  // CU17 -- plantillas Excel de notas
+  descargarPlantilla: (grupo_id: number, gestion_materia_id: number, numero_examen: number) =>
+    api
+      .get("/api/docente/notas/plantilla", {
+        params: { grupo_id, gestion_materia_id, numero_examen },
+        responseType: "blob",
+      })
+      .then((r) => r.data as Blob),
+
+  importarNotas: (payload: { grupo_id: number; gestion_materia_id: number; numero_examen: number; archivo: File }) =>
+    withCsrf(async () => {
+      const fd = new FormData();
+      fd.append("grupo_id", String(payload.grupo_id));
+      fd.append("gestion_materia_id", String(payload.gestion_materia_id));
+      fd.append("numero_examen", String(payload.numero_examen));
+      fd.append("archivo", payload.archivo);
+      return (await api.post("/api/docente/notas/importar", fd)).data;
+    }),
+
   // -------- COORD + ADMIN --------
   bloquesPendientes: (gestion_id: number) =>
     api

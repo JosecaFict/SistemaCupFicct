@@ -11,11 +11,14 @@ use App\Models\Grupo;
 use App\Models\Nota;
 use App\Models\Postulacion;
 use App\Services\BitacoraService;
+use App\Services\ExcelExport;
+use App\Services\ExcelImport;
 use App\Services\NotaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
 | DocenteController (Ciclo 2 - CU14)
@@ -177,44 +180,196 @@ class DocenteController extends Controller
             ->pluck('id')
             ->all();
 
+        $res = $this->aplicarNotas(
+            $data['notas'], $idsValidos, $gestion,
+            $data['gestion_materia_id'], $data['numero_examen'], $userId
+        );
+
+        BitacoraService::registrar('NOTAS_CARGADAS', 'asignacion_docente', $asignacion->id, [
+            'examen'       => $data['numero_examen'],
+            'insertados'   => $res['insertados'],
+            'actualizados' => $res['actualizados'],
+            'bloqueados'   => count($res['bloqueados']),
+        ]);
+
+        return response()->json([
+            'insertados'   => $res['insertados'],
+            'actualizados' => $res['actualizados'],
+            'bloqueados_validados' => $res['bloqueados'],
+            'mensaje' => 'Notas guardadas en estado PENDIENTE de validacion.',
+        ]);
+    }
+
+    /*
+    | CU17 - Plantillas Excel de notas
+    | ----------------------------------------------------------------------
+    | El docente descarga una plantilla .xlsx con sus alumnos (codigo + nombre)
+    | y una columna 'Nota' vacia; la llena y la sube para cargar en bloque.
+    */
+
+    /** Descarga la plantilla .xlsx del grupo/materia/examen. */
+    public function plantillaNotas(Request $request): Response
+    {
+        $data = $request->validate([
+            'grupo_id'           => ['required', 'exists:grupos,id'],
+            'gestion_materia_id' => ['required', 'exists:gestion_materias,id'],
+            'numero_examen'      => ['required', 'integer', 'min:1', 'max:3'],
+        ]);
+
+        $this->asignacionDelDocente($data['grupo_id'], $data['gestion_materia_id'], Auth::id());
+        $grupo = Grupo::findOrFail($data['grupo_id']);
+
+        $postulantes = Postulacion::with('persona:id,nombre,apellido_paterno,apellido_materno')
+            ->where('grupo_id', $grupo->id)
+            ->where('gestion_cup_id', $grupo->gestion_cup_id)
+            ->orderBy('codigo_postulante')
+            ->get(['id', 'persona_id', 'codigo_postulante']);
+
+        $matrix = [['Codigo', 'Nombre', 'Nota']];
+        foreach ($postulantes as $p) {
+            $matrix[] = [
+                $p->codigo_postulante,
+                trim(($p->persona?->nombre ?? '') . ' ' . ($p->persona?->apellido_paterno ?? '') . ' ' . ($p->persona?->apellido_materno ?? '')),
+                null,
+            ];
+        }
+
+        $gm = GestionMateria::with('materia')->find($data['gestion_materia_id']);
+        $nombre = "plantilla-notas-{$grupo->codigo}-" . ($gm?->materia?->codigo ?? 'MAT') . "-ex{$data['numero_examen']}";
+
+        return ExcelExport::stream($nombre, $matrix);
+    }
+
+    /** Importa notas desde un .xlsx (columna A=Codigo, C=Nota). */
+    public function importarNotas(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'grupo_id'           => ['required', 'exists:grupos,id'],
+            'gestion_materia_id' => ['required', 'exists:gestion_materias,id'],
+            'numero_examen'      => ['required', 'integer', 'min:1', 'max:3'],
+            'archivo'            => ['required', 'file', 'mimes:xlsx', 'max:5120'],
+        ]);
+
+        $userId = Auth::id();
+        $asignacion = $this->asignacionDelDocente($data['grupo_id'], $data['gestion_materia_id'], $userId);
+        $gestion = GestionCup::findOrFail($asignacion->gestion_cup_id);
+
+        // codigo_postulante -> postulacion_id del grupo
+        $porCodigo = Postulacion::where('grupo_id', $data['grupo_id'])
+            ->where('gestion_cup_id', $gestion->id)
+            ->whereNotNull('codigo_postulante')
+            ->pluck('id', 'codigo_postulante');
+        $idsValidos = $porCodigo->values()->all();
+
+        try {
+            $filas = ExcelImport::rows($request->file('archivo')->getRealPath());
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'No se pudo leer el Excel: ' . $e->getMessage()], 422);
+        }
+
+        $items = [];
+        $ignoradas = 0;
+        foreach ($filas as $i => $fila) {
+            if ($i === 0) {
+                continue; // encabezado
+            }
+            $codigo  = isset($fila[0]) ? trim((string) $fila[0]) : '';
+            $notaRaw = $fila[2] ?? null;
+            if ($codigo === '' || $notaRaw === null || trim((string) $notaRaw) === '') {
+                continue; // fila vacia, no cuenta como error
+            }
+
+            $notaStr = str_replace(',', '.', trim((string) $notaRaw));
+            $pid = $porCodigo[$codigo] ?? null;
+            if (!$pid || !is_numeric($notaStr) || (float) $notaStr < 0 || (float) $notaStr > 100) {
+                $ignoradas++;
+                continue;
+            }
+            $items[] = ['postulacion_id' => $pid, 'valor' => (float) $notaStr];
+        }
+
+        if (empty($items)) {
+            return response()->json(['message' => 'El Excel no tiene notas validas para cargar.'], 422);
+        }
+
+        $res = $this->aplicarNotas(
+            $items, $idsValidos, $gestion,
+            $data['gestion_materia_id'], $data['numero_examen'], $userId
+        );
+
+        BitacoraService::registrar('NOTAS_CARGADAS_EXCEL', 'asignacion_docente', $asignacion->id, [
+            'examen'       => $data['numero_examen'],
+            'insertados'   => $res['insertados'],
+            'actualizados' => $res['actualizados'],
+            'bloqueados'   => count($res['bloqueados']),
+            'ignoradas'    => $ignoradas,
+        ]);
+
+        return response()->json([
+            'insertados'   => $res['insertados'],
+            'actualizados' => $res['actualizados'],
+            'bloqueados_validados' => $res['bloqueados'],
+            'ignoradas'    => $ignoradas,
+            'mensaje' => 'Notas importadas desde Excel en estado PENDIENTE de validacion.',
+        ]);
+    }
+
+    /** Asignacion del docente a (grupo x materia), o 403. */
+    private function asignacionDelDocente(int $grupoId, int $gmId, int $userId): AsignacionDocente
+    {
+        $asignacion = AsignacionDocente::where('grupo_id', $grupoId)
+            ->where('gestion_materia_id', $gmId)
+            ->where('docente_user_id', $userId)
+            ->first();
+        abort_if(!$asignacion, 403, 'No estas asignado a este grupo y materia.');
+        return $asignacion;
+    }
+
+    /**
+     * Persiste un lote de notas [{postulacion_id, valor}] para un examen.
+     * Reutilizado por la carga web (guardarNotas) y por Excel (importarNotas).
+     * Las VALIDADAS no se tocan (quedan en 'bloqueados').
+     */
+    private function aplicarNotas(array $items, array $idsValidos, GestionCup $gestion, int $gestionMateriaId, int $numeroExamen, int $userId): array
+    {
         $insertados = 0;
         $actualizados = 0;
         $bloqueados = [];
 
-        DB::transaction(function () use ($data, $gestion, $userId, $idsValidos, &$insertados, &$actualizados, &$bloqueados) {
-            foreach ($data['notas'] as $item) {
-                if (!in_array($item['postulacion_id'], $idsValidos, true)) {
+        DB::transaction(function () use ($items, $idsValidos, $gestion, $gestionMateriaId, $numeroExamen, $userId, &$insertados, &$actualizados, &$bloqueados) {
+            foreach ($items as $item) {
+                $pid = (int) $item['postulacion_id'];
+                if (!in_array($pid, $idsValidos, true)) {
                     continue;
                 }
-                $existente = Nota::where('postulacion_id', $item['postulacion_id'])
-                    ->where('gestion_materia_id', $data['gestion_materia_id'])
-                    ->where('numero_examen', $data['numero_examen'])
+                $existente = Nota::where('postulacion_id', $pid)
+                    ->where('gestion_materia_id', $gestionMateriaId)
+                    ->where('numero_examen', $numeroExamen)
                     ->first();
 
                 $valor = round((float) $item['valor'], 2);
                 $descalifica = NotaService::calcularDescalifica($gestion, $valor);
 
                 if ($existente) {
-                    // Si esta VALIDADA, el docente no puede modificar (solo ADMIN)
                     if ($existente->estado === EstadoNota::VALIDADA) {
-                        $bloqueados[] = $item['postulacion_id'];
+                        $bloqueados[] = $pid;
                         continue;
                     }
                     $existente->update([
-                        'valor'        => $valor,
-                        'docente_user_id' => $userId,
-                        'estado'       => EstadoNota::PENDIENTE,
-                        'descalifica'  => $descalifica,
-                        'observacion'  => null,
-                        'validado_por_user_id' => null,
-                        'fecha_validacion'     => null,
+                        'valor'                 => $valor,
+                        'docente_user_id'       => $userId,
+                        'estado'                => EstadoNota::PENDIENTE,
+                        'descalifica'           => $descalifica,
+                        'observacion'           => null,
+                        'validado_por_user_id'  => null,
+                        'fecha_validacion'      => null,
                     ]);
                     $actualizados++;
                 } else {
                     Nota::create([
-                        'postulacion_id'     => $item['postulacion_id'],
-                        'gestion_materia_id' => $data['gestion_materia_id'],
-                        'numero_examen'      => $data['numero_examen'],
+                        'postulacion_id'     => $pid,
+                        'gestion_materia_id' => $gestionMateriaId,
+                        'numero_examen'      => $numeroExamen,
                         'valor'              => $valor,
                         'docente_user_id'    => $userId,
                         'estado'             => EstadoNota::PENDIENTE,
@@ -225,18 +380,6 @@ class DocenteController extends Controller
             }
         });
 
-        BitacoraService::registrar('NOTAS_CARGADAS', 'asignacion_docente', $asignacion->id, [
-            'examen'       => $data['numero_examen'],
-            'insertados'   => $insertados,
-            'actualizados' => $actualizados,
-            'bloqueados'   => count($bloqueados),
-        ]);
-
-        return response()->json([
-            'insertados'   => $insertados,
-            'actualizados' => $actualizados,
-            'bloqueados_validados' => $bloqueados,
-            'mensaje' => 'Notas guardadas en estado PENDIENTE de validacion.',
-        ]);
+        return ['insertados' => $insertados, 'actualizados' => $actualizados, 'bloqueados' => $bloqueados];
     }
 }
