@@ -10,8 +10,26 @@ interface Entry {
   entidad_id: number | null;
   ip: string | null;
   created_at: string;
-  user?: { nombre: string; apellidos: string } | null;
+  user?: { nombre: string; apellidos: string; email: string } | null;
   datos?: Record<string, unknown> | null;
+}
+
+/* Etiqueta legible por tipo de entidad (en vez de "user #1"). */
+const ENTIDAD_LABEL: Record<string, string> = {
+  user: "Usuario",
+  postulacion: "Postulacion",
+  postulacion_requisito: "Requisito",
+  pago: "Pago",
+  inscripcion: "Inscripcion",
+  gestion_cup: "Gestion",
+  asignacion_docente: "Asignacion docente",
+  bloque_notas: "Bloque de notas",
+  postulacion_requisitos: "Requisitos",
+};
+
+function etiquetaEntidad(tipo: string | null): string {
+  if (!tipo) return "-";
+  return ENTIDAD_LABEL[tipo] ?? tipo;
 }
 
 export function BitacoraPage() {
@@ -32,8 +50,10 @@ export function BitacoraPage() {
           columns={[
             { header: "Fecha",   cell: (e) => new Date(e.created_at).toLocaleString() },
             { header: "Evento",  cell: (e) => <b>{e.evento}</b> },
-            { header: "Usuario", cell: (e) => e.user ? `${e.user.nombre} ${e.user.apellidos}` : "-" },
-            { header: "Entidad", cell: (e) => e.entidad ? `${e.entidad} #${e.entidad_id ?? ""}` : "-" },
+            { header: "Usuario", cell: (e) => e.user
+                ? <span>{e.user.email}<span className="text-muted-400"> · {e.user.nombre} {e.user.apellidos}</span></span>
+                : <span className="text-muted-400">Sistema</span> },
+            { header: "Entidad", cell: (e) => etiquetaEntidad(e.entidad) },
             { header: "IP",      cell: (e) => e.ip ?? "-" },
           ]}
         />
