@@ -36,12 +36,16 @@ class UsuarioController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'role_id'   => ['required', 'exists:roles,id'],
-            'nombre'    => ['required', 'string', 'max:100'],
-            'apellidos' => ['required', 'string', 'max:100'],
-            'email'     => ['required', 'email', 'unique:users,email'],
-            'password'  => ['required', PasswordRule::min(8)->mixedCase()->numbers()],
-            'activo'    => ['boolean'],
+            'role_id'          => ['required', 'exists:roles,id'],
+            'nombre'           => ['required', 'string', 'max:100'],
+            'apellidos'        => ['required', 'string', 'max:100'],
+            'fecha_nacimiento' => ['nullable', 'date'],
+            'ci'               => ['nullable', 'string', 'max:20'],
+            'telefono'         => ['nullable', 'string', 'max:20'],
+            'descripcion'      => ['nullable', 'string'],
+            'email'            => ['required', 'email', 'unique:users,email'],
+            'password'         => ['required', PasswordRule::min(8)->mixedCase()->numbers()],
+            'activo'           => ['boolean'],
         ]);
 
         $data['password'] = Hash::make($data['password']);
@@ -58,12 +62,16 @@ class UsuarioController extends Controller
     public function update(Request $request, User $user): JsonResponse
     {
         $data = $request->validate([
-            'role_id'   => ['sometimes', 'exists:roles,id'],
-            'nombre'    => ['sometimes', 'string', 'max:100'],
-            'apellidos' => ['sometimes', 'string', 'max:100'],
-            'email'     => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-            'password'  => ['sometimes', 'nullable', PasswordRule::min(8)->mixedCase()->numbers()],
-            'activo'    => ['sometimes', 'boolean'],
+            'role_id'          => ['sometimes', 'exists:roles,id'],
+            'nombre'           => ['sometimes', 'string', 'max:100'],
+            'apellidos'        => ['sometimes', 'string', 'max:100'],
+            'fecha_nacimiento' => ['sometimes', 'nullable', 'date'],
+            'ci'               => ['sometimes', 'nullable', 'string', 'max:20'],
+            'telefono'         => ['sometimes', 'nullable', 'string', 'max:20'],
+            'descripcion'      => ['sometimes', 'nullable', 'string'],
+            'email'            => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+            'password'         => ['sometimes', 'nullable', PasswordRule::min(8)->mixedCase()->numbers()],
+            'activo'           => ['sometimes', 'boolean'],
         ]);
 
         if (!empty($data['password'])) {

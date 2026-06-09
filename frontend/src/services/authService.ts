@@ -47,11 +47,18 @@ export const authService = {
     });
   },
 
-  /** Actualiza los datos personales del usuario autenticado. */
+  /**
+   * Actualiza los datos personales del usuario autenticado.
+   * Incluye fecha_nacimiento, ci y telefono (todos opcionales).
+   * 'descripcion' NO se envia desde aqui: solo el admin la edita en /admin/usuarios.
+   */
   async actualizarPerfil(payload: {
     nombre: string;
     apellidos: string;
     email: string;
+    fecha_nacimiento?: string | null;
+    ci?: string | null;
+    telefono?: string | null;
   }): Promise<User> {
     return withCsrf(async () => {
       const { data } = await api.put("/api/auth/perfil", payload);

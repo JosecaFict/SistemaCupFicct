@@ -15,6 +15,10 @@ export interface User {
   role_id: number;
   nombre: string;
   apellidos: string;
+  fecha_nacimiento?: string | null;
+  ci?: string | null;
+  telefono?: string | null;
+  descripcion?: string | null;
   email: string;
   activo: boolean;
   last_login_at: string | null;

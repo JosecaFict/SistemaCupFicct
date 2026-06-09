@@ -23,7 +23,18 @@ export function UsuariosPage() {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<User | null>(null);
-  const [form, setForm] = useState({ role_id: "", nombre: "", apellidos: "", email: "", password: "", activo: true });
+  const [form, setForm] = useState({
+    role_id: "",
+    nombre: "",
+    apellidos: "",
+    fecha_nacimiento: "",
+    ci: "",
+    telefono: "",
+    descripcion: "",
+    email: "",
+    password: "",
+    activo: true,
+  });
 
   const cargar = (busq = q) => {
     adminService.usuarios({ q: busq }).then(setData);
@@ -31,22 +42,53 @@ export function UsuariosPage() {
 
   useEffect(() => { adminService.roles().then(setRoles); cargar(""); }, []);
 
+  // El campo 'descripcion' (perfil profesional) solo aplica al rol DOCENTE.
+  const codigoRolSeleccionado = roles.find((r) => String(r.id) === form.role_id)?.codigo ?? "";
+  const esDocente = codigoRolSeleccionado === "DOCENTE";
+
   const abrirNuevo = () => {
     setEditing(null);
-    setForm({ role_id: "", nombre: "", apellidos: "", email: "", password: "", activo: true });
+    setForm({
+      role_id: "",
+      nombre: "",
+      apellidos: "",
+      fecha_nacimiento: "",
+      ci: "",
+      telefono: "",
+      descripcion: "",
+      email: "",
+      password: "",
+      activo: true,
+    });
     setOpen(true);
   };
   const abrirEditar = (u: User) => {
     setEditing(u);
-    setForm({ role_id: String(u.role_id), nombre: u.nombre, apellidos: u.apellidos, email: u.email, password: "", activo: u.activo });
+    setForm({
+      role_id: String(u.role_id),
+      nombre: u.nombre,
+      apellidos: u.apellidos,
+      fecha_nacimiento: u.fecha_nacimiento ?? "",
+      ci: u.ci ?? "",
+      telefono: u.telefono ?? "",
+      descripcion: u.descripcion ?? "",
+      email: u.email,
+      password: "",
+      activo: u.activo,
+    });
     setOpen(true);
   };
 
   const guardar = async () => {
     try {
+      // Strings vacios -> null para que pase la validacion 'nullable|date' del backend.
       const payload = {
         ...form,
         role_id: Number(form.role_id),
+        fecha_nacimiento: form.fecha_nacimiento || null,
+        ci: form.ci || null,
+        telefono: form.telefono || null,
+        descripcion: esDocente ? (form.descripcion || null) : null,
       } as Partial<User> & { password: string };
       if (editing) {
         await adminService.actualizarUsuario(editing.id, payload);
@@ -109,6 +151,12 @@ export function UsuariosPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Input label="Nombre"    value={form.nombre}    onChange={(e) => setForm({ ...form, nombre: e.target.value })} />
           <Input label="Apellidos" value={form.apellidos} onChange={(e) => setForm({ ...form, apellidos: e.target.value })} />
+          <Input label="Fecha de nacimiento" type="date" value={form.fecha_nacimiento}
+                 onChange={(e) => setForm({ ...form, fecha_nacimiento: e.target.value })} />
+          <Input label="Carnet de identidad" value={form.ci} maxLength={20}
+                 onChange={(e) => setForm({ ...form, ci: e.target.value })} />
+          <Input label="Telefono" value={form.telefono} maxLength={20}
+                 onChange={(e) => setForm({ ...form, telefono: e.target.value })} />
           <Input label="Correo"    type="email" value={form.email}     onChange={(e) => setForm({ ...form, email: e.target.value })} />
           <Select label="Rol" value={form.role_id} onChange={(e) => setForm({ ...form, role_id: e.target.value })}>
             <option value="">Selecciona</option>
@@ -117,6 +165,25 @@ export function UsuariosPage() {
           <Input label={editing ? "Nueva contrasena (opcional)" : "Contrasena"} type="password" value={form.password}
                  onChange={(e) => setForm({ ...form, password: e.target.value })} />
         </div>
+
+        {/* Descripcion profesional: solo para DOCENTE. El docente NO la edita. */}
+        {esDocente && (
+          <div className="mt-3">
+            <label className="block text-sm font-medium text-institutional-700 mb-1">
+              Descripcion / experiencia profesional
+            </label>
+            <textarea
+              className="w-full rounded-md border border-muted-300 px-3 py-2 text-sm focus:border-institutional-500 focus:outline-none focus:ring-1 focus:ring-institutional-500"
+              rows={4}
+              value={form.descripcion}
+              onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
+              placeholder="Profesion, especialidad, anos de experiencia, formacion academica."
+            />
+            <p className="text-xs text-muted-500 mt-1">
+              Solo el administrador puede editar este campo.
+            </p>
+          </div>
+        )}
       </Modal>
     </div>
   );

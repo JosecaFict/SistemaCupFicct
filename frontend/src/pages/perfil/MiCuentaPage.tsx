@@ -23,6 +23,9 @@ export function MiCuentaPage() {
   // ----- Datos personales -----
   const [nombre, setNombre]       = useState(user?.nombre ?? "");
   const [apellidos, setApellidos] = useState(user?.apellidos ?? "");
+  const [fechaNacimiento, setFechaNacimiento] = useState(user?.fecha_nacimiento ?? "");
+  const [ci, setCi]               = useState(user?.ci ?? "");
+  const [telefono, setTelefono]   = useState(user?.telefono ?? "");
   const [email, setEmail]         = useState(user?.email ?? "");
   const [guardandoDatos, setGuardandoDatos] = useState(false);
   const [okDatos, setOkDatos]   = useState<string | null>(null);
@@ -33,7 +36,15 @@ export function MiCuentaPage() {
     setOkDatos(null); setErrDatos(null);
     setGuardandoDatos(true);
     try {
-      await authService.actualizarPerfil({ nombre, apellidos, email });
+      await authService.actualizarPerfil({
+        nombre,
+        apellidos,
+        email,
+        // Strings vacios -> null para pasar la validacion 'nullable|date' del backend.
+        fecha_nacimiento: fechaNacimiento || null,
+        ci: ci || null,
+        telefono: telefono || null,
+      });
       await refresh();
       setOkDatos("Datos actualizados correctamente.");
     } catch (e: unknown) {
@@ -104,6 +115,12 @@ export function MiCuentaPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input label="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required maxLength={100} />
             <Input label="Apellidos" value={apellidos} onChange={(e) => setApellidos(e.target.value)} required maxLength={100} />
+            <Input label="Fecha de nacimiento" type="date" value={fechaNacimiento}
+                   onChange={(e) => setFechaNacimiento(e.target.value)} />
+            <Input label="Carnet de identidad" value={ci} maxLength={20}
+                   onChange={(e) => setCi(e.target.value)} />
+            <Input label="Teléfono" value={telefono} maxLength={20}
+                   onChange={(e) => setTelefono(e.target.value)} />
           </div>
           <Input label="Correo electrónico" type="email" value={email}
                  onChange={(e) => setEmail(e.target.value)} required />

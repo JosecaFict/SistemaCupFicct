@@ -21,15 +21,23 @@ use Illuminate\Validation\ValidationException;
 */
 class PerfilController extends Controller
 {
-    /** Actualiza nombre, apellidos y email del usuario autenticado. */
+    /**
+     * Actualiza los datos personales del usuario autenticado.
+     * Permite editar nombre, apellidos, email y los datos personales nuevos
+     * (fecha_nacimiento, ci, telefono). NO incluye 'descripcion': esa solo
+     * la mantiene el administrador desde /admin/usuarios.
+     */
     public function actualizarDatos(Request $request): JsonResponse
     {
         $user = $request->user();
 
         $data = $request->validate([
-            'nombre'    => ['required', 'string', 'max:100'],
-            'apellidos' => ['required', 'string', 'max:100'],
-            'email'     => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+            'nombre'           => ['required', 'string', 'max:100'],
+            'apellidos'        => ['required', 'string', 'max:100'],
+            'fecha_nacimiento' => ['nullable', 'date'],
+            'ci'               => ['nullable', 'string', 'max:20'],
+            'telefono'         => ['nullable', 'string', 'max:20'],
+            'email'            => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
         ]);
 
         $user->update($data);

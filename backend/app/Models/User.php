@@ -22,6 +22,10 @@ class User extends Authenticatable
         'role_id',
         'nombre',
         'apellidos',
+        'fecha_nacimiento',
+        'ci',
+        'telefono',
+        'descripcion',
         'email',
         'password',
         'activo',
@@ -38,6 +42,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'last_login_at'     => 'datetime',
+            'fecha_nacimiento'  => 'date',
             'password'          => 'hashed',
             'activo'            => 'boolean',
         ];
