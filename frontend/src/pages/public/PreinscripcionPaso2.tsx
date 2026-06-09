@@ -86,7 +86,7 @@ export function PreinscripcionPaso2() {
         <Input label="Apellido paterno" value={form.apellido_paterno} onChange={upd("apellido_paterno")} />
         <Input label="Apellido materno" value={form.apellido_materno} onChange={upd("apellido_materno")} />
         <Select label="Sexo" value={form.sexo} onChange={upd("sexo")}>
-          <option value="">--</option>
+          <option value="">Selecciona</option>
           <option value="M">Masculino</option>
           <option value="F">Femenino</option>
           <option value="O">Otro</option>
@@ -103,16 +103,16 @@ export function PreinscripcionPaso2() {
       <FormSection title="Colegio">
         <Input label="Nombre del colegio" value={form.colegio_nombre} onChange={upd("colegio_nombre")} />
         <Input label="Ciudad" value={form.colegio_ciudad} onChange={upd("colegio_ciudad")} />
-        <Input label="Ano de egreso" type="number" min={1980} max={2100} value={form.anio_egreso_colegio} onChange={upd("anio_egreso_colegio")} />
+        <Input label="Año de egreso" type="number" min={1980} max={2100} value={form.anio_egreso_colegio} onChange={upd("anio_egreso_colegio")} />
       </FormSection>
 
       <FormSection title="Opciones de carrera">
         <Select label="Primera opcion" value={form.carrera_primera_id} onChange={upd("carrera_primera_id")} required>
-          <option value="">-- Selecciona --</option>
+          <option value="">Selecciona</option>
           {carreras.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
         </Select>
         <Select label="Segunda opcion (opcional)" value={form.carrera_segunda_id} onChange={upd("carrera_segunda_id")}>
-          <option value="">-- Ninguna --</option>
+          <option value="">Ninguna</option>
           {carreras.filter((c) => String(c.id) !== form.carrera_primera_id).map((c) =>
             <option key={c.id} value={c.id}>{c.nombre}</option>
           )}

@@ -161,7 +161,7 @@ export function PostulanteDetallePage() {
           {!todosOk && <Alert tone="warning">Aun hay requisitos sin validar.</Alert>}
           <div className="flex flex-wrap gap-3 items-end mt-3">
             <Select label="Turno" value={turno} onChange={(e) => setTurno(e.target.value)}>
-              <option value="">-- selecciona --</option>
+              <option value="">Selecciona</option>
               {turnos.map((t) => <option key={t.id} value={t.id}>{t.nombre} ({t.codigo})</option>)}
             </Select>
             <Button onClick={confirmar} loading={confirmando}

@@ -111,7 +111,7 @@ export function UsuariosPage() {
           <Input label="Apellidos" value={form.apellidos} onChange={(e) => setForm({ ...form, apellidos: e.target.value })} />
           <Input label="Correo"    type="email" value={form.email}     onChange={(e) => setForm({ ...form, email: e.target.value })} />
           <Select label="Rol" value={form.role_id} onChange={(e) => setForm({ ...form, role_id: e.target.value })}>
-            <option value="">-- selecciona --</option>
+            <option value="">Selecciona</option>
             {roles.map((r) => <option key={r.id} value={r.id}>{r.nombre}</option>)}
           </Select>
           <Input label={editing ? "Nueva contrasena (opcional)" : "Contrasena"} type="password" value={form.password}
