@@ -134,6 +134,19 @@ export interface Pago {
   referencia: string | null;
 }
 
+/* Datos listos para imprimir el comprobante de pago (CU7). */
+export interface ComprobantePago {
+  referencia: string | null;
+  monto: string;
+  moneda: string;
+  modo: "simulated" | "test" | "live";
+  estado: EstadoPago;
+  fecha_aprobacion: string | null;
+  postulante: string;
+  gestion: string;
+  concepto: string;
+}
+
 export type EstadoRequisito = "PENDIENTE" | "VALIDADO" | "OBSERVADO" | "RECHAZADO";
 
 export interface Requisito {

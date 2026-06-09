@@ -10,7 +10,7 @@ import { APP_NAME } from "../../data/constants";
 export function PublicLayout() {
   return (
     <div className="min-h-screen flex flex-col bg-muted-50">
-      <header className="bg-institutional-700 text-white">
+      <header className="bg-institutional-700 text-white no-print">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="font-semibold text-lg tracking-tight">
             {APP_NAME}
@@ -27,7 +27,7 @@ export function PublicLayout() {
         <Outlet />
       </main>
 
-      <footer className="bg-white border-t border-muted-100 text-xs text-muted-500">
+      <footer className="bg-white border-t border-muted-100 text-xs text-muted-500 no-print">
         <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between gap-2">
           <span>(c) FICCT - Facultad de Ingenieria en Ciencias de la Computacion y Telecomunicaciones</span>
           <span>Curso Preuniversitario CUP</span>

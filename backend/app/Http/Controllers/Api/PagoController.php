@@ -74,6 +74,35 @@ class PagoController extends Controller
         return response()->json([
             'pago'        => $pagoActualizado,
             'postulacion' => $pagoActualizado->postulacion->fresh(),
+            // Datos listos para pintar/imprimir el comprobante de pago.
+            'comprobante' => $this->comprobante($pagoActualizado),
         ]);
+    }
+
+    /**
+     * Arma el payload del comprobante de pago (nombre del postulante + gestion
+     * + datos del pago) para que el frontend lo imprima sin libs en el backend.
+     */
+    private function comprobante(Pago $pago): array
+    {
+        $pago->loadMissing(['postulacion.persona', 'postulacion.gestion']);
+        $post    = $pago->postulacion;
+        $persona = $post?->persona;
+
+        $nombre = $persona
+            ? trim($persona->nombre . ' ' . ($persona->apellido_paterno ?? '') . ' ' . ($persona->apellido_materno ?? ''))
+            : null;
+
+        return [
+            'referencia'       => $pago->referencia,
+            'monto'            => $pago->monto,
+            'moneda'           => $pago->moneda,
+            'modo'             => $pago->modo,
+            'estado'           => $pago->estado,
+            'fecha_aprobacion' => $pago->fecha_aprobacion,
+            'postulante'       => $nombre ?: ($post?->codigo_postulante ?? '—'),
+            'gestion'          => $post?->gestion?->codigo ?? '—',
+            'concepto'         => 'Inscripcion Curso Preuniversitario (CUP)',
+        ];
     }
 }

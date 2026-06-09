@@ -1,5 +1,5 @@
 import { api, withCsrf } from "./api";
-import type { Carrera, GestionCup, Pago, Postulacion, Turno } from "../types";
+import type { Carrera, ComprobantePago, GestionCup, Pago, Postulacion, Turno } from "../types";
 
 /*
  * publicService -- endpoints /api/public/* (sin login).
@@ -56,7 +56,7 @@ export const publicService = {
 
   confirmarPago: (pagoId: number, tarjetaSimulada: string) =>
     withCsrf(async () => {
-      const { data } = await api.post<{ pago: Pago; postulacion: Postulacion }>(
+      const { data } = await api.post<{ pago: Pago; postulacion: Postulacion; comprobante: ComprobantePago }>(
         `/api/public/pagos/${pagoId}/confirmar`,
         { tarjeta_simulada: tarjetaSimulada }
       );

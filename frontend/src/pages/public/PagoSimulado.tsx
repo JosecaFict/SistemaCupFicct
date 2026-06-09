@@ -6,8 +6,9 @@ import { Button } from "../../components/ui/Button";
 import { Alert } from "../../components/ui/Alert";
 import { Spinner } from "../../components/ui/Spinner";
 import { StatusBadge } from "../../components/tables/StatusBadge";
+import { ComprobantePreview } from "../../components/cards/ComprobantePreview";
 import { publicService } from "../../services/publicService";
-import type { Pago } from "../../types";
+import type { ComprobantePago, Pago } from "../../types";
 
 /*
  * PagoSimulado (CU7)
@@ -30,6 +31,7 @@ export function PagoSimulado() {
   const pagoIdRetorno = searchParams.get("pago");
 
   const [pago, setPago] = useState<Pago | null>(null);
+  const [comprobante, setComprobante] = useState<ComprobantePago | null>(null);
   const [tarjetas, setTarjetas] = useState<Record<string, string>>({});
   const [tarjeta, setTarjeta] = useState("4242 4242 4242 4242");
   const [mostrarTarjeta, setMostrarTarjeta] = useState(false); // solo modo simulado
@@ -45,8 +47,9 @@ export function PagoSimulado() {
         // Caso A: volvemos de Stripe (success_url / cancel_url).
         if (estadoRetorno && pagoIdRetorno) {
           if (estadoRetorno === "exito") {
-            const { pago: actualizado } = await publicService.confirmarPago(Number(pagoIdRetorno), "");
+            const { pago: actualizado, comprobante: comp } = await publicService.confirmarPago(Number(pagoIdRetorno), "");
             setPago(actualizado);
+            setComprobante(comp);
           }
           // 'cancelado' no necesita llamada: se muestra aviso de cancelacion.
           return;
@@ -81,8 +84,9 @@ export function PagoSimulado() {
     setError(null);
     setConfirmando(true);
     try {
-      const { pago: actualizado } = await publicService.confirmarPago(pago.id, tarjeta);
+      const { pago: actualizado, comprobante: comp } = await publicService.confirmarPago(pago.id, tarjeta);
       setPago(actualizado);
+      setComprobante(comp);
     } catch (e: unknown) {
       const er = e as { response?: { data?: { message?: string } } };
       setError(er?.response?.data?.message ?? "Error al confirmar el pago.");
@@ -118,7 +122,8 @@ export function PagoSimulado() {
   if (!pago) return null;
 
   return (
-    <div className="max-w-xl mx-auto space-y-5">
+    <>
+    <div className="max-w-xl mx-auto space-y-5 no-print">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold text-institutional-800">Pago de inscripcion</h2>
         <StatusBadge estado={pago.estado} tipo="pago" />
@@ -152,9 +157,16 @@ export function PagoSimulado() {
       )}
 
       {pago.estado === "APROBADO" && (
-        <Alert tone="success" title="Pago aprobado">
-          Tu pago fue aprobado. Pasa al encargado de inscripcion con tus documentos para completar el proceso.
-        </Alert>
+        <>
+          <Alert tone="success" title="Pago aprobado">
+            Tu pago fue aprobado. Pasa al encargado de inscripcion con tus documentos para completar el proceso.
+          </Alert>
+          {comprobante && (
+            <div className="flex justify-center">
+              <Button variant="secondary" onClick={() => window.print()}>Descargar comprobante</Button>
+            </div>
+          )}
+        </>
       )}
       {pago.estado === "RECHAZADO" && (
         <Alert tone="danger" title="Pago rechazado">
@@ -177,5 +189,13 @@ export function PagoSimulado() {
         </div>
       )}
     </div>
+
+    {/* Solo visible al imprimir: el comprobante queda como unica pagina. */}
+    {comprobante && (
+      <div className="hidden print:block">
+        <ComprobantePreview data={comprobante} />
+      </div>
+    )}
+    </>
   );
 }
