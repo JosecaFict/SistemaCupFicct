@@ -53,8 +53,42 @@ class ExcelExport
 
         return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
             . '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+            . self::colsXml($matrix)
             . '<sheetData>' . $rowsXml . '</sheetData>'
             . '</worksheet>';
+    }
+
+    /**
+     * Calcula el ancho de cada columna segun el texto mas largo que contiene
+     * (auto-fit) y emite el bloque <cols>. Sin esto, Excel deja todas las
+     * columnas con el ancho por defecto (~8) y los textos largos (nombres,
+     * carreras) se ven cortados hasta ensanchar a mano.
+     */
+    private static function colsXml(array $matrix): string
+    {
+        $maxLen = [];
+        foreach ($matrix as $row) {
+            $colIdx = 0;
+            foreach ((array) $row as $value) {
+                $len = ($value === null) ? 0 : mb_strlen((string) $value);
+                if (!isset($maxLen[$colIdx]) || $len > $maxLen[$colIdx]) {
+                    $maxLen[$colIdx] = $len;
+                }
+                $colIdx++;
+            }
+        }
+        if (!$maxLen) {
+            return '';
+        }
+
+        $cols = '';
+        foreach ($maxLen as $colIdx => $len) {
+            // +2 de respiro; acotado entre 8 (minimo legible) y 60 (tope).
+            $width = max(8, min(60, $len + 2));
+            $n = $colIdx + 1; // <col> usa indices 1-based
+            $cols .= '<col min="' . $n . '" max="' . $n . '" width="' . $width . '" customWidth="1"/>';
+        }
+        return '<cols>' . $cols . '</cols>';
     }
 
     private static function cellXml(string $ref, $value): string

@@ -297,12 +297,22 @@ class ReporteController extends Controller
         ])->toArray();
 
         if ($this->esExcel($request)) {
+            $cuerpo = array_map(fn ($f) => [
+                $f['codigo'], $f['turno'], $f['ambiente'], $f['capacidad'],
+                $f['inscritos'], $f['capacidad'] - $f['inscritos'], $this->num($f['ocupacion']),
+            ], $filas);
+
+            // Fila de totales (capacidad / inscritos / libres), igual que el
+            // pie de la tabla en pantalla.
+            $totalCap    = array_sum(array_column($filas, 'capacidad'));
+            $totalIns    = array_sum(array_column($filas, 'inscritos'));
+            $totalLibres = $totalCap - $totalIns;
+            $totales = ['Totales (' . count($filas) . ' grupos)', '', '', $totalCap, $totalIns, $totalLibres, ''];
+
             return ExcelExport::stream("grupos-{$gestion->codigo}", array_merge(
-                [['Codigo', 'Turno', 'Ambiente', 'Capacidad', 'Inscritos', '% Ocupacion', 'Estado']],
-                array_map(fn ($f) => [
-                    $f['codigo'], $f['turno'], $f['ambiente'], $f['capacidad'],
-                    $f['inscritos'], $this->num($f['ocupacion']), $f['estado'],
-                ], $filas)
+                [['Codigo', 'Turno', 'Ambiente', 'Capacidad', 'Inscritos', 'Libres', '% Ocupacion']],
+                $cuerpo,
+                [$totales]
             ));
         }
 
