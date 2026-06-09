@@ -265,6 +265,9 @@ function AsignacionFormModal({
   const [cargandoRecursos, setCargandoRecursos] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [errores, setErrores] = useState<string[]>([]);
+  // Asignaciones existentes del grupo seleccionado, para filtrar materias
+  // YA usadas en ese grupo apenas se elige el grupo (sin esperar dias/horario).
+  const [asignacionesDelGrupo, setAsignacionesDelGrupo] = useState<AsignacionDocente[]>([]);
 
   const [form, setForm] = useState<FormState>(() =>
     asignacion
@@ -293,6 +296,17 @@ function AsignacionFormModal({
     asignacionesService.datosIniciales(gestionId).then(setDatos);
   }, [gestionId]);
 
+  // Apenas se elige un grupo, traer sus asignaciones existentes para saber
+  // que materias ya tiene y excluirlas del dropdown. Esto se hace ANTES de
+  // elegir dias/horario; recursosDisponibles tambien filtra, pero recien
+  // despues de tener la franja completa.
+  useEffect(() => {
+    if (!form.grupo_id) { setAsignacionesDelGrupo([]); return; }
+    asignacionesService
+      .lista({ gestion_id: gestionId, grupo_id: form.grupo_id as number })
+      .then((r) => setAsignacionesDelGrupo(r.data));
+  }, [form.grupo_id, gestionId]);
+
   // Cuando hay franja completa (grupo + dias + horario), pedir recursos
   // disponibles (docentes y ambientes que NO chocan).
   useEffect(() => {
@@ -319,10 +333,18 @@ function AsignacionFormModal({
     setForm((f) => ({ ...f, [k]: v }));
   }
 
-  // Materias del grupo (excluye las que ya estan asignadas)
+  // Materias del grupo: excluye las ya asignadas.
+  // - Si ya tenemos 'recursos' (franja completa) usamos su info -- es la mas
+  //   fresca (tiene en cuenta ignore_id en edicion).
+  // - Si todavia no hay franja, usamos 'asignacionesDelGrupo' que se carga
+  //   apenas el usuario elige el grupo. En edicion, no excluimos la propia.
+  const materiasYaAsignadasDelGrupo = asignacionesDelGrupo
+    .filter((a) => !asignacion || a.id !== asignacion.id)
+    .map((a) => a.gestion_materia_id);
+
   const materiasDisponibles = (datos?.gestion_materias ?? []).filter((m) => {
-    if (!recursos) return true;
-    return !recursos.materias_ya_asignadas_al_grupo.includes(m.id);
+    if (recursos) return !recursos.materias_ya_asignadas_al_grupo.includes(m.id);
+    return !materiasYaAsignadasDelGrupo.includes(m.id);
   });
 
   // Turno del grupo seleccionado, para mostrar bloques sugeridos
@@ -427,7 +449,7 @@ function AsignacionFormModal({
                 </option>
               ))}
             </Select>
-            {recursos && materiasDisponibles.length === 0 && (
+            {form.grupo_id && materiasDisponibles.length === 0 && (
               <div className="text-xs text-warning-600 mt-1">
                 Este grupo ya tiene todas las materias asignadas.
               </div>
