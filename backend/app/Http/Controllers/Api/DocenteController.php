@@ -365,11 +365,18 @@ class DocenteController extends Controller
             ->get(['id', 'persona_id', 'codigo_postulante'])
             ->map(function ($p) {
                 $per = $p->persona;
-                $ap = trim(($per?->apellido_paterno ?? '') . ' ' . ($per?->apellido_materno ?? ''));
-                $nom = trim($per?->nombre ?? '');
-                return trim($ap . ', ' . $nom, ', ');
+                $apYNom = trim(
+                    ($per?->apellido_paterno ?? '') . ' '
+                    . ($per?->apellido_materno ?? '') . ' '
+                    . ($per?->nombre ?? '')
+                );
+                $apYNom = preg_replace('/\s+/', ' ', $apYNom);
+                return [
+                    'codigo' => $p->codigo_postulante ?? '-',
+                    'nombre' => $apYNom,
+                ];
             })
-            ->sortBy(fn ($s) => mb_strtolower($s))
+            ->sortBy(fn ($f) => mb_strtolower($f['nombre']))
             ->values()
             ->all();
 

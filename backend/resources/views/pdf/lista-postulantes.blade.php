@@ -17,6 +17,7 @@
         tbody td { padding: 6px 8px; border-bottom: 1px solid #d1d5db; }
         tbody tr:nth-child(even) { background: #f9fafb; }
         .num { width: 36px; text-align: right; color: #6b7280; font-family: monospace; }
+        .cod { width: 110px; font-family: monospace; font-size: 10px; color: #1f2937; }
         .footer { position: fixed; bottom: 10px; left: 0; right: 0; font-size: 8px; color: #9ca3af; text-align: center; }
         .vacio { text-align: center; padding: 16px; color: #6b7280; font-style: italic; }
     </style>
@@ -49,6 +50,7 @@
         <thead>
             <tr>
                 <th class="num">#</th>
+                <th class="cod" style="color:#fff;">Codigo postulante</th>
                 <th>Apellido y Nombre</th>
             </tr>
         </thead>
@@ -56,10 +58,11 @@
             @forelse($postulantes as $i => $p)
                 <tr>
                     <td class="num">{{ $i + 1 }}</td>
-                    <td>{{ $p }}</td>
+                    <td class="cod">{{ $p['codigo'] }}</td>
+                    <td>{{ $p['nombre'] }}</td>
                 </tr>
             @empty
-                <tr><td colspan="2" class="vacio">No hay postulantes asignados a este grupo.</td></tr>
+                <tr><td colspan="3" class="vacio">No hay postulantes asignados a este grupo.</td></tr>
             @endforelse
         </tbody>
     </table>
