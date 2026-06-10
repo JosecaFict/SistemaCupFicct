@@ -97,6 +97,14 @@ export const notasService = {
   }) =>
     withCsrf(async () => (await api.post("/api/docente/notas/guardar", payload)).data),
 
+  // Lista PDF de postulantes del grupo+materia (para control del docente en aula).
+  descargarListaPdf: (grupo_id: number, gestion_materia_id: number) =>
+    api
+      .get(`/api/docente/grupo/${grupo_id}/materia/${gestion_materia_id}/lista-pdf`, {
+        responseType: "blob",
+      })
+      .then((r) => r.data as Blob),
+
   // CU17 -- plantillas Excel de notas
   descargarPlantilla: (grupo_id: number, gestion_materia_id: number, numero_examen: number) =>
     api

@@ -165,6 +165,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:ADMINISTRADOR,DOCENTE')->prefix('docente')->group(function () {
         Route::get('/_placeholder',     fn () => response()->json(['ciclo' => 2, 'modulo' => 'docente']));
         Route::get('/mis-asignaciones', [DocenteController::class, 'misAsignaciones']);
+        Route::get('/grupo/{grupo}/materia/{gm}/lista-pdf',
+            [DocenteController::class, 'listaPostulantesPdf']);
         Route::get('/grupo/{grupo}/materia/{gm}/examen/{examen}',
             [DocenteController::class, 'notasDelExamen']);
         Route::post('/notas/guardar',   [DocenteController::class, 'guardarNotas']);

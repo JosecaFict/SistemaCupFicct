@@ -68,10 +68,31 @@ export function DocenteDashboard() {
   const [data, setData] = useState<MiAsignacion[] | null>(null);
   const [filtroGestion, setFiltroGestion] = useState<string>("");
   const [filtroTurno, setFiltroTurno]     = useState<string>("");
+  const [descargando, setDescargando]     = useState<number | null>(null);
 
   useEffect(() => {
     notasService.misAsignaciones().then(setData);
   }, []);
+
+  async function descargarLista(a: MiAsignacion) {
+    const grupoId = a.grupo?.id;
+    const gmId = a.gestion_materia?.id;
+    if (!grupoId || !gmId) return;
+    setDescargando(a.id);
+    try {
+      const blob = await notasService.descargarListaPdf(grupoId, gmId);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `lista-${a.grupo?.codigo ?? "grupo"}-${a.gestion_materia?.materia?.codigo ?? "MAT"}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } finally {
+      setDescargando(null);
+    }
+  }
 
   // Catalogos para los filtros (extraidos de las asignaciones)
   const gestiones = useMemo(() => {
@@ -158,6 +179,7 @@ export function DocenteDashboard() {
                 <th className="px-3 py-2 text-left">Horario</th>
                 <th className="px-3 py-2 text-left">Ambiente</th>
                 <th className="px-3 py-2 text-right">Post.</th>
+                <th className="px-3 py-2 text-center min-w-[64px]">Lista</th>
                 {numExamenes.map((n) => (
                   <th key={n} className="px-3 py-2 text-center min-w-[80px]">E{n}</th>
                 ))}
@@ -176,6 +198,17 @@ export function DocenteDashboard() {
                   <td className="px-3 py-2 font-mono text-xs">{fmtHorario(a)}</td>
                   <td className="px-3 py-2 text-xs">{a.ambiente?.nombre ?? "-"}</td>
                   <td className="px-3 py-2 text-right font-mono">{a.total_postulantes}</td>
+                  <td className="px-3 py-2 text-center">
+                    <button
+                      type="button"
+                      onClick={() => descargarLista(a)}
+                      disabled={descargando === a.id || a.total_postulantes === 0}
+                      className="inline-block px-2 py-1 rounded border text-xs font-mono border-institutional-200 bg-white text-institutional-700 hover:bg-institutional-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title={a.total_postulantes === 0 ? "Sin postulantes" : "Descargar lista de postulantes (PDF)"}
+                    >
+                      {descargando === a.id ? "..." : "PDF"}
+                    </button>
+                  </td>
                   {numExamenes.map((n) => {
                     const p = a.progreso[String(n)] || a.progreso[n];
                     const cant       = p?.cant ?? 0;
@@ -229,7 +262,7 @@ export function DocenteDashboard() {
               ))}
               {filas.length === 0 && (
                 <tr>
-                  <td colSpan={7 + maxExamenes} className="px-3 py-8 text-center text-muted-500 text-sm">
+                  <td colSpan={8 + maxExamenes} className="px-3 py-8 text-center text-muted-500 text-sm">
                     No hay asignaciones que coincidan con los filtros.
                   </td>
                 </tr>

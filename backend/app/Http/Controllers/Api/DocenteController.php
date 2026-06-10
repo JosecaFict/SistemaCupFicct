@@ -15,6 +15,7 @@ use App\Services\BitacoraService;
 use App\Services\ExcelExport;
 use App\Services\ExcelImport;
 use App\Services\NotaService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -344,6 +345,51 @@ class DocenteController extends Controller
             'ignoradas'    => $ignoradas,
             'mensaje' => 'Notas importadas desde Excel en estado PENDIENTE de validacion.',
         ]);
+    }
+
+    /**
+     * Descarga PDF con la lista de postulantes del grupo+materia (para control en aula).
+     * Solo dos columnas: # y Apellido y Nombre, con encabezado de gestion/grupo/materia/horario/ambiente.
+     */
+    public function listaPostulantesPdf(Grupo $grupo, GestionMateria $gm): Response
+    {
+        $userId = Auth::id();
+        $asignacion = $this->asignacionDelDocente($grupo->id, $gm->id, $userId);
+
+        $asignacion->load(['gestion:id,codigo,nombre', 'ambiente:id,nombre,ubicacion', 'docente:id,name']);
+        $gm->load('materia:id,codigo,nombre');
+
+        $postulantes = Postulacion::with('persona:id,nombre,apellido_paterno,apellido_materno')
+            ->where('grupo_id', $grupo->id)
+            ->where('gestion_cup_id', $grupo->gestion_cup_id)
+            ->get(['id', 'persona_id', 'codigo_postulante'])
+            ->map(function ($p) {
+                $per = $p->persona;
+                $ap = trim(($per?->apellido_paterno ?? '') . ' ' . ($per?->apellido_materno ?? ''));
+                $nom = trim($per?->nombre ?? '');
+                return trim($ap . ', ' . $nom, ', ');
+            })
+            ->sort(SORT_NATURAL | SORT_FLAG_CASE)
+            ->values()
+            ->all();
+
+        $horario = trim(($asignacion->dias_semana ?? '') . ' '
+            . substr($asignacion->hora_inicio ?? '', 0, 5) . '-'
+            . substr($asignacion->hora_fin ?? '', 0, 5));
+
+        $pdf = Pdf::loadView('pdf.lista-postulantes', [
+            'gestion'           => $asignacion->gestion,
+            'grupo'             => $grupo,
+            'materia'           => $gm->materia,
+            'horario'           => $horario ?: '-',
+            'ambienteNombre'    => $asignacion->ambiente?->nombre,
+            'ambienteUbicacion' => $asignacion->ambiente?->ubicacion,
+            'docente'           => $asignacion->docente?->name ?? '-',
+            'postulantes'       => $postulantes,
+        ])->setPaper('letter', 'portrait');
+
+        $nombre = 'lista-' . $grupo->codigo . '-' . ($gm->materia?->codigo ?? 'MAT') . '.pdf';
+        return $pdf->download($nombre);
     }
 
     /** Asignacion del docente a (grupo x materia), o 403. */
