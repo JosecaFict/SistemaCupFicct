@@ -81,6 +81,14 @@ export function DocenteDashboard() {
     setDescargando(a.id);
     try {
       const blob = await notasService.descargarListaPdf(grupoId, gmId);
+      // Si el backend respondio JSON (error) en lugar de PDF, leer y mostrar.
+      if (!blob.type.includes("pdf")) {
+        const txt = await blob.text();
+        let msg = txt;
+        try { msg = JSON.parse(txt)?.message ?? txt; } catch { /* texto plano */ }
+        alert("No se pudo generar el PDF: " + msg);
+        return;
+      }
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -89,6 +97,22 @@ export function DocenteDashboard() {
       link.click();
       link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      // Cuando el backend devuelve 5xx con responseType:blob, axios entra aqui.
+      let msg = "Error desconocido al descargar la lista.";
+      const data = err?.response?.data;
+      if (data instanceof Blob) {
+        try {
+          const txt = await data.text();
+          msg = JSON.parse(txt)?.message ?? txt;
+        } catch { /* ignore */ }
+      } else if (typeof data === "object" && data?.message) {
+        msg = data.message;
+      } else if (err?.message) {
+        msg = err.message;
+      }
+      alert("No se pudo descargar la lista: " + msg);
     } finally {
       setDescargando(null);
     }

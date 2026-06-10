@@ -356,7 +356,7 @@ class DocenteController extends Controller
         $userId = Auth::id();
         $asignacion = $this->asignacionDelDocente($grupo->id, $gm->id, $userId);
 
-        $asignacion->load(['gestion:id,codigo,nombre', 'ambiente:id,nombre,ubicacion', 'docente:id,name']);
+        $asignacion->load(['gestion:id,codigo,nombre', 'ambiente:id,nombre,ubicacion', 'docente:id,nombre,apellidos']);
         $gm->load('materia:id,codigo,nombre');
 
         $postulantes = Postulacion::with('persona:id,nombre,apellido_paterno,apellido_materno')
@@ -369,13 +369,18 @@ class DocenteController extends Controller
                 $nom = trim($per?->nombre ?? '');
                 return trim($ap . ', ' . $nom, ', ');
             })
-            ->sort(SORT_NATURAL | SORT_FLAG_CASE)
+            ->sortBy(fn ($s) => mb_strtolower($s))
             ->values()
             ->all();
 
+        // hora_inicio/fin estan casteadas a datetime:H:i:s, asi que pueden venir como
+        // objeto Carbon o string. Extraemos HH:MM con regex para ambos casos.
+        $extraerHora = fn ($v) => ($m = preg_match('/(\d{2}:\d{2})(?!\d)/', (string) $v, $mm)) ? $mm[1] : '';
         $horario = trim(($asignacion->dias_semana ?? '') . ' '
-            . substr($asignacion->hora_inicio ?? '', 0, 5) . '-'
-            . substr($asignacion->hora_fin ?? '', 0, 5));
+            . $extraerHora($asignacion->hora_inicio) . '-'
+            . $extraerHora($asignacion->hora_fin));
+
+        $nombreDocente = trim(($asignacion->docente?->nombre ?? '') . ' ' . ($asignacion->docente?->apellidos ?? ''));
 
         $pdf = Pdf::loadView('pdf.lista-postulantes', [
             'gestion'           => $asignacion->gestion,
@@ -384,7 +389,7 @@ class DocenteController extends Controller
             'horario'           => $horario ?: '-',
             'ambienteNombre'    => $asignacion->ambiente?->nombre,
             'ambienteUbicacion' => $asignacion->ambiente?->ubicacion,
-            'docente'           => $asignacion->docente?->name ?? '-',
+            'docente'           => $nombreDocente ?: '-',
             'postulantes'       => $postulantes,
         ])->setPaper('letter', 'portrait');
 
