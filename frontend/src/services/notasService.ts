@@ -25,6 +25,10 @@ export interface MiAsignacion {
     validadas: number;
     rechazadas: number;
   }>;
+  // Mapa numero_examen -> "YYYY-MM-DD" o null si el admin aun no la definio.
+  fechas_examenes: Record<string, string | null>;
+  // Mapa numero_examen -> true si today() >= fecha (habilita carga).
+  habilitado_carga: Record<string, boolean>;
 }
 
 export interface NotaFila {
@@ -49,6 +53,9 @@ export interface NotasExamenResponse {
   };
   examen: number;
   postulantes: NotaFila[];
+  bloqueado: boolean;
+  fecha_examen: string | null;
+  motivo_bloqueo: string | null;
 }
 
 export interface BloquePendiente {

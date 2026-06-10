@@ -39,7 +39,7 @@ const fmtHorario = (a: MiAsignacion): string => {
   return `${dias} ${ini}-${fin}`;
 };
 
-type Tono = "success" | "warning" | "neutral" | "info";
+type Tono = "success" | "warning" | "neutral" | "info" | "locked";
 
 function tonoExamen(cant: number, validadas: number, pendientes: number, total: number): Tono {
   if (total === 0) return "neutral";
@@ -54,7 +54,15 @@ const TONO_CSS: Record<Tono, string> = {
   warning: "border-orange-200 bg-orange-50 text-orange-800 hover:bg-orange-100",
   neutral: "border-muted-200 bg-muted-50 text-muted-600 hover:bg-muted-100",
   info:    "border-institutional-200 bg-institutional-50 text-institutional-800 hover:bg-institutional-100",
+  locked:  "border-muted-200 bg-muted-100 text-muted-500 cursor-not-allowed",
 };
+
+/** "YYYY-MM-DD" -> "DD/MM/YYYY". Devuelve "" si la cadena no encaja. */
+function fmtFecha(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[3]}/${m[2]}/${m[1]}` : "";
+}
 
 export function DocenteDashboard() {
   const [data, setData] = useState<MiAsignacion[] | null>(null);
@@ -173,6 +181,28 @@ export function DocenteDashboard() {
                     const cant       = p?.cant ?? 0;
                     const validadas  = p?.validadas ?? 0;
                     const pendientes = p?.pendientes ?? 0;
+
+                    const fechaIso  = a.fechas_examenes?.[String(n)] ?? null;
+                    const habilitado = a.habilitado_carga?.[String(n)] === true;
+
+                    // Si el admin no fijo la fecha o la fecha aun no llego,
+                    // mostrar celda bloqueada sin link.
+                    if (!habilitado) {
+                      const titulo = !fechaIso
+                        ? "Fecha del examen aun no definida por el administrador"
+                        : `Disponible desde ${fmtFecha(fechaIso)}`;
+                      return (
+                        <td key={n} className="px-2 py-2 text-center">
+                          <span
+                            className={`inline-block min-w-[64px] px-2 py-1 rounded border text-xs font-mono ${TONO_CSS.locked}`}
+                            title={titulo}
+                          >
+                            {fechaIso ? `🔒 ${fmtFecha(fechaIso)}` : "🔒 —"}
+                          </span>
+                        </td>
+                      );
+                    }
+
                     const tono = tonoExamen(cant, validadas, pendientes, a.total_postulantes);
                     return (
                       <td key={n} className="px-2 py-2 text-center">
@@ -185,7 +215,7 @@ export function DocenteDashboard() {
                               : pendientes > 0
                               ? `${pendientes} pendientes de validacion`
                               : cant === 0
-                              ? "Sin notas cargadas"
+                              ? `Sin notas cargadas (examen del ${fmtFecha(fechaIso)})`
                               : `${cant} cargadas`
                           }
                         >
@@ -224,6 +254,10 @@ export function DocenteDashboard() {
           <span className="inline-flex items-center gap-1">
             <span className="inline-block w-3 h-3 rounded border border-muted-200 bg-muted-50"></span>
             Sin notas
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <span className="inline-block w-3 h-3 rounded border border-muted-200 bg-muted-100"></span>
+            🔒 Bloqueado hasta la fecha del examen
           </span>
         </div>
       </Card>

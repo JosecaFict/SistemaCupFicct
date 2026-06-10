@@ -98,13 +98,14 @@ export function CargaNotasPage() {
   if (!data) return <div className="flex justify-center py-10"><Spinner /></div>;
 
   const notaMinima = parseFloat(String(data.asignacion.gestion?.nota_minima_aprobacion ?? "60"));
+  const bloqueado = data.bloqueado === true;
 
   function setValor(postId: number, v: string) {
     setValores((prev) => ({ ...prev, [postId]: v }));
   }
 
   function isReadonly(f: NotaFila): boolean {
-    return f.estado === "VALIDADA";
+    return bloqueado || f.estado === "VALIDADA";
   }
 
   async function guardar() {
@@ -204,16 +205,26 @@ export function CargaNotasPage() {
 
       {mensaje && <Alert tone={mensaje.tone}>{mensaje.text}</Alert>}
 
+      {bloqueado && (
+        <Alert tone="warning">
+          <b>Carga deshabilitada.</b>{" "}
+          {data.motivo_bloqueo ?? "La carga de notas aun no esta habilitada para este examen."}
+          {" "}Podes consultar las notas ya cargadas, pero no editarlas hasta la fecha del examen.
+        </Alert>
+      )}
+
       <Card>
         <div className="flex flex-wrap items-center gap-3">
           <div className="text-sm text-muted-600">
             <b>Plantilla Excel:</b> descarga la plantilla con tus alumnos, completa la columna <i>Nota</i> y subila para cargar en bloque.
           </div>
           <div className="flex gap-2 sm:ml-auto">
-            <Button variant="secondary" size="sm" onClick={descargarPlantilla}>Descargar plantilla</Button>
-            <label className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border border-muted-200 cursor-pointer ${importando ? "opacity-60 pointer-events-none" : "hover:bg-muted-100"}`}>
+            <Button variant="secondary" size="sm" onClick={descargarPlantilla} disabled={bloqueado}>Descargar plantilla</Button>
+            <label className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border border-muted-200 ${
+              bloqueado || importando ? "opacity-60 pointer-events-none" : "cursor-pointer hover:bg-muted-100"
+            }`}>
               {importando ? "Importando..." : "Subir Excel"}
-              <input type="file" accept=".xlsx" className="hidden" onChange={importarExcel} disabled={importando} />
+              <input type="file" accept=".xlsx" className="hidden" onChange={importarExcel} disabled={importando || bloqueado} />
             </label>
           </div>
         </div>
@@ -280,8 +291,8 @@ export function CargaNotasPage() {
 
         <div className="flex justify-end mt-4 gap-2">
           <Button variant="secondary" onClick={() => navigate("/docente")}>Cancelar</Button>
-          <Button onClick={guardar} disabled={guardando}>
-            {guardando ? "Guardando..." : "Guardar notas"}
+          <Button onClick={guardar} disabled={guardando || bloqueado}>
+            {guardando ? "Guardando..." : bloqueado ? "Bloqueado" : "Guardar notas"}
           </Button>
         </div>
       </Card>

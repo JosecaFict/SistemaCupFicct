@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Enums\EstadoNota;
 use App\Http\Controllers\Controller;
 use App\Models\AsignacionDocente;
+use App\Models\FechaExamen;
 use App\Models\GestionCup;
 use App\Models\GestionMateria;
 use App\Models\Grupo;
@@ -40,6 +41,7 @@ class DocenteController extends Controller
 
         $q = AsignacionDocente::with([
             'gestion:id,codigo,nombre,cantidad_examenes,nota_minima_aprobacion',
+            'gestion.fechasExamenes:id,gestion_cup_id,numero,fecha',
             'grupo.turno:id,codigo,nombre',
             'gestionMateria.materia:id,codigo,nombre',
             'ambiente:id,nombre,ubicacion',
@@ -51,12 +53,26 @@ class DocenteController extends Controller
 
         $asignaciones = $q->orderBy('grupo_id')->orderBy('hora_inicio')->get();
 
+        $hoy = now()->startOfDay();
+
         // Para cada asignacion: cuantas notas ya cargadas vs total esperado
-        $datos = $asignaciones->map(function ($a) {
+        $datos = $asignaciones->map(function ($a) use ($hoy) {
             $totalPostulantes = Postulacion::where('grupo_id', $a->grupo_id)
                 ->where('gestion_cup_id', $a->gestion_cup_id)
                 ->count();
             $numExamenes = (int) ($a->gestion?->cantidad_examenes ?? 0);
+
+            // Fechas de examen de la gestion (numero => "YYYY-MM-DD" o null)
+            // y flag de habilitacion (today >= fecha).
+            $fechasMap = [];
+            $habilitadoMap = [];
+            $fechasExamenes = $a->gestion?->fechasExamenes ?? collect();
+            foreach (range(1, $numExamenes) as $n) {
+                $fe = $fechasExamenes->firstWhere('numero', $n);
+                $fechaStr = $fe?->fecha?->toDateString();
+                $fechasMap[$n] = $fechaStr;
+                $habilitadoMap[$n] = $fechaStr ? $hoy->greaterThanOrEqualTo($fe->fecha) : false;
+            }
 
             // Notas cargadas por examen
             $cargadasPorExamen = Nota::whereIn('postulacion_id',
@@ -84,6 +100,8 @@ class DocenteController extends Controller
                 'total_postulantes' => $totalPostulantes,
                 'numero_examenes'   => $numExamenes,
                 'progreso'          => $cargadasPorExamen,
+                'fechas_examenes'   => $fechasMap,
+                'habilitado_carga'  => $habilitadoMap,
             ];
         });
 
@@ -106,6 +124,10 @@ class DocenteController extends Controller
             ->where('docente_user_id', $userId)
             ->first();
         abort_if(!$asignacion, 403, 'No estas asignado a este grupo y materia.');
+
+        // Estado de la fecha de examen (no estricto: permitimos lectura, pero
+        // marcamos bloqueado para que el frontend deshabilite la edicion).
+        $fechaInfo = $this->verificarFechaExamen($asignacion, $examen, false);
 
         $postulantes = Postulacion::with('persona:id,nombre,apellido_paterno,apellido_materno,documento')
             ->where('grupo_id', $grupo->id)
@@ -144,6 +166,9 @@ class DocenteController extends Controller
             'asignacion'  => $asignacion->load(['grupo.turno', 'gestionMateria.materia', 'gestion']),
             'examen'      => $examen,
             'postulantes' => $filas,
+            'bloqueado'   => !$fechaInfo['habilitado'],
+            'fecha_examen'=> $fechaInfo['fecha'],
+            'motivo_bloqueo' => $fechaInfo['motivo'],
         ]);
     }
 
@@ -171,6 +196,9 @@ class DocenteController extends Controller
             ->where('docente_user_id', $userId)
             ->first();
         abort_if(!$asignacion, 403, 'No estas asignado a este grupo y materia.');
+
+        // Defensa en profundidad: no permitir carga antes de la fecha del examen.
+        $this->verificarFechaExamen($asignacion, (int) $data['numero_examen'], true);
 
         $gestion = GestionCup::findOrFail($asignacion->gestion_cup_id);
 
@@ -252,6 +280,10 @@ class DocenteController extends Controller
 
         $userId = Auth::id();
         $asignacion = $this->asignacionDelDocente($data['grupo_id'], $data['gestion_materia_id'], $userId);
+
+        // Defensa en profundidad: no permitir importar antes de la fecha del examen.
+        $this->verificarFechaExamen($asignacion, (int) $data['numero_examen'], true);
+
         $gestion = GestionCup::findOrFail($asignacion->gestion_cup_id);
 
         // codigo_postulante -> postulacion_id del grupo
@@ -323,6 +355,37 @@ class DocenteController extends Controller
             ->first();
         abort_if(!$asignacion, 403, 'No estas asignado a este grupo y materia.');
         return $asignacion;
+    }
+
+    /**
+     * Resuelve el estado de la fecha de un examen para una asignacion.
+     * Devuelve ['habilitado' => bool, 'fecha' => string|null, 'motivo' => string|null].
+     * Si $estricto y no esta habilitado, aborta con 403.
+     */
+    private function verificarFechaExamen(AsignacionDocente $asignacion, int $numeroExamen, bool $estricto = false): array
+    {
+        $fe = FechaExamen::where('gestion_cup_id', $asignacion->gestion_cup_id)
+            ->where('numero', $numeroExamen)
+            ->first();
+
+        $fecha = $fe?->fecha;
+        if (!$fecha) {
+            $res = ['habilitado' => false, 'fecha' => null, 'motivo' => 'El administrador aun no definio la fecha de este examen.'];
+            if ($estricto) abort(403, $res['motivo']);
+            return $res;
+        }
+
+        if (now()->startOfDay()->lessThan($fecha)) {
+            $res = [
+                'habilitado' => false,
+                'fecha' => $fecha->toDateString(),
+                'motivo' => 'La carga de notas se habilita el dia del examen (' . $fecha->format('d/m/Y') . ').',
+            ];
+            if ($estricto) abort(403, $res['motivo']);
+            return $res;
+        }
+
+        return ['habilitado' => true, 'fecha' => $fecha->toDateString(), 'motivo' => null];
     }
 
     /**
