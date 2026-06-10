@@ -130,30 +130,53 @@ export function PostulanteDetallePage() {
         {!tienePagoAprobado && (
           <Alert tone="warning">El pago aun no esta aprobado. La inscripcion no puede confirmarse.</Alert>
         )}
-        <table className="min-w-full text-sm mt-3">
-          <thead>
-            <tr className="bg-muted-50 text-muted-600 text-left">
-              <th className="px-3 py-2">Requisito</th>
-              <th className="px-3 py-2">Estado</th>
-              <th className="px-3 py-2">Observacion</th>
-              <th className="px-3 py-2">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reqs.map((r) => (
-              <tr key={r.id} className="border-t border-muted-100">
-                <td className="px-3 py-2">{r.requisito?.nombre}</td>
-                <td className="px-3 py-2"><StatusBadge estado={r.estado} tipo="requisito" /></td>
-                <td className="px-3 py-2 text-muted-600">{r.observacion ?? "-"}</td>
-                <td className="px-3 py-2 flex gap-1 flex-wrap">
-                  <Button size="sm" variant="success" onClick={() => marcar(r, "VALIDADO")}>Validar</Button>
-                  <Button size="sm" variant="secondary" onClick={() => marcar(r, "OBSERVADO")}>Observar</Button>
-                  <Button size="sm" variant="danger" onClick={() => marcar(r, "RECHAZADO")}>Rechazar</Button>
-                </td>
+        {/* Escritorio: tabla. */}
+        <div className="hidden md:block overflow-x-auto mt-3">
+          <table className="min-w-full text-sm">
+            <thead>
+              <tr className="bg-muted-50 text-muted-600 text-left">
+                <th className="px-3 py-2">Requisito</th>
+                <th className="px-3 py-2">Estado</th>
+                <th className="px-3 py-2">Observacion</th>
+                <th className="px-3 py-2">Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {reqs.map((r) => (
+                <tr key={r.id} className="border-t border-muted-100">
+                  <td className="px-3 py-2">{r.requisito?.nombre}</td>
+                  <td className="px-3 py-2"><StatusBadge estado={r.estado} tipo="requisito" /></td>
+                  <td className="px-3 py-2 text-muted-600">{r.observacion ?? "-"}</td>
+                  <td className="px-3 py-2 flex gap-1 flex-wrap">
+                    <Button size="sm" variant="success" onClick={() => marcar(r, "VALIDADO")}>Validar</Button>
+                    <Button size="sm" variant="secondary" onClick={() => marcar(r, "OBSERVADO")}>Observar</Button>
+                    <Button size="sm" variant="danger" onClick={() => marcar(r, "RECHAZADO")}>Rechazar</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile: cada requisito como tarjeta apilada. */}
+        <div className="md:hidden mt-3 space-y-3">
+          {reqs.map((r) => (
+            <div key={r.id} className="rounded-md border border-muted-100 bg-white p-3 space-y-2">
+              <div className="flex justify-between gap-3 items-start">
+                <div className="text-sm font-medium text-institutional-800">{r.requisito?.nombre}</div>
+                <StatusBadge estado={r.estado} tipo="requisito" />
+              </div>
+              {r.observacion && (
+                <div className="text-xs text-muted-600"><b>Observacion:</b> {r.observacion}</div>
+              )}
+              <div className="flex gap-1 flex-wrap pt-1">
+                <Button size="sm" variant="success" onClick={() => marcar(r, "VALIDADO")}>Validar</Button>
+                <Button size="sm" variant="secondary" onClick={() => marcar(r, "OBSERVADO")}>Observar</Button>
+                <Button size="sm" variant="danger" onClick={() => marcar(r, "RECHAZADO")}>Rechazar</Button>
+              </div>
+            </div>
+          ))}
+        </div>
       </Card>
 
       {!yaInscrito && (

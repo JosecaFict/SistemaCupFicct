@@ -11,11 +11,11 @@ export function PublicLayout() {
   return (
     <div className="min-h-screen flex flex-col bg-muted-50">
       <header className="bg-institutional-700 text-white no-print">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="font-semibold text-lg tracking-tight">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-y-2">
+          <Link to="/" className="font-semibold text-base sm:text-lg tracking-tight">
             {APP_NAME}
           </Link>
-          <nav className="text-sm flex gap-5">
+          <nav className="text-sm flex flex-wrap gap-x-4 gap-y-1 sm:gap-5">
             <Link to="/preinscripcion" className="hover:underline">Preinscripcion</Link>
             <Link to="/resultados"     className="hover:underline">Resultados</Link>
             <Link to="/login"          className="hover:underline">Acceso</Link>

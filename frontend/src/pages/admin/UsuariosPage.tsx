@@ -148,7 +148,7 @@ export function UsuariosPage() {
                <Button variant="secondary" onClick={() => setOpen(false)}>Cancelar</Button>
                <Button onClick={guardar}>{editing ? "Guardar" : "Crear"}</Button>
              </>}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Input label="Nombre"    value={form.nombre}    onChange={(e) => setForm({ ...form, nombre: e.target.value })} />
           <Input label="Apellidos" value={form.apellidos} onChange={(e) => setForm({ ...form, apellidos: e.target.value })} />
           <Input label="Fecha de nacimiento" type="date" value={form.fecha_nacimiento}

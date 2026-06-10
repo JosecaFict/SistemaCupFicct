@@ -20,7 +20,7 @@ export function BoletaPreview({ data }: { data: BoletaPayload }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 text-sm">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         <Item label="Nombre completo" value={data.nombre_completo} />
         <Item label="Documento" value={`${data.documento.numero}${data.documento.expedido ? " " + data.documento.expedido : ""} (${data.documento.tipo})`} />
         <Item label="Gestion" value={`${data.gestion.codigo} - ${data.gestion.nombre}`} />

@@ -192,7 +192,8 @@ export function DocenteDashboard() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Escritorio: tabla compacta. */}
+        <div className="hidden lg:block overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead>
               <tr className="bg-muted-50 text-muted-600 text-xs uppercase tracking-wide">
@@ -293,6 +294,101 @@ export function DocenteDashboard() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile / tablet: cada asignacion como tarjeta. */}
+        <div className="lg:hidden space-y-3">
+          {filas.length === 0 && (
+            <div className="rounded-md border border-muted-100 bg-white p-4 text-center text-sm text-muted-500">
+              No hay asignaciones que coincidan con los filtros.
+            </div>
+          )}
+          {filas.map((a) => (
+            <div key={a.id} className="rounded-md border border-muted-100 bg-white p-3 space-y-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-mono text-base font-semibold text-institutional-800">{a.grupo?.codigo ?? "-"}</span>
+                    <span className="text-xs text-muted-500">{a.grupo?.turno?.codigo ?? ""}</span>
+                    <Badge tone="info">{a.gestion_materia?.materia?.codigo ?? "-"}</Badge>
+                  </div>
+                  <div className="text-sm text-muted-700 mt-0.5 break-words">
+                    {a.gestion_materia?.materia?.nombre ?? ""}
+                  </div>
+                  <div className="text-xs text-muted-500 mt-0.5">
+                    <span className="font-mono">{fmtHorario(a)}</span>
+                    {a.ambiente?.nombre && <span>  {a.ambiente.nombre}</span>}
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <div className="text-xs text-muted-500">{a.gestion?.codigo}</div>
+                  <div className="text-xs text-muted-500 mt-0.5">
+                    Post.: <span className="font-mono font-semibold text-institutional-800">{a.total_postulantes}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 flex-wrap pt-1 border-t border-muted-100">
+                <button
+                  type="button"
+                  onClick={() => descargarLista(a)}
+                  disabled={descargando === a.id || a.total_postulantes === 0}
+                  className="inline-flex items-center px-3 py-1.5 rounded border text-xs font-mono border-institutional-200 bg-white text-institutional-700 hover:bg-institutional-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  title={a.total_postulantes === 0 ? "Sin postulantes" : "Descargar lista de postulantes (PDF)"}
+                >
+                  {descargando === a.id ? "Generando..." : "Lista PDF"}
+                </button>
+
+                <div className="flex flex-wrap gap-1 justify-end">
+                  {numExamenes.map((n) => {
+                    const p = a.progreso[String(n)] || a.progreso[n];
+                    const cant       = p?.cant ?? 0;
+                    const validadas  = p?.validadas ?? 0;
+                    const pendientes = p?.pendientes ?? 0;
+
+                    const fechaIso  = a.fechas_examenes?.[String(n)] ?? null;
+                    const habilitado = a.habilitado_carga?.[String(n)] === true;
+
+                    if (!habilitado) {
+                      const titulo = !fechaIso
+                        ? "Fecha aun no definida"
+                        : `Disponible desde ${fmtFecha(fechaIso)}`;
+                      return (
+                        <span
+                          key={n}
+                          className={`inline-flex items-center px-2 py-1.5 rounded border text-xs font-mono ${TONO_CSS.locked}`}
+                          title={titulo}
+                        >
+                          E{n} 🔒
+                        </span>
+                      );
+                    }
+
+                    const tono = tonoExamen(cant, validadas, pendientes, a.total_postulantes);
+                    return (
+                      <Link
+                        key={n}
+                        to={`/docente/notas/${a.grupo?.id}/${a.gestion_materia?.id}/${n}`}
+                        className={`inline-flex items-center px-2 py-1.5 rounded border text-xs font-mono ${TONO_CSS[tono]}`}
+                        title={
+                          validadas === a.total_postulantes && cant > 0
+                            ? "Todas validadas"
+                            : pendientes > 0
+                            ? `${pendientes} pendientes`
+                            : cant === 0
+                            ? `Sin notas (examen del ${fmtFecha(fechaIso)})`
+                            : `${cant} cargadas`
+                        }
+                      >
+                        E{n} {cant}/{a.total_postulantes}
+                        {tono === "success" && <span className="ml-1">✓</span>}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-500">

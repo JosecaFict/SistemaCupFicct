@@ -180,7 +180,7 @@ export function CargaNotasPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-sm">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm">
         <div className="border border-muted-100 bg-white rounded p-2 text-center">
           <div className="text-xs text-muted-500">Total</div>
           <div className="font-semibold">{totales.total}</div>
@@ -235,12 +235,13 @@ export function CargaNotasPage() {
           Nota minima para no descalificar: <b>{notaMinima}</b>.
           Las notas guardadas quedan en PENDIENTE de validacion por el coordinador.
         </div>
-        <div className="overflow-x-auto">
+        {/* Escritorio: tabla. */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted-50 text-muted-700">
               <tr>
                 <th className="px-2 py-2 text-left">N</th>
-                <th className="px-2 py-2 text-left">Cdigo</th>
+                <th className="px-2 py-2 text-left">Codigo</th>
                 <th className="px-2 py-2 text-left">Nombre completo</th>
                 <th className="px-2 py-2 text-right">Nota (0-100)</th>
                 <th className="px-2 py-2 text-center">Estado</th>
@@ -287,6 +288,54 @@ export function CargaNotasPage() {
               })}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile: cada postulante como tarjeta apilada con el input de nota grande. */}
+        <div className="md:hidden space-y-3">
+          {filas.map((f) => {
+            const readonly = isReadonly(f);
+            const v = valores[f.postulacion_id] ?? "";
+            const num = parseFloat(v);
+            const esBajo = !Number.isNaN(num) && num < notaMinima;
+            return (
+              <div key={f.postulacion_id} className="rounded-md border border-muted-100 bg-white p-3 space-y-2">
+                <div className="flex justify-between items-start gap-2">
+                  <div className="min-w-0">
+                    <div className="text-xs text-muted-500 font-mono">
+                      #{f.numero}  {f.codigo_postulante ?? ""}
+                    </div>
+                    <div className="text-sm font-medium text-institutional-800 break-words">{f.nombre_completo}</div>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    {f.estado === "VALIDADA" && <Badge tone="success">Validada</Badge>}
+                    {f.estado === "PENDIENTE" && <Badge tone="warning">Pendiente</Badge>}
+                    {f.estado === "RECHAZADA" && <Badge tone="danger">Rechazada</Badge>}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <label className="text-xs text-muted-500 shrink-0">Nota (0-100):</label>
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    min={0}
+                    max={100}
+                    step={0.01}
+                    value={v}
+                    onChange={(e) => setValor(f.postulacion_id, e.target.value)}
+                    readOnly={readonly}
+                    className={`flex-1 text-right border rounded px-3 py-2 text-base ${
+                      readonly ? "bg-muted-50 text-muted-500" :
+                      esBajo ? "border-danger-300 bg-red-50" :
+                      "border-muted-200"
+                    }`}
+                  />
+                </div>
+                {f.descalifica && (
+                  <div className="text-xs text-danger-600">descalifica</div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <div className="flex justify-end mt-4 gap-2">

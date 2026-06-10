@@ -29,7 +29,7 @@ export function ComprobantePreview({ data }: { data: ComprobantePago }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 text-sm">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         <Item label="Referencia" value={data.referencia ?? "—"} mono />
         <Item label="Fecha de aprobacion" value={fecha} />
         <Item label="Postulante" value={data.postulante} />
