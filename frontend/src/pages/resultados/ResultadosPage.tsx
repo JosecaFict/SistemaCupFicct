@@ -231,7 +231,7 @@ export function ResultadosPage() {
           <div className="text-sm text-muted-500">
             {modo === "detalle"
               ? "Vista detallada (todos los campos)."
-              : "Vista compacta: solo cdigos publicados de los aceptados (modo lista oficial)."}
+              : "Vista codigo: solo codigos publicados de los aceptados (modo lista oficial)."}
           </div>
           <div className="inline-flex rounded-md border border-muted-200 overflow-hidden">
             <button
@@ -246,7 +246,7 @@ export function ResultadosPage() {
               onClick={() => { setModo("compacto"); setPagina(1); }}
               className={`px-3 py-1.5 text-sm border-l border-muted-200 ${modo === "compacto" ? "bg-institutional-700 text-white" : "bg-white text-muted-700 hover:bg-muted-100"}`}
             >
-              Compacto (cdigos)
+              Codigo
             </button>
           </div>
         </div>

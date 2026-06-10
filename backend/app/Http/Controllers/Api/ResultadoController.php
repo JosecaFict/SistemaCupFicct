@@ -26,7 +26,15 @@ class ResultadoController extends Controller
         ]);
 
         $postulacion = Postulacion::where('codigo_postulante', $data['codigo'])
-            ->with(['persona', 'gestion', 'carreraPrimera', 'carreraSegunda', 'turno', 'grupo'])
+            ->with([
+                'persona',
+                'gestion',
+                'carreraPrimera',
+                'carreraSegunda',
+                'turno',
+                'grupo',
+                'resultado.carreraAsignada',
+            ])
             ->first();
 
         if (!$postulacion) {
@@ -36,6 +44,14 @@ class ResultadoController extends Controller
             ], 404);
         }
 
+        // Resultado del calculo (puede ser null si la gestion aun no calculo).
+        // Solo se expone al postulante si esta publicado.
+        $resultado = $postulacion->resultado;
+        $publicado = $resultado?->publicado === true;
+        $estadoFinal = $publicado ? $resultado?->estado_final?->value : null;
+        $opcionAceptada = $publicado ? $resultado?->opcion_aceptada?->value : null;
+        $carreraAsignada = $publicado ? $resultado?->carreraAsignada?->nombre : null;
+
         return response()->json([
             'encontrado' => true,
             'codigo'     => $postulacion->codigo_postulante,
@@ -44,12 +60,15 @@ class ResultadoController extends Controller
             ],
             'gestion'    => $postulacion->gestion?->codigo,
             'carrera'    => $postulacion->carreraPrimera?->nombre,
+            // Campos del resultado publicado (null si aun no se calculo / publico).
+            'carrera_asignada' => $carreraAsignada,
+            'opcion_aceptada'  => $opcionAceptada, // PRIMERA, SEGUNDA, NINGUNA, null
+            'estado_final'     => $estadoFinal,    // ACEPTADO, SIN_CUPO, PENDIENTE_DESEMPATE, null
+            'publicado'        => $publicado,
             'turno'      => $postulacion->turno?->codigo,
             'grupo'      => $postulacion->grupo?->codigo,
             'estado'     => $postulacion->estado,
-            // En Ciclos siguientes aqui se sumara: notas por materia, promedio,
-            // ranking, resultado final (ACEPTADO / SIN_CUPO), etc.
-            'resultado_final' => null,
+            'resultado_final' => $estadoFinal, // alias retrocompat
         ]);
     }
 }

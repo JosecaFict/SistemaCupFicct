@@ -61,15 +61,42 @@ export function ResultadosPublicos() {
             <div><b>Codigo:</b> {String(resultado.codigo)}</div>
             <div><b>Nombre:</b> {(resultado.persona as { nombre_completo?: string })?.nombre_completo}</div>
             <div><b>Gestion:</b> {String(resultado.gestion ?? "-")}</div>
-            <div><b>Carrera:</b> {String(resultado.carrera ?? "-")}</div>
-            <div><b>Turno:</b> {String(resultado.turno ?? "-")}</div>
-            <div><b>Grupo:</b> {String(resultado.grupo ?? "-")}</div>
+
+            {(() => {
+              const estadoFinal = resultado.estado_final as string | null | undefined;
+              const publicado   = resultado.publicado === true;
+              const carreraAsignada = resultado.carrera_asignada as string | null | undefined;
+              const carreraSolicitada = resultado.carrera as string | null | undefined;
+              const opcion = resultado.opcion_aceptada as string | null | undefined;
+
+              // 1) Aceptado y publicado -> mostrar carrera asignada + opcion.
+              if (publicado && estadoFinal === "ACEPTADO" && carreraAsignada) {
+                const opcionTxt =
+                  opcion === "PRIMERA" ? " (1ra opcion)" :
+                  opcion === "SEGUNDA" ? " (2da opcion)" : "";
+                return <div><b>Carrera asignada:</b> {carreraAsignada}{opcionTxt}</div>;
+              }
+              // 2) Sin cupo y publicado -> mostrar la primera opcion que solicito.
+              if (publicado && estadoFinal === "SIN_CUPO") {
+                return <div><b>Carrera (1ra opcion solicitada):</b> {carreraSolicitada ?? "-"}</div>;
+              }
+              // 3) Aun no calculado / no publicado: mostrar lo que pidio.
+              return <div><b>Carrera (1ra opcion):</b> {carreraSolicitada ?? "-"}</div>;
+            })()}
+
             <div className="flex items-center gap-2">
-              <b>Estado:</b> <StatusBadge estado={String(resultado.estado)} tipo="postulacion" />
+              <b>Estado:</b>{" "}
+              {resultado.publicado === true && resultado.estado_final
+                ? <StatusBadge estado={String(resultado.estado_final)} tipo="postulacion" />
+                : <StatusBadge estado={String(resultado.estado)} tipo="postulacion" />}
             </div>
-            <div className="text-xs text-muted-500 pt-2 border-t border-muted-100">
-              El resultado final del examen CUP (ACEPTADO / SIN_CUPO) estara disponible en una siguiente etapa del sistema.
-            </div>
+
+            {!(resultado.publicado === true && resultado.estado_final) && (
+              <div className="text-xs text-muted-500 pt-2 border-t border-muted-100">
+                Cuando la gestion publique los resultados finales (ACEPTADO / SIN_CUPO),
+                aparecera aqui automaticamente.
+              </div>
+            )}
           </div>
         </Card>
       )}
