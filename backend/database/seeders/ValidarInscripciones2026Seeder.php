@@ -36,8 +36,9 @@ class ValidarInscripciones2026Seeder extends Seeder
 
     /** Lotes: turno (codigo) => cantidad a validar/inscribir. */
     private const BATCHES = [
-        ['turno' => 'N', 'cantidad' => 69], // Noche -> N1 (1->70, lleno)
-        ['turno' => 'T', 'cantidad' => 66], // Tarde -> T1 (4->70, lleno)
+        ['turno' => 'M', 'cantidad' => 64], // Manana -> M2 (1->65)
+        ['turno' => 'T', 'cantidad' => 64], // Tarde  -> T2 (1->65)
+        ['turno' => 'N', 'cantidad' => 64], // Noche  -> N2 (1->65)
     ];
 
     public function run(): void
