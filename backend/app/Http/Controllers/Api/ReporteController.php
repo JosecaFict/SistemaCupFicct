@@ -84,20 +84,38 @@ class ReporteController extends Controller
             'estado'           => $p->estado?->value ?? $p->estado,
         ])->toArray();
 
+        // Agrupar por Grupo. Las filas ya vienen ordenadas por codigo_postulante,
+        // y ese orden se conserva dentro de cada grupo. Los sin grupo van al final.
+        $grupos = [];
+        foreach ($filas as $f) {
+            $clave = $f['grupo'] ?: 'Sin grupo';
+            $grupos[$clave][] = $f;
+        }
+        uksort($grupos, function ($a, $b) {
+            if ($a === 'Sin grupo') return 1;
+            if ($b === 'Sin grupo') return -1;
+            return strnatcmp($a, $b);
+        });
+
         if ($this->esExcel($request)) {
-            return ExcelExport::stream("lista-general-{$gestion->codigo}", array_merge(
-                [['Codigo', 'Nombre completo', 'Documento', '1ra carrera', '2da carrera', 'Grupo', 'Estado']],
-                array_map(fn ($f) => [
-                    $f['codigo'], $f['nombre_completo'], $f['documento'],
-                    $f['carrera_primera'], $f['carrera_segunda'], $f['grupo'], $f['estado'],
-                ], $filas)
-            ));
+            $matriz = [['Codigo', 'Nombre completo', 'Documento', '1ra carrera', '2da carrera', 'Grupo', 'Estado']];
+            foreach ($grupos as $clave => $filasGrupo) {
+                $matriz[] = ["GRUPO: {$clave}"]; // fila separadora por grupo
+                foreach ($filasGrupo as $f) {
+                    $matriz[] = [
+                        $f['codigo'], $f['nombre_completo'], $f['documento'],
+                        $f['carrera_primera'], $f['carrera_segunda'], $f['grupo'], $f['estado'],
+                    ];
+                }
+            }
+            return ExcelExport::stream("lista-general-{$gestion->codigo}", $matriz);
         }
 
         return $this->descarga('reportes.lista-general', [
             'titulo'  => 'Lista general de postulantes',
             'gestion' => $gestion,
-            'filas'   => $filas,
+            'grupos'  => $grupos,
+            'total'   => count($filas),
         ], "lista-general-{$gestion->codigo}");
     }
 
