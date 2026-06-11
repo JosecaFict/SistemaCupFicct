@@ -1,0 +1,384 @@
+25428097	Miguel	Sanchez	Quiroga	14/04/2000	65922776	miguel.sanchez94@gmail.com	Barrio El Pari, Calle 12, Casa #389	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2018
+77764522	Katherine Lorena	Peralta	Gutierrez	20/04/2005	78510656	katherine.peralta21@yahoo.com	Av. Beni, Calle 1, Casa #471	Colegio San Antonio	Warnes	2023
+34933011	David Alberto	Saucedo	Paredes	01/02/2006	64460136	david.saucedo14@gmail.com	Av. Virgen de Cotoca, Calle 2, Casa #909	Colegio Los Tusequis	Warnes	2024
+99056627	Brayan	Lazarte	Ribera	06/01/2003	79107203	brayan.lazarte71@hotmail.com	Av. Beni, Calle 26, Casa #440	Colegio Andres Ibanez	Santa Cruz de la Sierra	2020
+23948631	Mateo Esteban	Condori	Ribera	13/07/2003	68483581	mateo.condori79@hotmail.com	Barrio Plan 3000, Calle 22, Casa #850	Colegio Don Bosco	Santa Cruz de la Sierra	2020
+27682982	Carmen Vanessa	Terrazas	Salazar	24/09/2005	63228188	carmen.terrazas12@gmail.com	Av. Cristo Redentor, Calle 17, Casa #500	Colegio Cristo Rey	Santa Cruz de la Sierra	2023
+41698014	Ricardo Enrique	Cortez	Roca	27/01/2005	69217411	ricardo.cortez30@outlook.com	Barrio Hamacas, Calle 18, Casa #564	Colegio Cardenal Cushing	Santa Cruz de la Sierra	2022
+20592131	Jazmin	Fernandez	Flores	15/08/2001	64725446	jazmin.fernandez25@hotmail.com	Zona Sur, Calle 27, Casa #817	Colegio Domingo Savio	Santa Cruz de la Sierra	2018
+91219073	Roberto Antonio	Alvarez	Castillo	19/09/1999	64406994	roberto.alvarez41@gmail.com	Av. Santos Dumont, Calle 18, Casa #842	Colegio Santa Ana	Warnes	2016
+53747267	Veronica	Rivero	Villarroel	06/02/2006	73933234	veronica.rivero78@hotmail.com	Av. Mutualista, Calle 25, Casa #669	Colegio Domingo Savio	Warnes	2023
+9090133	Samuel Javier	Quiroga	Villarroel	08/05/2005	71157175	samuel.quiroga20@hotmail.com	Barrio El Trompillo, Calle 16, Casa #967	Colegio Enrique Finot	Santa Cruz de la Sierra	2022
+94636078	Emanuel	Roca	Aguilera	02/11/2001	79644525	emanuel.roca62@yahoo.com	Villa Primero de Mayo, Calle 1, Casa #362	Colegio San Antonio	Santa Cruz de la Sierra	2019
+34805485	Nicolas	Saucedo	Mendez	23/10/2005	72544212	nicolas.saucedo34@hotmail.com	Av. Grigota, Calle 26, Casa #449	Colegio Boliviano Japones	Santa Cruz de la Sierra	2023
+53274155	Nicole	Becerra	Morales	22/09/2000	65814033	nicole.becerra54@gmail.com	Barrio Los Lotes, Calle 18, Casa #367	Colegio San Jose	Santa Cruz de la Sierra	2017
+92844972	Gabriel	Mercado	Castillo	02/06/2003	66170757	gabriel.mercado85@gmail.com	Villa Primero de Mayo, Calle 22, Casa #904	Colegio Los Tusequis	Santa Cruz de la Sierra	2021
+6853215	Brayan	Camacho	Mamani	05/01/2000	79519427	brayan.camacho95@outlook.com	Barrio La Cuchilla, Calle 20, Casa #288	Colegio Juan Pablo II	Santa Cruz de la Sierra	2018
+56029967	Mariana	Duran	Zeballos	07/04/2002	68636674	mariana.duran56@outlook.com	Zona Norte, Calle 16, Casa #349	Colegio Nacional Florida	Santa Cruz de la Sierra	2019
+65588738	Carla Lourdes	Paz	Quiroga	01/06/2005	63077860	carla.paz74@yahoo.com	Av. Banzer 5to Anillo, Calle 28, Casa #125	Colegio Enrique Finot	Santa Cruz de la Sierra	2023
+20457689	Claudia Lourdes	Mendez	Menacho	29/10/2006	74195965	claudia.mendez78@gmail.com	Radial 26, Calle 24, Casa #138	Colegio Nueva America	Warnes	2024
+49061583	Mariana Pilar	Vaca	Camacho	27/12/2000	73856029	mariana.vaca73@icloud.com	Barrio La Cuchilla, Calle 8, Casa #42	Colegio Santa Ana	Santa Cruz de la Sierra	2017
+6564469	Paola Antonella	Vargas	Zeballos	16/02/2004	64372876	paola.vargas43@gmail.com	Barrio Plan 3000, Calle 23, Casa #586	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2022
+33094365	Axel Rafael	Landivar	Rivero	18/08/2008	72630382	axel.landivar46@gmail.com	Av. Santos Dumont, Calle 28, Casa #495	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2025
+15916711	Veronica Victoria	Torrez	Mercado	30/01/2001	73710092	veronica.torrez36@hotmail.com	Barrio Hamacas, Calle 23, Casa #94	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2019
+18210582	Miguel Mathias	Terrazas	Vaca	02/01/2007	72547558	miguel.terrazas57@yahoo.com	Barrio Los Chacos, Calle 21, Casa #969	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2025
+86766626	Joel Alvaro	Paredes	Morales	23/11/2003	68670093	joel.paredes13@icloud.com	Av. Virgen de Cotoca, Calle 13, Casa #737	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2020
+83153484	Yoselin	Mamani	Aguilera	26/11/2003	75842001	yoselin.mamani98@hotmail.com	Av. Beni, Calle 14, Casa #44	Colegio Nacional Florida	Santa Cruz de la Sierra	2020
+33867539	Diana	Arce	Molina	18/02/2004	64383795	diana.arce93@icloud.com	Barrio Los Chacos, Calle 16, Casa #124	Colegio La Merced	Cotoca	2021
+38875442	Gabriel Alberto	Castillo	Romero	01/12/2005	75020439	gabriel.castillo56@outlook.com	Av. Grigota, Calle 6, Casa #933	Colegio San Jose	Montero	2022
+50646617	Ivan Lucas	Medina	Cuellar	25/07/2005	76082885	ivan.medina77@icloud.com	Av. Alemana, Calle 15, Casa #159	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2022
+72151580	Laura	Mendez	Aguilera	12/12/2007	69603146	laura.mendez91@yahoo.com	Av. Santos Dumont, Calle 2, Casa #532	Colegio Belen	Santa Cruz de la Sierra	2024
+5895357	Leonardo	Duran	Terceros	28/11/2000	69643075	leonardo.duran88@gmail.com	Av. Roca y Coronado, Calle 27, Casa #401	Colegio Boliviano Japones	Santa Cruz de la Sierra	2018
+98274701	Sofia Lorena	Duran	Condori	27/08/2002	79937619	sofia.duran41@gmail.com	Barrio Los Chacos, Calle 4, Casa #162	Colegio Andres Ibanez	Santa Cruz de la Sierra	2020
+82916809	Gustavo Esteban	Ribera	Duran	17/07/2002	78339030	gustavo.ribera91@hotmail.com	Barrio Hamacas, Calle 17, Casa #918	Colegio Andres Ibanez	Santa Cruz de la Sierra	2019
+79799506	Yoselin Lourdes	Montano	Rojas	31/08/2004	72837340	yoselin.montano23@outlook.com	Av. Moscú, Calle 12, Casa #30	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2022
+34750924	Raul Rafael	Mendez	Paz	08/02/2004	72895157	raul.mendez53@hotmail.com	Barrio El Trompillo, Calle 4, Casa #690	Colegio Domingo Savio	Santa Cruz de la Sierra	2021
+41139912	Mateo	Molina	Gomez	28/12/2003	74433962	mateo.molina23@gmail.com	Av. Moscú, Calle 23, Casa #375	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2020
+31774465	Milena Lorena	Rivero	Mercado	04/07/2008	65446236	milena.rivero87@gmail.com	Av. Mutualista, Calle 13, Casa #366	Colegio La Salle	Cotoca	2025
+15964480	Roberto	Castillo	Arias	15/08/1999	67751527	roberto.castillo74@icloud.com	Barrio Los Lotes, Calle 28, Casa #516	Colegio Andres Ibanez	El Torno	2016
+66396605	Fabiola Vanessa	Nunez	Pinto	10/01/2008	67919426	fabiola.nunez27@outlook.com	Barrio El Trompillo, Calle 26, Casa #356	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2025
+90092924	Rodrigo Mathias	Mendez	Sanchez	08/02/2006	69627986	rodrigo.mendez32@yahoo.com	Barrio La Cuchilla, Calle 20, Casa #893	Colegio Santa Cruz	Santa Cruz de la Sierra	2024
+46416527	Carlos Jhonatan	Romero	Castillo	08/08/2002	75684934	carlos.romero50@gmail.com	Barrio Hamacas, Calle 9, Casa #497	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2019
+51858549	Axel	Zeballos	Sanchez	16/05/2000	78787147	axel.zeballos15@outlook.com	Barrio Sirari, Calle 13, Casa #690	Colegio Santa Cruz	Santa Cruz de la Sierra	2018
+8734688	Sebastian	Antelo	Zeballos	07/11/2000	67884148	sebastian.antelo63@yahoo.com	Villa Primero de Mayo, Calle 23, Casa #630	Colegio Santa Cruz	Santa Cruz de la Sierra	2017
+44105610	Sergio	Cuellar	Menacho	07/09/2000	72227490	sergio.cuellar35@hotmail.com	Barrio Las Palmas, Calle 13, Casa #42	Colegio Rene Moreno	Santa Cruz de la Sierra	2018
+46014917	Rodrigo Benjamin	Torrez	Cabrera	14/12/1999	78376627	rodrigo.torrez42@hotmail.com	Radial 26, Calle 28, Casa #731	Colegio Domingo Savio	Santa Cruz de la Sierra	2016
+22383455	Mauricio Alvaro	Vaca	Paz	19/01/2006	71226630	mauricio.vaca49@outlook.com	Av. Mutualista, Calle 5, Casa #537	Colegio Rene Moreno	Santa Cruz de la Sierra	2023
+56720770	Patricia	Sandoval	Paz	20/01/2008	78746077	patricia.sandoval90@yahoo.com	Barrio Plan 3000, Calle 24, Casa #31	Colegio Nacional Florida	Santa Cruz de la Sierra	2025
+50887395	Valeria	Salazar	Callisaya	01/11/2001	72779153	valeria.salazar79@icloud.com	Barrio Las Palmas, Calle 21, Casa #195	Colegio Marista	Santa Cruz de la Sierra	2018
+81790674	Fernando Lucas	Morales	Antelo	01/10/2001	74035400	fernando.morales89@icloud.com	Barrio Sirari, Calle 7, Casa #289	Colegio Cardenal Cushing	Santa Cruz de la Sierra	2019
+6194539	David Alberto	Nunez	Heredia	06/04/2004	64638112	david.nunez52@icloud.com	Barrio Las Palmas, Calle 22, Casa #959	Colegio 24 de Septiembre	Montero	2021
+72219346	Estefany	Rivero	Menacho	09/04/2001	76507284	estefany.rivero94@icloud.com	Av. Mutualista, Calle 13, Casa #538	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2018
+23870478	Patricia Antonella	Vaca	Barba	18/05/1999	67297005	patricia.vaca45@gmail.com	Av. Moscú, Calle 27, Casa #429	Colegio Marista	Santa Cruz de la Sierra	2017
+74145485	Nicolas	Roca	Alvarez	21/04/1999	75482696	nicolas.roca62@icloud.com	Barrio La Cuchilla, Calle 1, Casa #623	Colegio Don Bosco	Santa Cruz de la Sierra	2016
+89875484	Milena	Sanchez	Montano	28/02/2004	78434532	milena.sanchez69@outlook.com	Barrio Las Palmas, Calle 6, Casa #220	Colegio Santa Ana	Santa Cruz de la Sierra	2021
+57083257	Ivan	Lopez	Velasco	09/09/2006	61588995	ivan.lopez19@gmail.com	Zona Norte, Calle 28, Casa #330	Colegio La Merced	Santa Cruz de la Sierra	2023
+34461086	Noelia	Montano	Villarroel	19/02/2005	68473110	noelia.montano90@gmail.com	Zona Norte, Calle 23, Casa #635	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2022
+72266886	Milena	Soruco	Lazarte	27/02/2007	69491004	milena.soruco90@hotmail.com	Barrio El Trompillo, Calle 16, Casa #191	Colegio Belen	Santa Cruz de la Sierra	2025
+93953286	Paola Lourdes	Vaca	Rojas	24/03/2003	71365005	paola.vaca82@gmail.com	Av. Virgen de Cotoca, Calle 26, Casa #689	Colegio Don Bosco	Buena Vista	2021
+32018029	Roberto	Terrazas	Aguilera	31/05/2003	79770283	roberto.terrazas92@gmail.com	Barrio Sirari, Calle 16, Casa #886	Colegio Maria Auxiliadora	Warnes	2020
+53677976	David	Terceros	Zeballos	09/12/1999	67078987	david.terceros83@outlook.com	Barrio Los Lotes, Calle 4, Casa #934	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2016
+27422941	Mauricio	Terrazas	Ribera	19/09/2000	77569054	mauricio.terrazas78@gmail.com	Zona Sur, Calle 1, Casa #616	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2017
+85367631	Cristian	Condori	Camacho	23/04/2004	62678963	cristian.condori91@hotmail.com	Av. Beni, Calle 6, Casa #756	Colegio Belen	Cotoca	2021
+22960247	Daniel Elvis	Terrazas	Paz	07/01/1999	79669997	daniel.terrazas49@yahoo.com	Av. Grigota, Calle 10, Casa #72	Colegio Marista	Santa Cruz de la Sierra	2017
+90290102	Andrea	Zeballos	Gomez	02/08/2000	65638564	andrea.zeballos37@yahoo.com	Av. Banzer 5to Anillo, Calle 3, Casa #31	Colegio San Antonio	La Guardia	2018
+50064295	Rocio	Antelo	Medina	28/11/2004	78983114	rocio.antelo40@hotmail.com	Av. Cristo Redentor, Calle 4, Casa #64	Colegio Don Bosco	Santa Cruz de la Sierra	2022
+17409445	Camila	Castillo	Nunez	19/11/2000	64407596	camila.castillo80@yahoo.com	Barrio El Trompillo, Calle 20, Casa #805	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2017
+71118428	Lucia Melisa	Duran	Salazar	26/02/2004	76641341	lucia.duran31@hotmail.com	Av. Alemana, Calle 11, Casa #658	Colegio Enrique Finot	Santa Cruz de la Sierra	2022
+63794864	Jazmin Isabel	Gutierrez	Paredes	14/06/1999	67007611	jazmin.gutierrez91@outlook.com	Barrio Sirari, Calle 13, Casa #592	Colegio Santa Cruz	Santa Cruz de la Sierra	2017
+24901552	Maria	Arce	Quiroga	24/10/2008	73614108	maria.arce55@icloud.com	Villa Primero de Mayo, Calle 22, Casa #150	Colegio Sagrado Corazon	El Torno	2025
+7412013	Kevin	Peralta	Antelo	02/02/1999	72788152	kevin.peralta25@hotmail.com	Av. Santos Dumont, Calle 13, Casa #396	Colegio Cardenal Cushing	Santa Cruz de la Sierra	2016
+94257016	Rocio Elisa	Ortiz	Heredia	07/07/2001	66501410	rocio.ortiz80@hotmail.com	Zona Norte, Calle 4, Casa #432	Colegio Santa Cruz	Cotoca	2018
+65632044	Nicole	Rojas	Fernandez	12/03/2005	72686877	nicole.rojas83@outlook.com	Av. Roca y Coronado, Calle 14, Casa #277	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2022
+74563180	Alejandra	Soruco	Pinto	20/03/2002	64251855	alejandra.soruco48@gmail.com	Av. Santos Dumont, Calle 17, Casa #129	Colegio Nacional Pampa de la Isla	Montero	2020
+17468212	Jose Jhonatan	Salazar	Justiniano	28/04/2004	73374274	jose.salazar95@icloud.com	Av. Santos Dumont, Calle 17, Casa #773	Colegio San Agustin	Santa Cruz de la Sierra	2022
+11782685	Claudia Pilar	Villarroel	Mercado	08/10/2007	64080377	claudia.villarroel82@gmail.com	Av. Roca y Coronado, Calle 17, Casa #326	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2025
+94805279	Paola	Mendez	Terrazas	11/10/2007	76708607	paola.mendez93@hotmail.com	Barrio Las Palmas, Calle 19, Casa #329	Colegio Nacional Florida	Santa Cruz de la Sierra	2025
+70045660	Miguel	Justiniano	Soruco	20/06/2001	75438716	miguel.justiniano48@icloud.com	Barrio Urbari, Calle 7, Casa #223	Colegio Andres Ibanez	Santa Cruz de la Sierra	2019
+19875382	Daniel Jhonatan	Saucedo	Quiroga	08/09/2001	79151815	daniel.saucedo66@yahoo.com	Av. Grigota, Calle 17, Casa #172	Colegio La Salle	Santa Cruz de la Sierra	2019
+10398082	Rodrigo Elvis	Ribera	Villarroel	10/10/2006	68226501	rodrigo.ribera83@hotmail.com	Barrio La Cuchilla, Calle 2, Casa #972	Colegio Don Bosco	San Ignacio de Velasco	2024
+62989945	Mariana Belen	Montano	Justiniano	02/08/2003	72339831	mariana.montano79@yahoo.com	Av. Virgen de Cotoca, Calle 27, Casa #189	Colegio San Antonio	Santa Cruz de la Sierra	2021
+66493734	Andres	Valverde	Paredes	15/02/2003	62580086	andres.valverde46@gmail.com	Barrio El Pari, Calle 20, Casa #566	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2021
+43304258	Ana	Mercado	Rojas	12/03/2004	65109577	ana.mercado58@outlook.com	Av. Alemana, Calle 10, Casa #389	Colegio Don Bosco	Santa Cruz de la Sierra	2022
+14622967	Marco	Peralta	Flores	23/01/2005	78931618	marco.peralta80@outlook.com	Pampa de la Isla, Calle 27, Casa #465	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2022
+9776194	Diana	Heredia	Callisaya	09/07/2002	65763385	diana.heredia19@outlook.com	Av. Cristo Redentor, Calle 17, Casa #793	Colegio Domingo Savio	Santa Cruz de la Sierra	2020
+73692023	Hugo	Valverde	Cabrera	20/11/2006	62659838	hugo.valverde18@yahoo.com	Zona Equipetrol, Calle 25, Casa #946	Colegio Don Bosco	Santa Cruz de la Sierra	2023
+93581623	Nicole	Cortez	Molina	03/03/2005	64469664	nicole.cortez20@yahoo.com	Villa Primero de Mayo, Calle 18, Casa #496	Colegio Marista	Santa Cruz de la Sierra	2023
+24661376	Lucia Lourdes	Soruco	Lazarte	06/02/2002	79447789	lucia.soruco69@icloud.com	Av. Roca y Coronado, Calle 15, Casa #632	Colegio Nacional Florida	Santa Cruz de la Sierra	2020
+11912517	Milena	Antelo	Zeballos	08/08/2002	75568328	milena.antelo57@gmail.com	Av. Mutualista, Calle 28, Casa #249	Colegio San Jose	La Guardia	2019
+2762197	Fernanda	Barba	Condori	05/06/2005	64231411	fernanda.barba97@outlook.com	Av. Grigota, Calle 15, Casa #997	Colegio Juan Pablo II	Santa Cruz de la Sierra	2022
+16240915	Jorge	Chavez	Vargas	27/01/2001	63363560	jorge.chavez72@icloud.com	Barrio Urbari, Calle 10, Casa #242	Colegio Andres Ibanez	Santa Cruz de la Sierra	2018
+66697049	Karen	Alvarez	Duran	28/07/1999	68765651	karen.alvarez63@icloud.com	Villa Primero de Mayo, Calle 10, Casa #752	Colegio Andres Ibanez	Santa Cruz de la Sierra	2016
+25126282	Maria	Romero	Gomez	13/09/2002	72144771	maria.romero20@hotmail.com	Barrio Sirari, Calle 7, Casa #214	Colegio Enrique Finot	Santa Cruz de la Sierra	2019
+30160867	Tatiana Julieta	Pinto	Aguilera	06/12/2000	67390319	tatiana.pinto56@icloud.com	Barrio Urbari, Calle 1, Casa #490	Colegio Libertad	Santa Cruz de la Sierra	2018
+8039179	Hugo	Terceros	Justiniano	21/07/2000	78116459	hugo.terceros91@yahoo.com	Pampa de la Isla, Calle 2, Casa #190	Colegio Don Bosco	Santa Cruz de la Sierra	2018
+63763718	Joel Javier	Romero	Zeballos	20/07/2002	66606090	joel.romero57@outlook.com	Barrio El Trompillo, Calle 27, Casa #351	Colegio San Antonio	Santa Cruz de la Sierra	2019
+75337468	Kevin Mathias	Quiroga	Soruco	28/04/2000	68758181	kevin.quiroga38@gmail.com	Av. Mutualista, Calle 22, Casa #670	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2017
+99828111	Sofia Julieta	Cuellar	Vargas	18/05/2006	65184525	sofia.cuellar12@icloud.com	Av. Virgen de Cotoca, Calle 6, Casa #356	Colegio San Martin	Santa Cruz de la Sierra	2023
+21203925	Andrea Cristina	Peralta	Mamani	11/08/1999	62095875	andrea.peralta18@outlook.com	Barrio Sirari, Calle 3, Casa #414	Colegio La Merced	Santa Cruz de la Sierra	2017
+52583212	Claudia	Zeballos	Arias	08/12/1999	75450244	claudia.zeballos43@icloud.com	Barrio Las Palmas, Calle 28, Casa #240	Colegio Libertad	Cotoca	2016
+89494072	Joel	Becerra	Nunez	26/09/2007	67607109	joel.becerra51@yahoo.com	Zona Sur, Calle 13, Casa #618	Colegio 24 de Septiembre	Warnes	2024
+82951489	Juan Alvaro	Fernandez	Camacho	27/05/2006	75126853	juan.fernandez61@hotmail.com	Barrio Plan 3000, Calle 22, Casa #927	Colegio Tecnico Humanistico El Pari	Warnes	2023
+79483904	Mariana	Becerra	Quiroga	22/05/2004	63080702	mariana.becerra60@outlook.com	Av. Grigota, Calle 22, Casa #195	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2022
+10517842	Nicolas Jhonatan	Camacho	Mendez	27/04/2007	66378789	nicolas.camacho93@gmail.com	Radial 26, Calle 10, Casa #832	Colegio Los Tusequis	Santa Cruz de la Sierra	2025
+56383778	Ariana Pilar	Terceros	Cabrera	11/05/2008	69431633	ariana.terceros20@hotmail.com	Av. Beni, Calle 20, Casa #184	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2025
+76118313	Veronica Elisa	Mamani	Callisaya	13/02/2006	61571974	veronica.mamani10@gmail.com	Av. Cristo Redentor, Calle 22, Casa #294	Colegio Cristo Rey	Warnes	2024
+57391855	Estefany	Arce	Villarroel	17/09/2007	61390745	estefany.arce22@outlook.com	Av. Grigota, Calle 18, Casa #227	Colegio Santa Cruz	Santa Cruz de la Sierra	2025
+60660268	Tatiana Monica	Chavez	Mendez	25/01/2002	63366295	tatiana.chavez13@yahoo.com	Barrio El Trompillo, Calle 3, Casa #385	Colegio Boliviano Japones	Santa Cruz de la Sierra	2020
+72104233	Anthony	Cabrera	Terrazas	25/02/2006	63404905	anthony.cabrera93@icloud.com	Barrio El Trompillo, Calle 22, Casa #915	Colegio Gabriel Rene Moreno	El Torno	2024
+10032614	Noelia Lourdes	Condori	Velasco	07/06/2008	71880794	noelia.condori31@yahoo.com	Zona Norte, Calle 20, Casa #806	Colegio Santa Ana	Santa Cruz de la Sierra	2025
+60225001	Sergio Alberto	Sandoval	Terrazas	28/11/2005	69925226	sergio.sandoval58@outlook.com	Zona Sur, Calle 24, Casa #437	Colegio Marista	Montero	2022
+51963924	Fernando	Landivar	Paz	08/05/2007	63952418	fernando.landivar23@hotmail.com	Barrio Plan 3000, Calle 3, Casa #666	Colegio Rene Moreno	Santa Cruz de la Sierra	2025
+66756192	Ricardo	Lazarte	Mercado	19/02/1999	61346979	ricardo.lazarte37@icloud.com	Radial 26, Calle 5, Casa #899	Colegio Belen	Santa Cruz de la Sierra	2016
+56809090	Oscar	Barba	Paz	21/04/2002	64778810	oscar.barba10@outlook.com	Av. Grigota, Calle 7, Casa #287	Colegio Andres Ibanez	Santa Cruz de la Sierra	2020
+19144106	Miguel	Aguilera	Medina	13/04/2003	75173217	miguel.aguilera98@yahoo.com	Barrio Los Lotes, Calle 13, Casa #446	Colegio Los Tusequis	Warnes	2020
+84527136	Claudia	Camacho	Arias	04/07/2006	66370029	claudia.camacho83@gmail.com	Zona Norte, Calle 3, Casa #238	Colegio San Martin	Santa Cruz de la Sierra	2024
+14851931	Noelia Antonella	Morales	Ribera	23/06/2006	77960891	noelia.morales39@gmail.com	Barrio Sirari, Calle 16, Casa #114	Colegio Andres Ibanez	Santa Cruz de la Sierra	2023
+15018874	Daniel	Suarez	Quiroga	10/06/2006	67848388	daniel.suarez54@gmail.com	Av. Cristo Redentor, Calle 23, Casa #819	Colegio Boliviano Japones	Santa Cruz de la Sierra	2023
+26369299	Yoselin	Fernandez	Arce	17/04/2005	71900328	yoselin.fernandez32@outlook.com	Av. Beni, Calle 12, Casa #226	Colegio Rene Moreno	Santa Cruz de la Sierra	2022
+64765542	Rocio	Heredia	Zeballos	27/08/2000	78882579	rocio.heredia80@outlook.com	Zona Equipetrol, Calle 13, Casa #27	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2017
+50790770	Adrian	Duran	Velasco	25/07/2002	67129881	adrian.duran11@icloud.com	Zona Norte, Calle 16, Casa #716	Colegio Andres Ibanez	Santa Cruz de la Sierra	2019
+50558255	Juan	Roca	Soruco	11/03/2000	72040873	juan.roca70@hotmail.com	Av. Moscú, Calle 16, Casa #655	Colegio Gabriel Rene Moreno	La Guardia	2018
+74340069	Alejandro	Barba	Villarroel	02/10/2002	63341196	alejandro.barba93@outlook.com	Av. Grigota, Calle 12, Casa #32	Colegio La Salle	Santa Cruz de la Sierra	2019
+36428114	Milena Lourdes	Velasco	Zeballos	11/06/1999	72520574	milena.velasco31@yahoo.com	Zona Norte, Calle 5, Casa #206	Colegio Don Bosco	Santa Cruz de la Sierra	2017
+39818327	Ivan Enrique	Zeballos	Morales	14/04/2003	62883706	ivan.zeballos76@icloud.com	Av. Mutualista, Calle 19, Casa #740	Colegio Marista	Santa Cruz de la Sierra	2020
+72591445	Veronica	Fernandez	Gomez	01/10/2008	62294123	veronica.fernandez27@yahoo.com	Radial 26, Calle 13, Casa #854	Colegio Marista	Santa Cruz de la Sierra	2025
+42991193	Daniela	Flores	Roca	30/07/2001	68375094	daniela.flores99@hotmail.com	Av. Virgen de Cotoca, Calle 21, Casa #410	Colegio San Agustin	Santa Cruz de la Sierra	2018
+42893109	Natalia	Lopez	Chavez	23/10/2004	72823226	natalia.lopez15@outlook.com	Barrio Las Palmas, Calle 14, Casa #25	Colegio Libertad	Santa Cruz de la Sierra	2022
+61502029	Bianca	Ortiz	Soruco	11/06/2007	75402947	bianca.ortiz72@icloud.com	Pampa de la Isla, Calle 26, Casa #878	Colegio Boliviano Japones	Santa Cruz de la Sierra	2025
+27110156	Ivan	Lazarte	Flores	02/05/2005	72341574	ivan.lazarte25@yahoo.com	Av. Mutualista, Calle 18, Casa #801	Colegio Domingo Savio	Santa Cruz de la Sierra	2023
+11303946	Marco Alvaro	Flores	Valverde	06/06/2001	79637634	marco.flores68@yahoo.com	Barrio Urbari, Calle 6, Casa #904	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2018
+43759711	Andrea Carolina	Sandoval	Lazarte	25/07/2008	62364692	andrea.sandoval36@outlook.com	Av. Grigota, Calle 9, Casa #229	Colegio San Martin	Santa Cruz de la Sierra	2025
+15276151	Ivan Emilio	Cortez	Gomez	20/06/2006	68458608	ivan.cortez44@yahoo.com	Av. Banzer 5to Anillo, Calle 20, Casa #971	Colegio Boliviano Japones	Santa Cruz de la Sierra	2024
+6446146	Juan	Heredia	Paz	13/04/2005	78166009	juan.heredia56@gmail.com	Av. Banzer 5to Anillo, Calle 1, Casa #140	Colegio La Salle	Santa Cruz de la Sierra	2022
+94807760	Alejandro Emilio	Vargas	Gomez	20/05/2002	76864842	alejandro.vargas72@gmail.com	Barrio Los Chacos, Calle 9, Casa #311	Colegio Boliviano Japones	Santa Cruz de la Sierra	2019
+97524707	Lucia	Velasco	Fernandez	19/01/2008	71538155	lucia.velasco13@yahoo.com	Pampa de la Isla, Calle 14, Casa #180	Colegio La Salle	Santa Cruz de la Sierra	2025
+10771779	Camila Elisa	Vargas	Suarez	15/12/1999	76135255	camila.vargas10@gmail.com	Barrio Las Palmas, Calle 8, Casa #23	Colegio Rene Moreno	Santa Cruz de la Sierra	2016
+11896879	Bianca Victoria	Barba	Arce	25/11/2004	78747475	bianca.barba83@icloud.com	Barrio La Cuchilla, Calle 28, Casa #547	Colegio Santa Ana	Santa Cruz de la Sierra	2021
+29557681	Anthony Antonio	Heredia	Sandoval	01/11/2002	67177609	anthony.heredia70@outlook.com	Zona Equipetrol, Calle 26, Casa #484	Colegio Belen	Cotoca	2020
+84909410	Daniela Vanessa	Antelo	Castillo	26/05/2001	74088633	daniela.antelo74@hotmail.com	Barrio Los Lotes, Calle 25, Casa #51	Colegio Libertad	Santa Cruz de la Sierra	2018
+37905347	Jorge	Duran	Barba	01/11/2007	64391674	jorge.duran59@hotmail.com	Av. Moscú, Calle 13, Casa #858	Colegio La Salle	Santa Cruz de la Sierra	2025
+36691175	Ximena	Lopez	Cabrera	07/04/2000	73800785	ximena.lopez15@gmail.com	Zona Sur, Calle 27, Casa #354	Colegio Nueva America	Mineros	2018
+41125696	Fernando	Pinto	Lopez	19/07/2000	69078050	fernando.pinto46@hotmail.com	Barrio Plan 3000, Calle 28, Casa #491	Colegio 24 de Septiembre	La Guardia	2017
+36586241	Pablo	Arce	Rivero	18/07/2002	62080499	pablo.arce87@yahoo.com	Zona Norte, Calle 20, Casa #30	Colegio Boliviano Japones	Santa Cruz de la Sierra	2020
+37385056	Samuel	Vaca	Vargas	14/11/2006	63975041	samuel.vaca47@gmail.com	Zona Equipetrol, Calle 7, Casa #72	Colegio Santa Cruz	Montero	2024
+75551251	Eduardo Martin	Antelo	Becerra	03/02/2007	79361942	eduardo.antelo21@icloud.com	Barrio El Trompillo, Calle 28, Casa #182	Colegio Cardenal Cushing	Santa Cruz de la Sierra	2025
+97221913	Marco	Mercado	Salazar	01/12/2002	71495310	marco.mercado13@yahoo.com	Barrio Hamacas, Calle 27, Casa #889	Colegio Nacional Florida	Warnes	2020
+1573667	Sofia	Mamani	Camacho	01/10/2001	73126807	sofia.mamani64@outlook.com	Zona Sur, Calle 11, Casa #366	Colegio Belen	Santa Cruz de la Sierra	2018
+65097789	Brayan	Torrez	Cuellar	22/06/2002	61559831	brayan.torrez50@outlook.com	Barrio Hamacas, Calle 20, Casa #445	Colegio Los Tusequis	Santa Cruz de la Sierra	2019
+88432953	Joel Mathias	Landivar	Valverde	22/10/2008	68081206	joel.landivar37@icloud.com	Zona Norte, Calle 9, Casa #144	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2025
+65767238	Eduardo	Vaca	Castillo	30/11/1999	72082399	eduardo.vaca26@yahoo.com	Av. Grigota, Calle 8, Casa #403	Colegio San Jose	Santa Cruz de la Sierra	2017
+30370831	Fernando	Mercado	Gutierrez	17/11/2006	65480535	fernando.mercado27@yahoo.com	Zona Sur, Calle 25, Casa #706	Colegio Belen	La Guardia	2024
+29783038	Ariana	Alvarez	Mendez	01/03/2001	64677291	ariana.alvarez19@gmail.com	Zona Sur, Calle 3, Casa #514	Colegio Enrique Finot	Santa Cruz de la Sierra	2018
+66257013	Yoselin	Velasco	Condori	17/05/1999	71345139	yoselin.velasco68@hotmail.com	Zona Equipetrol, Calle 8, Casa #835	Colegio Santa Ana	Santa Cruz de la Sierra	2017
+54065064	Bianca Lorena	Justiniano	Medina	29/11/2000	79805540	bianca.justiniano11@icloud.com	Av. Virgen de Cotoca, Calle 6, Casa #244	Colegio Santa Cruz	Santa Cruz de la Sierra	2017
+83035627	Gustavo Antonio	Zeballos	Terrazas	09/01/2005	72615222	gustavo.zeballos13@gmail.com	Barrio Urbari, Calle 3, Casa #477	Colegio La Merced	El Torno	2023
+85415435	Ana	Gutierrez	Cabrera	13/09/2000	74664385	ana.gutierrez64@outlook.com	Av. Cristo Redentor, Calle 13, Casa #186	Colegio Libertad	Santa Cruz de la Sierra	2018
+4879275	Gustavo	Soruco	Nunez	02/01/2007	69326749	gustavo.soruco25@hotmail.com	Av. Beni, Calle 14, Casa #207	Colegio Juan Pablo II	Santa Cruz de la Sierra	2025
+76832063	Mariana	Nunez	Molina	08/07/2008	73175220	mariana.nunez93@icloud.com	Zona Equipetrol, Calle 6, Casa #108	Colegio Don Bosco	Santa Cruz de la Sierra	2025
+11568520	Jazmin	Vargas	Vaca	18/03/2007	62483535	jazmin.vargas21@yahoo.com	Av. Santos Dumont, Calle 26, Casa #776	Colegio Andres Ibanez	Santa Cruz de la Sierra	2025
+76365872	Sergio	Barba	Soruco	15/09/2008	77637755	sergio.barba35@yahoo.com	Av. Virgen de Cotoca, Calle 4, Casa #244	Colegio Santa Cruz	Santa Cruz de la Sierra	2025
+87759596	Claudia Lorena	Ribera	Aguilera	21/12/2008	71214683	claudia.ribera15@yahoo.com	Barrio Plan 3000, Calle 19, Casa #238	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2025
+28678024	Rodrigo Javier	Ortiz	Romero	10/07/2006	75402749	rodrigo.ortiz97@outlook.com	Barrio Los Lotes, Calle 9, Casa #509	Colegio Domingo Savio	Santa Cruz de la Sierra	2024
+10220067	Daniela	Lopez	Vargas	16/09/1999	74183052	daniela.lopez92@yahoo.com	Pampa de la Isla, Calle 28, Casa #708	Colegio Rene Moreno	Santa Cruz de la Sierra	2016
+26312095	Paola Elisa	Callisaya	Roca	10/09/2001	66571890	paola.callisaya73@hotmail.com	Av. Alemana, Calle 1, Casa #963	Colegio Santa Cruz	Montero	2018
+32620792	Kevin Saul	Villarroel	Justiniano	02/01/1999	65501702	kevin.villarroel75@outlook.com	Radial 26, Calle 20, Casa #738	Colegio Cristo Rey	Cotoca	2016
+90491803	Fernando	Condori	Ortiz	16/02/2005	76780424	fernando.condori28@hotmail.com	Av. Alemana, Calle 8, Casa #350	Colegio Los Tusequis	Santa Cruz de la Sierra	2023
+98436024	Daniel	Ortiz	Soruco	13/12/2000	61148565	daniel.ortiz61@outlook.com	Pampa de la Isla, Calle 14, Casa #603	Colegio Santa Cruz	Montero	2017
+83643933	Noelia	Duran	Rojas	20/12/2005	74523483	noelia.duran37@yahoo.com	Av. Mutualista, Calle 8, Casa #345	Colegio San Antonio	Warnes	2023
+58250588	Marco	Vaca	Landivar	13/01/2000	71523925	marco.vaca72@outlook.com	Barrio La Cuchilla, Calle 22, Casa #918	Colegio Andres Ibanez	Montero	2017
+22606703	Rocio Cristina	Rojas	Mendez	13/04/2004	64171646	rocio.rojas98@outlook.com	Barrio El Trompillo, Calle 27, Casa #671	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2021
+8358577	Andres Enrique	Castillo	Chavez	25/04/2001	67465494	andres.castillo61@hotmail.com	Av. Moscú, Calle 5, Casa #272	Colegio San Antonio	Santa Cruz de la Sierra	2019
+81926671	Jose	Morales	Becerra	31/10/2001	77816267	jose.morales64@outlook.com	Barrio Urbari, Calle 3, Casa #380	Colegio Cristo Rey	Santa Cruz de la Sierra	2018
+91563143	Estefany Melisa	Mamani	Roca	02/08/2001	64716147	estefany.mamani46@outlook.com	Barrio Los Lotes, Calle 20, Casa #375	Colegio Enrique Finot	Santa Cruz de la Sierra	2019
+93853950	Katherine Vanessa	Rojas	Medina	10/08/2006	64717015	katherine.rojas80@icloud.com	Barrio Los Chacos, Calle 24, Casa #519	Colegio Los Tusequis	Santa Cruz de la Sierra	2023
+78443274	Ricardo	Becerra	Peralta	14/07/1999	79666797	ricardo.becerra25@gmail.com	Zona Norte, Calle 2, Casa #97	Colegio San Antonio	Portachuelo	2017
+92109657	Alejandro Benjamin	Justiniano	Callisaya	17/06/2000	67998820	alejandro.justiniano55@gmail.com	Av. Santos Dumont, Calle 15, Casa #556	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2018
+41041158	Mateo Javier	Duran	Aguilera	20/04/2008	74446328	mateo.duran38@hotmail.com	Av. Roca y Coronado, Calle 18, Casa #586	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2025
+31963434	Mariana Yamila	Molina	Sandoval	07/02/2004	69826406	mariana.molina59@outlook.com	Radial 26, Calle 14, Casa #175	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2022
+75534122	Oscar Martin	Lazarte	Ribera	04/07/2006	71416047	oscar.lazarte99@outlook.com	Villa Primero de Mayo, Calle 22, Casa #311	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2023
+55314103	Hugo Alvaro	Paz	Heredia	28/08/2007	61128903	hugo.paz89@yahoo.com	Av. Roca y Coronado, Calle 24, Casa #561	Colegio Cristo Rey	Santa Cruz de la Sierra	2024
+55493094	Rodrigo Benjamin	Paz	Cuellar	05/10/2007	67992238	rodrigo.paz52@outlook.com	Av. Santos Dumont, Calle 15, Casa #961	Colegio San Agustin	Warnes	2024
+46467617	Sofia	Cortez	Camacho	10/04/2005	69345090	sofia.cortez21@icloud.com	Zona Equipetrol, Calle 17, Casa #88	Colegio Nacional Florida	La Guardia	2023
+39462131	Raul Enrique	Peralta	Romero	03/02/2000	78361147	raul.peralta44@outlook.com	Barrio Los Lotes, Calle 4, Casa #887	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2017
+39646975	Gustavo Lucas	Salazar	Torrez	27/12/2005	69599420	gustavo.salazar92@hotmail.com	Av. Banzer 5to Anillo, Calle 20, Casa #662	Colegio Domingo Savio	Santa Cruz de la Sierra	2023
+73719090	Oscar Enrique	Landivar	Arce	17/11/2005	79255342	oscar.landivar88@outlook.com	Barrio La Cuchilla, Calle 3, Casa #20	Colegio Nueva America	Mineros	2023
+17446581	Laura	Rojas	Gutierrez	24/01/2008	67112285	laura.rojas66@yahoo.com	Barrio Las Palmas, Calle 21, Casa #475	Colegio Nacional Pampa de la Isla	La Guardia	2025
+53393671	Elizabeth Monica	Nunez	Vaca	08/04/2006	66211384	elizabeth.nunez34@yahoo.com	Av. Alemana, Calle 18, Casa #401	Colegio Marista	Santa Cruz de la Sierra	2024
+47329895	Micaela Monica	Soruco	Condori	26/04/2003	79108175	micaela.soruco92@icloud.com	Barrio El Pari, Calle 22, Casa #911	Colegio La Merced	Santa Cruz de la Sierra	2021
+81148162	Ivan	Villarroel	Callisaya	13/11/2007	76365142	ivan.villarroel92@yahoo.com	Zona Equipetrol, Calle 4, Casa #53	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2024
+55642480	Andrea	Castillo	Saucedo	21/09/1999	66278308	andrea.castillo55@gmail.com	Zona Norte, Calle 10, Casa #257	Colegio Cristo Rey	Santa Cruz de la Sierra	2017
+38147647	Mariana Carolina	Salazar	Gutierrez	10/03/2001	61375253	mariana.salazar44@hotmail.com	Av. Cristo Redentor, Calle 24, Casa #189	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2019
+68786439	Mateo Alvaro	Duran	Cabrera	29/06/2000	75384306	mateo.duran64@yahoo.com	Av. Alemana, Calle 25, Casa #895	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2017
+48559399	Sofia	Landivar	Mamani	04/01/2003	62203267	sofia.landivar47@gmail.com	Barrio El Pari, Calle 3, Casa #867	Colegio Maria Auxiliadora	Portachuelo	2020
+65964286	Fernando	Terceros	Soruco	07/09/2003	74694571	fernando.terceros78@outlook.com	Zona Equipetrol, Calle 4, Casa #822	Colegio Libertad	Cotoca	2021
+60190092	Estefany	Medina	Justiniano	15/03/2002	63913331	estefany.medina73@hotmail.com	Av. Grigota, Calle 8, Casa #995	Colegio Rene Moreno	Montero	2020
+13551403	Estefany Elisa	Justiniano	Flores	26/11/2008	68963436	estefany.justiniano93@outlook.com	Av. Banzer 5to Anillo, Calle 7, Casa #912	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2025
+92198904	Elizabeth Cristina	Condori	Arce	06/12/2000	78631742	elizabeth.condori50@outlook.com	Villa Primero de Mayo, Calle 8, Casa #350	Colegio Libertad	Santa Cruz de la Sierra	2017
+7937110	Ariana	Pinto	Chavez	04/06/2003	72619167	ariana.pinto58@outlook.com	Av. Cristo Redentor, Calle 16, Casa #828	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2020
+34679293	Axel	Salazar	Molina	27/08/2004	69926782	axel.salazar26@hotmail.com	Barrio La Cuchilla, Calle 19, Casa #170	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2022
+54589103	Juan	Mercado	Ortiz	19/09/2008	69670193	juan.mercado38@hotmail.com	Barrio El Trompillo, Calle 17, Casa #533	Colegio Andres Ibanez	La Guardia	2025
+69092752	Bianca Julieta	Velasco	Peralta	31/10/2002	69510472	bianca.velasco26@icloud.com	Av. Roca y Coronado, Calle 27, Casa #515	Colegio Gabriel Rene Moreno	Cotoca	2020
+48300724	Roberto Elvis	Flores	Ribera	23/06/2002	77621430	roberto.flores91@icloud.com	Av. Grigota, Calle 1, Casa #512	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2020
+51439094	Tatiana	Condori	Fernandez	29/10/1999	79562665	tatiana.condori84@yahoo.com	Av. Roca y Coronado, Calle 9, Casa #643	Colegio Nacional Florida	Warnes	2016
+59725276	Veronica Lorena	Ribera	Antelo	02/07/2001	63502161	veronica.ribera67@hotmail.com	Barrio Las Palmas, Calle 8, Casa #880	Colegio San Antonio	Santa Cruz de la Sierra	2018
+59098256	Veronica Antonella	Gomez	Cabrera	14/06/1999	76621017	veronica.gomez31@outlook.com	Zona Norte, Calle 4, Casa #974	Colegio Boliviano Japones	Santa Cruz de la Sierra	2016
+91171466	Bianca Victoria	Duran	Heredia	21/07/2004	74051109	bianca.duran34@hotmail.com	Av. Banzer 5to Anillo, Calle 13, Casa #466	Colegio Cristo Rey	Santa Cruz de la Sierra	2021
+68178670	Kevin	Paredes	Landivar	18/08/2005	76906835	kevin.paredes35@yahoo.com	Barrio Hamacas, Calle 8, Casa #220	Colegio Boliviano Japones	Santa Cruz de la Sierra	2023
+48543114	Marco Javier	Quiroga	Castillo	08/05/2004	71035874	marco.quiroga85@yahoo.com	Zona Sur, Calle 8, Casa #38	Colegio Don Bosco	Santa Cruz de la Sierra	2021
+84735997	Gabriela Carolina	Saucedo	Pinto	06/05/2003	65069468	gabriela.saucedo94@hotmail.com	Av. Beni, Calle 6, Casa #454	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2020
+29613825	Claudia Yamila	Flores	Mamani	30/08/2007	69634125	claudia.flores58@icloud.com	Barrio Los Lotes, Calle 5, Casa #838	Colegio San Jose	Portachuelo	2024
+88977602	Ricardo	Lopez	Camacho	22/10/2008	74680685	ricardo.lopez30@icloud.com	Barrio Plan 3000, Calle 25, Casa #531	Colegio San Antonio	Santa Cruz de la Sierra	2025
+26367824	Ana	Terrazas	Molina	04/11/2007	75918663	ana.terrazas40@outlook.com	Barrio Plan 3000, Calle 15, Casa #795	Colegio Marista	Santa Cruz de la Sierra	2024
+39712949	Mateo Lucas	Mercado	Vaca	28/11/2006	75876736	mateo.mercado99@hotmail.com	Av. Cristo Redentor, Calle 10, Casa #287	Colegio Enrique Finot	Santa Cruz de la Sierra	2024
+58888275	Raul	Menacho	Pinto	03/12/2008	67046838	raul.menacho36@outlook.com	Barrio Urbari, Calle 5, Casa #168	Colegio Los Tusequis	Santa Cruz de la Sierra	2025
+66802659	Daniel	Mamani	Saucedo	06/02/1999	74338152	daniel.mamani38@outlook.com	Av. Roca y Coronado, Calle 26, Casa #226	Colegio Nueva America	Santa Cruz de la Sierra	2017
+43565142	Claudia	Vargas	Soruco	16/02/2003	67555370	claudia.vargas98@gmail.com	Av. Moscú, Calle 1, Casa #253	Colegio Domingo Savio	Santa Cruz de la Sierra	2021
+61711913	Rodrigo	Lopez	Landivar	30/09/2005	73539069	rodrigo.lopez99@yahoo.com	Av. Roca y Coronado, Calle 18, Casa #888	Colegio Los Tusequis	Santa Cruz de la Sierra	2023
+31667780	Rodrigo	Ortiz	Callisaya	24/08/2008	64863433	rodrigo.ortiz25@outlook.com	Av. Virgen de Cotoca, Calle 21, Casa #597	Colegio San Antonio	Cotoca	2025
+37855874	Patricia	Nunez	Pinto	24/11/2002	75976403	patricia.nunez17@icloud.com	Av. Grigota, Calle 4, Casa #367	Colegio San Jose	Santa Cruz de la Sierra	2019
+83354805	Ana Isabel	Romero	Aguilera	27/01/2004	64649895	ana.romero12@gmail.com	Av. Banzer 5to Anillo, Calle 17, Casa #84	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2021
+63314505	Diego Javier	Lopez	Morales	06/09/2008	73527213	diego.lopez64@gmail.com	Zona Equipetrol, Calle 14, Casa #298	Colegio Nueva America	Warnes	2025
+42381541	Andres Javier	Barba	Antelo	15/05/2003	73157901	andres.barba30@yahoo.com	Barrio Los Chacos, Calle 3, Casa #289	Colegio Andres Ibanez	La Guardia	2020
+3696312	Tatiana	Arce	Sanchez	10/10/2003	73983290	tatiana.arce32@hotmail.com	Barrio El Trompillo, Calle 13, Casa #534	Colegio Boliviano Japones	Santa Cruz de la Sierra	2020
+99217531	Carla	Camacho	Becerra	19/09/2002	61438639	carla.camacho47@yahoo.com	Barrio Sirari, Calle 27, Casa #411	Colegio Nueva America	Santa Cruz de la Sierra	2019
+61785957	Adrian Jhonatan	Vargas	Molina	15/02/2007	61436850	adrian.vargas90@outlook.com	Pampa de la Isla, Calle 17, Casa #486	Colegio Santa Ana	La Guardia	2025
+79775821	Dayana	Cuellar	Rojas	27/06/2004	65038135	dayana.cuellar30@yahoo.com	Pampa de la Isla, Calle 12, Casa #638	Colegio Cristo Rey	Santa Cruz de la Sierra	2021
+15287725	Rodrigo	Callisaya	Becerra	25/12/2002	79330714	rodrigo.callisaya55@gmail.com	Av. Banzer 5to Anillo, Calle 26, Casa #714	Colegio Belen	Santa Cruz de la Sierra	2020
+28148710	Kevin Alvaro	Rivero	Pinto	17/01/2008	72638083	kevin.rivero46@icloud.com	Barrio El Trompillo, Calle 2, Casa #11	Colegio Andres Ibanez	Cotoca	2025
+76148487	Patricia Julieta	Romero	Soruco	19/09/2008	73104545	patricia.romero45@outlook.com	Av. Mutualista, Calle 28, Casa #955	Colegio Santa Cruz	Santa Cruz de la Sierra	2025
+81265126	Axel Jhonatan	Romero	Peralta	07/06/2003	67283904	axel.romero30@outlook.com	Barrio Los Lotes, Calle 19, Casa #824	Colegio Cardenal Cushing	Santa Cruz de la Sierra	2020
+9919418	Ana	Barba	Ortiz	06/12/2002	78611569	ana.barba62@hotmail.com	Barrio El Trompillo, Calle 26, Casa #981	Colegio Santa Ana	El Torno	2020
+2119487	Daniela Victoria	Quiroga	Terrazas	03/07/2001	67055966	daniela.quiroga34@gmail.com	Av. Cristo Redentor, Calle 18, Casa #922	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2018
+94358341	Bianca Cristina	Morales	Romero	28/09/2000	74129891	bianca.morales64@icloud.com	Zona Norte, Calle 26, Casa #653	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2017
+37539024	Diana	Antelo	Ortiz	03/07/2003	73948705	diana.antelo46@hotmail.com	Barrio Sirari, Calle 4, Casa #40	Colegio Los Tusequis	Santa Cruz de la Sierra	2020
+90373427	Ximena Melisa	Pinto	Morales	28/11/2002	69287845	ximena.pinto91@hotmail.com	Barrio Sirari, Calle 13, Casa #409	Colegio 24 de Septiembre	Cotoca	2020
+76311622	Jorge Rafael	Sanchez	Cortez	25/06/2005	77695406	jorge.sanchez71@yahoo.com	Zona Sur, Calle 11, Casa #606	Colegio La Merced	Santa Cruz de la Sierra	2023
+13306786	Dayana	Ortiz	Becerra	21/03/2001	71520051	dayana.ortiz33@icloud.com	Av. Cristo Redentor, Calle 7, Casa #269	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2018
+60103306	Lucia	Cortez	Justiniano	21/01/2008	76194654	lucia.cortez88@icloud.com	Radial 26, Calle 17, Casa #588	Colegio Cardenal Cushing	Santa Cruz de la Sierra	2025
+96663456	Diana	Mendez	Ortiz	11/04/2003	64120672	diana.mendez96@gmail.com	Av. Alemana, Calle 5, Casa #114	Colegio San Antonio	Buena Vista	2020
+80393368	Ariana Pilar	Morales	Montano	06/01/1999	71374227	ariana.morales45@icloud.com	Zona Sur, Calle 2, Casa #759	Colegio Don Bosco	Santa Cruz de la Sierra	2017
+4992208	Karen Elisa	Gutierrez	Arias	14/02/2004	77364159	karen.gutierrez13@icloud.com	Barrio La Cuchilla, Calle 9, Casa #133	Colegio San Antonio	Santa Cruz de la Sierra	2022
+76782526	David	Medina	Torrez	21/05/2001	64619447	david.medina89@hotmail.com	Av. Grigota, Calle 26, Casa #841	Colegio Santa Cruz	Santa Cruz de la Sierra	2019
+48463292	Anthony Alvaro	Valverde	Vargas	09/07/2008	75291872	anthony.valverde58@hotmail.com	Barrio Sirari, Calle 19, Casa #231	Colegio Santa Cruz	Portachuelo	2025
+86761878	Jazmin Melisa	Heredia	Chavez	21/12/2000	79830027	jazmin.heredia13@gmail.com	Av. Santos Dumont, Calle 5, Casa #599	Colegio San Martin	Santa Cruz de la Sierra	2018
+31794511	Maria Lourdes	Callisaya	Cortez	21/08/1999	75297700	maria.callisaya86@yahoo.com	Barrio Plan 3000, Calle 2, Casa #26	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2016
+4394736	Leonardo Alvaro	Paredes	Alvarez	09/09/1999	67669050	leonardo.paredes59@icloud.com	Av. Mutualista, Calle 22, Casa #461	Colegio San Martin	Santa Cruz de la Sierra	2016
+25319994	Joel Israel	Velasco	Lopez	05/01/2007	75598581	joel.velasco55@hotmail.com	Av. Moscú, Calle 22, Casa #637	Colegio Belen	Santa Cruz de la Sierra	2024
+77592656	Valeria	Sandoval	Lopez	22/09/1999	63522048	valeria.sandoval87@outlook.com	Av. Alemana, Calle 9, Casa #251	Colegio Santa Ana	El Torno	2017
+71488546	Sergio	Menacho	Arce	04/11/2004	65731449	sergio.menacho39@outlook.com	Av. Banzer 5to Anillo, Calle 9, Casa #63	Colegio Tecnico Humanistico El Pari	El Torno	2021
+84223936	Ana	Mendez	Rivero	27/08/2001	73826434	ana.mendez67@outlook.com	Zona Sur, Calle 11, Casa #231	Colegio San Antonio	Santa Cruz de la Sierra	2018
+34538410	Carmen	Zeballos	Arias	19/06/2005	75586058	carmen.zeballos77@icloud.com	Av. Alemana, Calle 23, Casa #395	Colegio Cristo Rey	Santa Cruz de la Sierra	2022
+67998795	Axel	Camacho	Salazar	11/09/2002	61598488	axel.camacho40@yahoo.com	Av. Roca y Coronado, Calle 21, Casa #597	Colegio Santa Ana	Santa Cruz de la Sierra	2019
+98190625	Eduardo	Gutierrez	Condori	20/05/2004	64232216	eduardo.gutierrez13@outlook.com	Av. Cristo Redentor, Calle 14, Casa #766	Colegio Nacional Florida	Santa Cruz de la Sierra	2021
+77537945	Patricia	Velasco	Salazar	04/02/2005	69336461	patricia.velasco98@yahoo.com	Pampa de la Isla, Calle 3, Casa #349	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2022
+45296529	Karen Belen	Roca	Barba	03/06/2004	66709085	karen.roca49@gmail.com	Zona Sur, Calle 2, Casa #155	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2021
+84415839	Ariana Isabel	Menacho	Flores	17/03/2006	68517763	ariana.menacho91@gmail.com	Barrio El Trompillo, Calle 14, Casa #513	Colegio Enrique Finot	Santa Cruz de la Sierra	2024
+30622267	Daniela Lourdes	Velasco	Lazarte	25/03/2007	61075277	daniela.velasco65@gmail.com	Av. Roca y Coronado, Calle 11, Casa #663	Colegio Libertad	Santa Cruz de la Sierra	2024
+85751833	Kevin Alvaro	Saucedo	Landivar	06/11/2004	71797164	kevin.saucedo50@outlook.com	Radial 26, Calle 8, Casa #81	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2021
+40748211	Roberto Jhonatan	Cuellar	Sanchez	30/08/2001	61923839	roberto.cuellar53@outlook.com	Av. Roca y Coronado, Calle 4, Casa #94	Colegio San Antonio	Santa Cruz de la Sierra	2018
+71754256	Veronica Monica	Mendez	Nunez	22/05/2005	65034517	veronica.mendez64@outlook.com	Barrio Sirari, Calle 1, Casa #31	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2023
+6844675	Elizabeth Carolina	Cabrera	Ribera	16/09/2007	65903939	elizabeth.cabrera85@gmail.com	Av. Banzer 5to Anillo, Calle 25, Casa #593	Colegio Maria Auxiliadora	La Guardia	2025
+71472215	Marco	Lazarte	Ortiz	07/12/2001	68943259	marco.lazarte77@hotmail.com	Villa Primero de Mayo, Calle 3, Casa #641	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2019
+16128173	Carla	Cabrera	Cuellar	31/08/2006	78031947	carla.cabrera93@icloud.com	Av. Roca y Coronado, Calle 14, Casa #529	Colegio Juan Pablo II	Santa Cruz de la Sierra	2024
+35781417	Eduardo	Montano	Medina	16/01/2006	76251456	eduardo.montano69@gmail.com	Av. Santos Dumont, Calle 15, Casa #494	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2023
+30250387	Mariana	Romero	Salazar	09/05/2000	65461896	mariana.romero23@icloud.com	Barrio El Pari, Calle 28, Casa #326	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2017
+85991476	Diego	Paredes	Becerra	18/01/2004	67964050	diego.paredes10@hotmail.com	Barrio El Trompillo, Calle 14, Casa #937	Colegio La Merced	Santa Cruz de la Sierra	2021
+16331542	Brayan Martin	Arce	Torrez	09/02/2006	62679678	brayan.arce22@yahoo.com	Pampa de la Isla, Calle 2, Casa #433	Colegio Juan Pablo II	Santa Cruz de la Sierra	2024
+37951005	Oscar	Flores	Condori	22/11/2003	74714934	oscar.flores78@yahoo.com	Av. Virgen de Cotoca, Calle 8, Casa #559	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2020
+58632186	Valeria Lorena	Condori	Nunez	09/11/2005	73741437	valeria.condori31@hotmail.com	Av. Virgen de Cotoca, Calle 2, Casa #971	Colegio Belen	Santa Cruz de la Sierra	2023
+65776990	Mariana	Rojas	Vaca	26/05/2002	71960595	mariana.rojas73@icloud.com	Av. Mutualista, Calle 27, Casa #214	Colegio Santa Ana	Santa Cruz de la Sierra	2019
+58508147	Jose Jhonatan	Villarroel	Nunez	07/01/2003	65836335	jose.villarroel39@outlook.com	Av. Moscú, Calle 5, Casa #984	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2020
+44565308	Fabiola Victoria	Menacho	Zeballos	07/04/2005	69380823	fabiola.menacho44@yahoo.com	Av. Roca y Coronado, Calle 1, Casa #902	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2023
+91621083	Alejandra Belen	Paz	Vaca	13/07/2001	68925617	alejandra.paz77@hotmail.com	Barrio La Cuchilla, Calle 14, Casa #361	Colegio Libertad	La Guardia	2018
+45458561	Ximena Elisa	Nunez	Landivar	01/12/2003	61636473	ximena.nunez79@hotmail.com	Zona Equipetrol, Calle 4, Casa #568	Colegio Marista	Santa Cruz de la Sierra	2021
+54553133	Leonardo Javier	Mendez	Paredes	03/12/2006	64409544	leonardo.mendez60@yahoo.com	Barrio La Cuchilla, Calle 3, Casa #742	Colegio Santa Ana	Montero	2023
+31236103	Fabiola	Quiroga	Callisaya	25/07/2000	64579379	fabiola.quiroga32@hotmail.com	Zona Norte, Calle 25, Casa #522	Colegio San Agustin	La Guardia	2017
+47582084	Nicolas	Medina	Flores	18/01/2003	76131426	nicolas.medina99@gmail.com	Villa Primero de Mayo, Calle 24, Casa #987	Colegio Juan Pablo II	Santa Cruz de la Sierra	2020
+87324972	Ximena	Terrazas	Barba	28/08/1999	74857380	ximena.terrazas22@hotmail.com	Av. Grigota, Calle 14, Casa #224	Colegio Cristo Rey	Santa Cruz de la Sierra	2016
+8457885	Pablo	Cuellar	Ribera	05/08/2005	73446078	pablo.cuellar62@hotmail.com	Av. Cristo Redentor, Calle 6, Casa #46	Colegio Cristo Rey	Santa Cruz de la Sierra	2022
+21570626	Veronica	Saucedo	Vargas	06/11/2004	63192926	veronica.saucedo72@hotmail.com	Barrio Hamacas, Calle 28, Casa #391	Colegio Villa Primero de Mayo	La Guardia	2022
+8411492	Adrian	Condori	Villarroel	15/08/2001	63709329	adrian.condori66@gmail.com	Av. Banzer 5to Anillo, Calle 8, Casa #310	Colegio Libertad	Santa Cruz de la Sierra	2019
+18787896	Paola	Duran	Flores	03/09/2002	77675027	paola.duran29@gmail.com	Zona Equipetrol, Calle 23, Casa #908	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2020
+56397679	Fabiola	Mamani	Chavez	12/07/1999	68536189	fabiola.mamani55@gmail.com	Av. Banzer 5to Anillo, Calle 20, Casa #611	Colegio Enrique Finot	El Torno	2016
+55151268	Paola	Pinto	Justiniano	03/06/1999	63366896	paola.pinto99@gmail.com	Barrio Plan 3000, Calle 28, Casa #333	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2016
+15901470	Carlos Saul	Pinto	Condori	19/04/2000	72242976	carlos.pinto84@outlook.com	Barrio Hamacas, Calle 14, Casa #648	Colegio Santa Cruz	Cotoca	2017
+72077562	Marco	Sandoval	Paz	16/09/2007	66904829	marco.sandoval41@gmail.com	Av. Santos Dumont, Calle 7, Casa #175	Colegio Belen	Santa Cruz de la Sierra	2024
+93710058	Sergio	Chavez	Flores	09/06/1999	68988311	sergio.chavez82@yahoo.com	Zona Norte, Calle 7, Casa #458	Colegio Rene Moreno	Santa Cruz de la Sierra	2016
+85039377	Diana	Morales	Arias	20/06/2002	69846258	diana.morales83@yahoo.com	Barrio Los Chacos, Calle 3, Casa #347	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2020
+62866358	Joel	Cabrera	Barba	13/09/2003	74679296	joel.cabrera43@yahoo.com	Pampa de la Isla, Calle 19, Casa #650	Colegio Boliviano Japones	Santa Cruz de la Sierra	2021
+30222553	Yoselin	Mercado	Gomez	13/02/2003	79340802	yoselin.mercado28@icloud.com	Zona Sur, Calle 24, Casa #797	Colegio Juan Pablo II	Santa Cruz de la Sierra	2020
+54794726	Cristian Javier	Chavez	Montano	19/04/2005	62944514	cristian.chavez42@outlook.com	Zona Equipetrol, Calle 27, Casa #977	Colegio Cardenal Cushing	Santa Cruz de la Sierra	2022
+17071161	Paola	Montano	Camacho	13/03/1999	68534679	paola.montano70@hotmail.com	Barrio Las Palmas, Calle 11, Casa #763	Colegio Domingo Savio	Santa Cruz de la Sierra	2016
+10242356	Leonardo	Molina	Montano	12/04/2005	79318289	leonardo.molina63@gmail.com	Av. Mutualista, Calle 17, Casa #674	Colegio Los Tusequis	Santa Cruz de la Sierra	2022
+62413262	Joel	Mendez	Terceros	01/05/2005	68321270	joel.mendez65@outlook.com	Zona Norte, Calle 10, Casa #909	Colegio San Agustin	Santa Cruz de la Sierra	2023
+80718461	Raul Benjamin	Sandoval	Mendez	07/10/2002	66825088	raul.sandoval48@outlook.com	Barrio Los Lotes, Calle 3, Casa #74	Colegio Domingo Savio	Santa Cruz de la Sierra	2019
+40169922	Rocio	Menacho	Cuellar	28/07/2001	69045632	rocio.menacho80@gmail.com	Barrio El Trompillo, Calle 7, Casa #825	Colegio Los Tusequis	San Ignacio de Velasco	2019
+99729725	Micaela	Medina	Paredes	29/08/2002	63869804	micaela.medina47@outlook.com	Av. Grigota, Calle 23, Casa #977	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2020
+72406403	Eduardo Javier	Menacho	Torrez	26/02/2003	69844226	eduardo.menacho63@gmail.com	Barrio El Pari, Calle 15, Casa #557	Colegio Los Tusequis	Santa Cruz de la Sierra	2021
+89502906	Rosa Elisa	Arias	Barba	13/04/2005	69758205	rosa.arias53@gmail.com	Zona Equipetrol, Calle 2, Casa #259	Colegio Juan Pablo II	Santa Cruz de la Sierra	2023
+68468668	Mateo	Gomez	Vargas	10/10/2007	72398730	mateo.gomez24@yahoo.com	Barrio Los Chacos, Calle 16, Casa #265	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2025
+22501723	David	Chavez	Condori	29/09/2003	68498335	david.chavez62@outlook.com	Barrio Los Chacos, Calle 4, Casa #436	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2021
+25028510	Daniel	Ortiz	Cortez	02/10/2002	67313405	daniel.ortiz26@outlook.com	Barrio Los Lotes, Calle 18, Casa #622	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2020
+88990126	Carla	Villarroel	Cortez	03/11/2008	76013240	carla.villarroel55@yahoo.com	Barrio Las Palmas, Calle 13, Casa #207	Colegio Nueva America	Santa Cruz de la Sierra	2025
+50161262	Mariana	Lopez	Medina	22/06/2004	66116852	mariana.lopez71@icloud.com	Barrio Las Palmas, Calle 18, Casa #19	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2021
+81069784	Maria	Lopez	Rojas	16/09/2006	69510678	maria.lopez84@yahoo.com	Barrio Sirari, Calle 8, Casa #568	Colegio La Salle	Santa Cruz de la Sierra	2024
+27009465	Brayan Elvis	Becerra	Ortiz	27/12/2003	79011087	brayan.becerra14@icloud.com	Barrio El Trompillo, Calle 17, Casa #755	Colegio Nacional Florida	Santa Cruz de la Sierra	2021
+68918045	Maria	Terceros	Vaca	24/02/1999	71036069	maria.terceros47@icloud.com	Av. Beni, Calle 25, Casa #896	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2017
+56846443	Fernanda Melisa	Vaca	Terceros	15/01/2006	72836338	fernanda.vaca37@icloud.com	Barrio Sirari, Calle 6, Casa #212	Colegio Libertad	Santa Cruz de la Sierra	2023
+51335135	Ariana	Valverde	Rivero	21/03/2004	61341506	ariana.valverde11@outlook.com	Pampa de la Isla, Calle 1, Casa #98	Colegio Nueva America	Santa Cruz de la Sierra	2022
+78197389	Nicole	Terrazas	Vargas	14/12/2003	68036018	nicole.terrazas95@outlook.com	Barrio El Trompillo, Calle 10, Casa #418	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2020
+94637115	Pablo Jhonatan	Gomez	Mercado	25/02/2004	64200795	pablo.gomez62@yahoo.com	Zona Norte, Calle 16, Casa #769	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2021
+34655801	Ariana	Cabrera	Arias	27/07/2004	78730345	ariana.cabrera49@yahoo.com	Villa Primero de Mayo, Calle 2, Casa #325	Colegio San Agustin	Montero	2022
+79203707	Jose	Fernandez	Ortiz	03/10/2001	65811374	jose.fernandez54@hotmail.com	Av. Cristo Redentor, Calle 4, Casa #856	Colegio Cristo Rey	Warnes	2018
+8509282	Daniel Alberto	Medina	Saucedo	28/09/2006	62213808	daniel.medina86@gmail.com	Barrio Sirari, Calle 3, Casa #690	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2023
+75537381	Bianca	Quiroga	Alvarez	27/04/2000	73956775	bianca.quiroga13@icloud.com	Av. Cristo Redentor, Calle 19, Casa #619	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2018
+6311801	Nicole Vanessa	Ortiz	Mendez	09/08/2006	65312522	nicole.ortiz16@gmail.com	Av. Santos Dumont, Calle 7, Casa #415	Colegio Boliviano Japones	La Guardia	2024
+1220799	Juan	Peralta	Montano	15/11/2003	68132943	juan.peralta93@icloud.com	Barrio Hamacas, Calle 17, Casa #392	Colegio Tecnico Humanistico El Pari	Santa Cruz de la Sierra	2020
+5747223	Fernando Mathias	Cuellar	Antelo	24/03/2008	76812873	fernando.cuellar27@gmail.com	Av. Santos Dumont, Calle 25, Casa #761	Colegio San Martin	El Torno	2025
+50832339	Jose	Antelo	Vargas	17/10/2007	64011869	jose.antelo56@yahoo.com	Av. Banzer 5to Anillo, Calle 14, Casa #323	Colegio La Merced	Santa Cruz de la Sierra	2025
+64047639	Micaela Julieta	Montano	Morales	13/04/2002	68199953	micaela.montano65@gmail.com	Villa Primero de Mayo, Calle 1, Casa #833	Colegio 24 de Septiembre	La Guardia	2019
+48649266	Ivan	Terceros	Chavez	12/06/2001	72538780	ivan.terceros95@yahoo.com	Av. Santos Dumont, Calle 6, Casa #206	Colegio Santa Ana	Santa Cruz de la Sierra	2018
+40218726	Brayan	Sanchez	Lopez	27/03/2000	79433201	brayan.sanchez72@hotmail.com	Radial 26, Calle 11, Casa #89	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2018
+8951379	Dayana	Medina	Terrazas	22/03/1999	67297022	dayana.medina49@outlook.com	Av. Moscú, Calle 3, Casa #591	Colegio Cristo Rey	Santa Cruz de la Sierra	2016
+60190270	Gustavo	Sanchez	Landivar	03/01/2004	73677693	gustavo.sanchez24@outlook.com	Av. Cristo Redentor, Calle 27, Casa #154	Colegio Enrique Finot	Santa Cruz de la Sierra	2021
+76786293	Dayana	Cabrera	Mendez	19/05/2006	66180083	dayana.cabrera74@icloud.com	Av. Cristo Redentor, Calle 7, Casa #573	Colegio Cristo Rey	Santa Cruz de la Sierra	2024
+75708239	Rosa	Suarez	Becerra	11/04/2001	64418837	rosa.suarez12@hotmail.com	Zona Equipetrol, Calle 10, Casa #216	Colegio Rene Moreno	Santa Cruz de la Sierra	2019
+32679318	Luis Antonio	Antelo	Flores	11/06/2006	68991177	luis.antelo76@yahoo.com	Zona Sur, Calle 24, Casa #45	Colegio Enrique Finot	Montero	2023
+30434392	Miguel	Flores	Antelo	08/06/1999	79106738	miguel.flores59@icloud.com	Barrio Plan 3000, Calle 17, Casa #503	Colegio San Agustin	Santa Cruz de la Sierra	2017
+38743013	Carla	Vargas	Becerra	30/05/2002	75323866	carla.vargas94@yahoo.com	Barrio Urbari, Calle 9, Casa #722	Colegio Boliviano Japones	Santa Cruz de la Sierra	2019
+59959393	David	Molina	Sanchez	07/11/2007	79156181	david.molina91@outlook.com	Av. Santos Dumont, Calle 21, Casa #314	Colegio San Jose	Santa Cruz de la Sierra	2024
+42405717	Daniela	Torrez	Vaca	02/06/2001	79024436	daniela.torrez79@icloud.com	Av. Grigota, Calle 10, Casa #62	Colegio Rene Moreno	Santa Cruz de la Sierra	2018
+12546425	Oscar Alvaro	Villarroel	Saucedo	28/03/2003	77333444	oscar.villarroel43@outlook.com	Barrio Hamacas, Calle 19, Casa #56	Colegio Nacional Florida	El Torno	2021
+20190018	Mateo	Medina	Fernandez	20/12/2005	66609249	mateo.medina82@outlook.com	Barrio El Trompillo, Calle 1, Casa #364	Colegio Boliviano Japones	Santa Cruz de la Sierra	2022
+69655427	Noelia	Heredia	Mendez	01/01/2008	78369571	noelia.heredia28@outlook.com	Radial 26, Calle 15, Casa #696	Colegio Santa Cruz	Santa Cruz de la Sierra	2025
+44103230	Claudia Melisa	Montano	Vargas	01/10/2006	68042823	claudia.montano70@yahoo.com	Radial 26, Calle 23, Casa #457	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2024
+22411669	Eduardo	Menacho	Gutierrez	18/07/1999	61666203	eduardo.menacho40@gmail.com	Barrio Plan 3000, Calle 1, Casa #682	Colegio Marista	Santa Cruz de la Sierra	2017
+64479146	Sebastian	Velasco	Nunez	29/12/2000	61114082	sebastian.velasco66@yahoo.com	Av. Grigota, Calle 21, Casa #915	Colegio Belen	Warnes	2017
+24083450	Fernanda Julieta	Gomez	Ribera	12/09/2003	69946019	fernanda.gomez87@hotmail.com	Barrio La Cuchilla, Calle 13, Casa #178	Colegio La Salle	Santa Cruz de la Sierra	2020
+83773537	Nicole	Suarez	Paredes	19/06/2008	76612891	nicole.suarez79@outlook.com	Av. Moscú, Calle 27, Casa #559	Colegio Don Bosco	Santa Cruz de la Sierra	2025
+31172319	Micaela Melisa	Romero	Camacho	20/06/2001	79879528	micaela.romero47@yahoo.com	Pampa de la Isla, Calle 3, Casa #11	Colegio Marista	Santa Cruz de la Sierra	2019
+62191526	Sergio	Landivar	Flores	19/02/1999	79685289	sergio.landivar48@outlook.com	Barrio La Cuchilla, Calle 20, Casa #871	Colegio La Salle	Santa Cruz de la Sierra	2017
+21310729	Sebastian	Velasco	Barba	08/11/2003	79767280	sebastian.velasco36@gmail.com	Av. Moscú, Calle 9, Casa #774	Colegio Belen	Santa Cruz de la Sierra	2020
+43757453	Alejandra	Sandoval	Pinto	29/06/2006	71941554	alejandra.sandoval88@yahoo.com	Av. Santos Dumont, Calle 21, Casa #893	Colegio Sagrado Corazon	Santa Cruz de la Sierra	2024
+24351862	Maria Carolina	Vaca	Cortez	14/11/2004	72022238	maria.vaca91@hotmail.com	Zona Sur, Calle 5, Casa #934	Colegio Boliviano Japones	Santa Cruz de la Sierra	2021
+82224483	Estefany Rebeca	Morales	Antelo	01/06/2001	62138840	estefany.morales25@outlook.com	Av. Banzer 5to Anillo, Calle 15, Casa #859	Colegio Andres Ibanez	Santa Cruz de la Sierra	2018
+79688167	Andres	Romero	Arce	06/01/2000	61926556	andres.romero88@hotmail.com	Barrio Los Lotes, Calle 16, Casa #720	Colegio La Merced	Santa Cruz de la Sierra	2017
+94096057	Carmen	Fernandez	Cortez	23/01/2000	71121603	carmen.fernandez94@icloud.com	Av. Beni, Calle 27, Casa #793	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2017
+12711011	Katherine	Camacho	Soruco	13/01/2001	67988232	katherine.camacho42@yahoo.com	Zona Norte, Calle 18, Casa #739	Colegio Maria Auxiliadora	Warnes	2019
+16673083	Nicole Melisa	Villarroel	Cortez	18/01/2007	79306624	nicole.villarroel51@gmail.com	Barrio Urbari, Calle 10, Casa #287	Colegio Nacional Pampa de la Isla	Santa Cruz de la Sierra	2024
+89050571	Veronica	Terrazas	Flores	11/07/2008	62538783	veronica.terrazas44@gmail.com	Av. Santos Dumont, Calle 3, Casa #574	Colegio Los Tusequis	Santa Cruz de la Sierra	2025
+95071678	Gabriela Melisa	Alvarez	Terrazas	06/08/2001	72735457	gabriela.alvarez25@icloud.com	Zona Sur, Calle 16, Casa #908	Colegio Belen	Santa Cruz de la Sierra	2019
+54606100	David	Heredia	Lopez	22/07/2001	79814076	david.heredia73@yahoo.com	Av. Moscú, Calle 19, Casa #526	Colegio San Martin	Santa Cruz de la Sierra	2019
+37241342	Diana Belen	Ortiz	Romero	10/12/2000	65072805	diana.ortiz36@gmail.com	Barrio Los Lotes, Calle 28, Casa #496	Colegio Maria Auxiliadora	Santa Cruz de la Sierra	2017
+98041068	Rodrigo Antonio	Romero	Paredes	07/08/2006	64372690	rodrigo.romero92@icloud.com	Av. Alemana, Calle 20, Casa #744	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2023
+55827836	Valeria	Arias	Lazarte	19/08/2002	67728893	valeria.arias10@gmail.com	Av. Beni, Calle 28, Casa #188	Colegio Nacional Florida	Montero	2020
+84167891	Diana	Camacho	Callisaya	16/04/2000	63005407	diana.camacho52@outlook.com	Av. Moscú, Calle 2, Casa #402	Colegio San Martin	Santa Cruz de la Sierra	2017
+42882435	Mauricio	Quiroga	Roca	07/11/2003	68056350	mauricio.quiroga25@gmail.com	Av. Banzer 5to Anillo, Calle 8, Casa #96	Colegio San Martin	Santa Cruz de la Sierra	2021
+82026714	Micaela Monica	Vaca	Peralta	15/08/2000	75829006	micaela.vaca74@outlook.com	Av. Banzer 5to Anillo, Calle 28, Casa #556	Colegio Boliviano Japones	Santa Cruz de la Sierra	2018
+42286264	Roberto Mathias	Gutierrez	Roca	15/02/2008	68923471	roberto.gutierrez24@icloud.com	Zona Equipetrol, Calle 13, Casa #543	Colegio Belen	Santa Cruz de la Sierra	2025
+69063823	Sergio Enrique	Peralta	Medina	23/05/2005	79851835	sergio.peralta54@outlook.com	Av. Roca y Coronado, Calle 9, Casa #688	Colegio La Salle	Portachuelo	2022
+91596949	Estefany Monica	Molina	Rojas	28/12/2005	71955780	estefany.molina10@outlook.com	Zona Equipetrol, Calle 6, Casa #235	Colegio Santa Cruz	Santa Cruz de la Sierra	2022
+38221201	Nicolas	Terceros	Soruco	10/10/2000	79178376	nicolas.terceros67@gmail.com	Av. Banzer 5to Anillo, Calle 21, Casa #281	Colegio Libertad	Santa Cruz de la Sierra	2017
+36569140	Miguel	Valverde	Menacho	16/03/2000	68848443	miguel.valverde69@outlook.com	Barrio Los Chacos, Calle 26, Casa #676	Colegio Nueva America	Santa Cruz de la Sierra	2017
+54170512	Laura Pilar	Montano	Torrez	19/12/2008	66152620	laura.montano86@hotmail.com	Av. Moscú, Calle 20, Casa #661	Colegio Belen	Warnes	2025
+56925500	Paola	Romero	Ortiz	09/09/2001	66744099	paola.romero59@icloud.com	Av. Cristo Redentor, Calle 11, Casa #257	Colegio Rene Moreno	Santa Cruz de la Sierra	2018
+2455922	Karen	Medina	Terceros	14/10/2000	73819380	karen.medina64@icloud.com	Av. Moscú, Calle 12, Casa #715	Colegio Domingo Savio	Santa Cruz de la Sierra	2017
+23329322	Camila	Chavez	Antelo	25/01/2001	68247594	camila.chavez80@icloud.com	Barrio El Pari, Calle 26, Casa #36	Colegio Domingo Savio	Santa Cruz de la Sierra	2018
+32104551	Miguel Martin	Mendez	Molina	21/06/2007	61385776	miguel.mendez75@icloud.com	Barrio El Pari, Calle 23, Casa #162	Colegio Santa Cruz	Buena Vista	2024
+77318580	Jorge Benjamin	Cabrera	Medina	22/12/2006	73899923	jorge.cabrera15@gmail.com	Villa Primero de Mayo, Calle 7, Casa #657	Colegio Santa Ana	Santa Cruz de la Sierra	2024
+77057331	Oscar	Zeballos	Ribera	08/06/2002	78673297	oscar.zeballos53@yahoo.com	Barrio Los Lotes, Calle 11, Casa #372	Colegio Boliviano Japones	Santa Cruz de la Sierra	2020
+16658264	Fernanda Pilar	Paredes	Paz	15/05/2008	66830549	fernanda.paredes53@gmail.com	Barrio Los Chacos, Calle 25, Casa #924	Colegio Santa Ana	Santa Cruz de la Sierra	2025
+52406773	Ximena Carolina	Heredia	Alvarez	09/04/2008	62231221	ximena.heredia49@yahoo.com	Barrio Plan 3000, Calle 21, Casa #530	Colegio Andres Ibanez	Montero	2025
+49161371	Sergio	Mercado	Castillo	05/01/2003	71988972	sergio.mercado95@hotmail.com	Av. Mutualista, Calle 5, Casa #370	Colegio 24 de Septiembre	Santa Cruz de la Sierra	2020
+60843066	Estefany Yamila	Terceros	Antelo	05/05/2008	71154573	estefany.terceros67@gmail.com	Av. Beni, Calle 22, Casa #303	Colegio Nacional Florida	Santa Cruz de la Sierra	2025
+30034040	Sofia Victoria	Sanchez	Menacho	01/10/2004	73615573	sofia.sanchez25@icloud.com	Barrio El Pari, Calle 18, Casa #514	Colegio San Jose	Santa Cruz de la Sierra	2022
+9450874	Veronica	Lazarte	Lopez	09/11/2000	65152139	veronica.lazarte76@outlook.com	Barrio El Trompillo, Calle 20, Casa #796	Colegio Los Tusequis	Santa Cruz de la Sierra	2018
+49822757	Andrea	Medina	Heredia	02/07/2003	68997941	andrea.medina46@hotmail.com	Radial 26, Calle 6, Casa #582	Colegio Belen	Santa Cruz de la Sierra	2021
+89905945	Leonardo	Peralta	Barba	13/12/2002	68766192	leonardo.peralta47@icloud.com	Pampa de la Isla, Calle 2, Casa #348	Colegio Andres Ibanez	Santa Cruz de la Sierra	2019
+8806930	Nicolas	Villarroel	Soruco	02/04/2005	71770707	nicolas.villarroel60@hotmail.com	Barrio Los Lotes, Calle 8, Casa #205	Colegio Gabriel Rene Moreno	Santa Cruz de la Sierra	2022
+35161682	Sebastian	Ribera	Cabrera	02/02/2006	68180472	sebastian.ribera33@hotmail.com	Pampa de la Isla, Calle 8, Casa #10	Colegio Maria Auxiliadora	Warnes	2023
+80330677	Emanuel Martin	Barba	Sanchez	12/07/2008	61016964	emanuel.barba52@icloud.com	Barrio El Trompillo, Calle 13, Casa #739	Colegio La Merced	Santa Cruz de la Sierra	2025
+92904663	Diana Monica	Pinto	Peralta	14/10/2000	73080359	diana.pinto28@gmail.com	Barrio Hamacas, Calle 10, Casa #739	Colegio Cardenal Cushing	Warnes	2017
+72812183	Luis	Heredia	Landivar	19/10/2007	79546178	luis.heredia81@hotmail.com	Barrio Las Palmas, Calle 23, Casa #15	Colegio Domingo Savio	Santa Cruz de la Sierra	2025
+1246703	Cristian	Peralta	Aguilera	15/07/2002	67309554	cristian.peralta68@hotmail.com	Zona Sur, Calle 14, Casa #145	Colegio Villa Primero de Mayo	Santa Cruz de la Sierra	2020
