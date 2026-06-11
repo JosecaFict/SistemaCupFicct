@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
@@ -51,12 +51,14 @@ export function CalculoResultadosPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gestionId]);
 
+  const estadoReqRef = useRef(0);
   function refreshEstado() {
     if (!gestionId) return;
+    const reqId = ++estadoReqRef.current;
     setCargando(true);
     calculoService.estado(gestionId as number)
-      .then(setEstado)
-      .finally(() => setCargando(false));
+      .then((d) => { if (reqId === estadoReqRef.current) setEstado(d); })
+      .finally(() => { if (reqId === estadoReqRef.current) setCargando(false); });
   }
 
   async function calcular() {

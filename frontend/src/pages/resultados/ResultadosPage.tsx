@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
 import { Select } from "../../components/ui/Select";
@@ -42,13 +42,17 @@ export function ResultadosPage() {
   const [notasOpen, setNotasOpen] = useState(false);
   const [cargandoNotas, setCargandoNotas] = useState(false);
 
+  const notasReqRef = useRef(0);
   const verNotas = (r: Resultado) => {
     const pid = r.postulacion?.id;
     if (!pid) return;
+    const reqId = ++notasReqRef.current;
     setNotasOpen(true);
     setCargandoNotas(true);
     setNotas(null);
-    resultadosService.notasPostulante(pid).then(setNotas).finally(() => setCargandoNotas(false));
+    resultadosService.notasPostulante(pid)
+      .then((d) => { if (reqId === notasReqRef.current) setNotas(d); })
+      .finally(() => { if (reqId === notasReqRef.current) setCargandoNotas(false); });
   };
 
   // Cargar catalogos (gestiones + carreras) una sola vez
@@ -64,6 +68,7 @@ export function ResultadosPage() {
 
   // Recargar lista + KPIs cuando cambien filtros, pagina o modo
   useEffect(() => {
+    let vigente = true;
     setCargando(true);
     // Modo compacto: pide hasta 200 items y solo ACEPTADOS publicados
     const filtrosEfectivos: FiltrosResultados =
@@ -77,10 +82,12 @@ export function ResultadosPage() {
       resultadosService.kpis(filtros),
     ])
       .then(([lista, k]) => {
+        if (!vigente) return;
         setData(lista);
         setKpis(k);
       })
-      .finally(() => setCargando(false));
+      .finally(() => { if (vigente) setCargando(false); });
+    return () => { vigente = false; };
   }, [filtros, pagina, modo]);
 
   function setFiltro<K extends keyof FiltrosResultados>(k: K, v: FiltrosResultados[K]) {

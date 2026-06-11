@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
@@ -36,8 +36,11 @@ export function UsuariosPage() {
     activo: true,
   });
 
+  // Guarda anti respuestas fuera de orden (buscador): solo la ultima cargar() aplica.
+  const reqIdRef = useRef(0);
   const cargar = (busq = q) => {
-    adminService.usuarios({ q: busq }).then(setData);
+    const reqId = ++reqIdRef.current;
+    adminService.usuarios({ q: busq }).then((d) => { if (reqId === reqIdRef.current) setData(d); });
   };
 
   useEffect(() => { adminService.roles().then(setRoles); cargar(""); }, []);

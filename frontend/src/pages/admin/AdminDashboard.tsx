@@ -79,13 +79,15 @@ export function AdminDashboard() {
 
   // Cargar resumen segun gestion seleccionada
   useEffect(() => {
+    let vigente = true;
     setCargando(true);
     api
       .get<DashboardData>("/api/dashboard/resumen", {
         params: gestionId ? { gestion_id: gestionId } : {},
       })
-      .then((r) => setData(r.data))
-      .finally(() => setCargando(false));
+      .then((r) => { if (vigente) setData(r.data); })
+      .finally(() => { if (vigente) setCargando(false); });
+    return () => { vigente = false; };
   }, [gestionId]);
 
   if (!data) return <div className="flex justify-center py-10"><Spinner /></div>;

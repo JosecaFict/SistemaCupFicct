@@ -27,10 +27,12 @@ export function GruposPage() {
   }, []);
 
   useEffect(() => {
+    let vigente = true;
     encargadoService.grupos({
       gestion_cup_id: gestionId ? Number(gestionId) : undefined,
       turno_id:       turnoId   ? Number(turnoId)   : undefined,
-    }).then(setGrupos);
+    }).then((g) => { if (vigente) setGrupos(g); });
+    return () => { vigente = false; };
   }, [gestionId, turnoId]);
 
   async function descargarExcel() {

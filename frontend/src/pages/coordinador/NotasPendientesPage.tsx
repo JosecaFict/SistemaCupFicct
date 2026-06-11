@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
@@ -46,12 +46,14 @@ export function NotasPendientesPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gestionId]);
 
+  const bloquesReqRef = useRef(0);
   function recargar() {
     if (!gestionId) return;
+    const reqId = ++bloquesReqRef.current;
     setCargando(true);
     notasService.bloquesPendientes(gestionId as number)
-      .then(setBloques)
-      .finally(() => setCargando(false));
+      .then((d) => { if (reqId === bloquesReqRef.current) setBloques(d); })
+      .finally(() => { if (reqId === bloquesReqRef.current) setCargando(false); });
   }
 
   async function aplicar() {

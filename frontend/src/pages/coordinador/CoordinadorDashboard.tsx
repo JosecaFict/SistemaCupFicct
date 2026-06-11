@@ -77,13 +77,15 @@ export function CoordinadorDashboard() {
 
   // Resumen segun gestion seleccionada.
   useEffect(() => {
+    let vigente = true;
     setCargando(true);
     api
       .get<DashboardData>("/api/dashboard/resumen", {
         params: gestionId ? { gestion_id: gestionId } : {},
       })
-      .then((r) => setData(r.data))
-      .finally(() => setCargando(false));
+      .then((r) => { if (vigente) setData(r.data); })
+      .finally(() => { if (vigente) setCargando(false); });
+    return () => { vigente = false; };
   }, [gestionId]);
 
   // Bloques de notas pendientes de la gestion resuelta (KPI propio del rol).
@@ -93,10 +95,12 @@ export function CoordinadorDashboard() {
       setBloquesPendientes(null);
       return;
     }
+    let vigente = true;
     notasService
       .bloquesPendientes(gid)
-      .then((bloques) => setBloquesPendientes(bloques.filter((b) => b.pendientes > 0).length))
-      .catch(() => setBloquesPendientes(null));
+      .then((bloques) => { if (vigente) setBloquesPendientes(bloques.filter((b) => b.pendientes > 0).length); })
+      .catch(() => { if (vigente) setBloquesPendientes(null); });
+    return () => { vigente = false; };
   }, [data?.gestion?.id]);
 
   if (!data) return <div className="flex justify-center py-10"><Spinner /></div>;
