@@ -66,17 +66,22 @@ export function AsignacionesPage() {
   // Cargar catalogos de filtros al cambiar gestion
   useEffect(() => {
     if (!gestionId) { setCatalogos(null); return; }
-    asignacionesService.catalogosFiltros(gestionId as number).then(setCatalogos);
+    let vigente = true;
+    asignacionesService.catalogosFiltros(gestionId as number)
+      .then((c) => { if (vigente) setCatalogos(c); });
+    return () => { vigente = false; };
   }, [gestionId]);
 
   // Cargar asignaciones cuando cambia gestion o filtros
   useEffect(() => {
     if (!gestionId) return;
+    let vigente = true;
     setCargandoLista(true);
     asignacionesService
       .lista({ gestion_id: gestionId as number, ...filtros })
-      .then((r) => setAsignaciones(r.data))
-      .finally(() => setCargandoLista(false));
+      .then((r) => { if (vigente) setAsignaciones(r.data); })
+      .finally(() => { if (vigente) setCargandoLista(false); });
+    return () => { vigente = false; };
   }, [gestionId, filtros]);
 
   function setFiltro<K extends keyof typeof filtros>(k: K, v: (typeof filtros)[K]) {
@@ -293,7 +298,10 @@ function AsignacionFormModal({
 
   // Cargar datos iniciales (grupos + materias + bloques sugeridos)
   useEffect(() => {
-    asignacionesService.datosIniciales(gestionId).then(setDatos);
+    let vigente = true;
+    asignacionesService.datosIniciales(gestionId)
+      .then((d) => { if (vigente) setDatos(d); });
+    return () => { vigente = false; };
   }, [gestionId]);
 
   // Apenas se elige un grupo, traer sus asignaciones existentes para saber
@@ -302,15 +310,18 @@ function AsignacionFormModal({
   // despues de tener la franja completa.
   useEffect(() => {
     if (!form.grupo_id) { setAsignacionesDelGrupo([]); return; }
+    let vigente = true;
     asignacionesService
       .lista({ gestion_id: gestionId, grupo_id: form.grupo_id as number })
-      .then((r) => setAsignacionesDelGrupo(r.data));
+      .then((r) => { if (vigente) setAsignacionesDelGrupo(r.data); });
+    return () => { vigente = false; };
   }, [form.grupo_id, gestionId]);
 
   // Cuando hay franja completa (grupo + dias + horario), pedir recursos
   // disponibles (docentes y ambientes que NO chocan).
   useEffect(() => {
     if (form.grupo_id && form.dias_semana && form.hora_inicio && form.hora_fin) {
+      let vigente = true;
       setCargandoRecursos(true);
       asignacionesService
         .recursosDisponibles({
@@ -321,8 +332,9 @@ function AsignacionFormModal({
           grupo_id: form.grupo_id as number,
           ignore_id: asignacion?.id,
         })
-        .then(setRecursos)
-        .finally(() => setCargandoRecursos(false));
+        .then((r) => { if (vigente) setRecursos(r); })
+        .finally(() => { if (vigente) setCargandoRecursos(false); });
+      return () => { vigente = false; };
     } else {
       setRecursos(null);
     }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
@@ -42,19 +42,28 @@ export function PostulantesPage() {
   // Gestion ACTIVA (solo relevante para el encargado).
   const gestionActiva = gestiones.find((g) => g.estado === "ACTIVA") ?? null;
 
+  // Guarda anti "respuesta fuera de orden": cada llamada a cargar() toma un id
+  // incremental; solo la ultima disparada puede aplicar su resultado. Evita que
+  // una respuesta lenta y vieja pise la lista actual (bug de carga incompleta).
+  const reqIdRef = useRef(0);
+
   const cargar = (busq = q, gid = gestionId, gest = gestionEstado, pag = pagina) => {
+    const reqId = ++reqIdRef.current;
+    const aplicar = (d: Paginated<Postulacion>) => {
+      if (reqId === reqIdRef.current) setData(d);
+    };
     const params: Record<string, string | number> = { page: pag };
     if (busq) params.q = busq;
 
     if (esAdmin) {
       if (gid)  params.gestion_cup_id = Number(gid);
       if (gest) params.gestion_estado = gest;
-      encargadoService.postulaciones(params).then(setData);
+      encargadoService.postulaciones(params).then(aplicar);
     } else {
       // Encargado: bloqueado a la gestion activa. Sin activa no se lista nada.
       if (!gestionActiva) { setData(null); return; }
       params.gestion_cup_id = gestionActiva.id;
-      encargadoService.postulaciones(params).then(setData);
+      encargadoService.postulaciones(params).then(aplicar);
     }
   };
 
