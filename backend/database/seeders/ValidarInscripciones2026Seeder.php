@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Auth;
 /*
 | ValidarInscripciones2026Seeder
 | --------------------------------------------------------------------------
-| Valida (requisitos VALIDADO) y confirma la inscripcion de N postulantes
-| pendientes (PAGO_APROBADO) de la gestion 1-2026 al turno indicado.
+| Valida (requisitos VALIDADO) y confirma la inscripcion de lotes de
+| postulantes pendientes (PAGO_APROBADO) de la gestion 1-2026 a un turno.
 |
 | Replica lo que haria el encargado a mano (CU8 + CU9):
 |   - marca todos los requisitos como VALIDADO
@@ -25,13 +25,20 @@ use Illuminate\Support\Facades\Auth;
 |     codigo y pasa la postulacion a INSCRITO.
 |
 | El grupo lo elige el sistema: primer grupo ACTIVO del turno con cupo libre
-| (ordenado por codigo). Para 32 al turno M con M1 (33 libres) -> todos a M1.
+| (ordenado por codigo). Cada lote toma los SIGUIENTES pendientes por orden
+| (los ya inscritos salen de la cola, no se repiten).
+|
+| Lotes a procesar: ver BATCHES.
 */
 class ValidarInscripciones2026Seeder extends Seeder
 {
-    private const GESTION_ID   = 3;
-    private const TURNO_CODIGO = 'M';
-    private const CANTIDAD     = 32;
+    private const GESTION_ID = 3;
+
+    /** Lotes: turno (codigo) => cantidad a validar/inscribir. */
+    private const BATCHES = [
+        ['turno' => 'N', 'cantidad' => 69], // Noche -> N1 (1->70, lleno)
+        ['turno' => 'T', 'cantidad' => 66], // Tarde -> T1 (4->70, lleno)
+    ];
 
     public function run(): void
     {
@@ -45,20 +52,28 @@ class ValidarInscripciones2026Seeder extends Seeder
         Auth::setUser($admin);
         $this->command->info("Actuando como admin: {$admin->email}");
 
-        $turno = Turno::where('codigo', self::TURNO_CODIGO)->first();
+        foreach (self::BATCHES as $batch) {
+            $this->procesarLote($admin, $batch['turno'], $batch['cantidad']);
+        }
+    }
+
+    private function procesarLote(User $admin, string $turnoCodigo, int $cantidad): void
+    {
+        $this->command->info('----------------------------------------');
+        $turno = Turno::where('codigo', $turnoCodigo)->first();
         if (!$turno) {
-            $this->command->error('Turno no encontrado: ' . self::TURNO_CODIGO);
+            $this->command->error("Turno no encontrado: {$turnoCodigo}");
             return;
         }
-        $this->command->info("Turno destino: [{$turno->id}] {$turno->codigo} - {$turno->nombre}");
+        $this->command->info("Lote: {$cantidad} -> turno [{$turno->id}] {$turno->codigo} ({$turno->nombre})");
 
         $pendientes = Postulacion::where('gestion_cup_id', self::GESTION_ID)
             ->where('estado', EstadoPostulacion::PAGO_APROBADO->value)
             ->orderBy('id')
-            ->limit(self::CANTIDAD)
+            ->limit($cantidad)
             ->get();
 
-        $this->command->info('Pendientes tomados (primeros por orden): ' . $pendientes->count());
+        $this->command->info('Pendientes tomados: ' . $pendientes->count());
 
         $ok = 0;
         $fail = 0;
@@ -66,14 +81,12 @@ class ValidarInscripciones2026Seeder extends Seeder
 
         foreach ($pendientes as $p) {
             try {
-                // (CU8) Marcar todos los requisitos como VALIDADO.
                 PostulacionRequisito::where('postulacion_id', $p->id)->update([
                     'estado'                 => EstadoRequisito::VALIDADO->value,
                     'verificado_por_user_id' => $admin->id,
                     'verificado_at'          => now(),
                 ]);
 
-                // (CU9) Confirmar inscripcion al turno -> asigna grupo + INSCRITO.
                 $insc = InscripcionService::confirmar($p, $turno->id);
 
                 $cod = $insc->grupo->codigo ?? '?';
@@ -85,11 +98,9 @@ class ValidarInscripciones2026Seeder extends Seeder
             }
         }
 
-        $this->command->info('========================================');
-        $this->command->info("Validados e inscritos: {$ok}");
-        $this->command->info("Fallidos: {$fail}");
+        $this->command->info("  Inscritos: {$ok} | Fallidos: {$fail}");
         foreach ($grupos as $g => $n) {
-            $this->command->info("  Grupo {$g}: +{$n} inscritos");
+            $this->command->info("  Grupo {$g}: +{$n}");
         }
     }
 }
