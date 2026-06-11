@@ -41,6 +41,12 @@ class BoletaService
         // no tiene asignaciones -> arreglo vacio y el front muestra "por asignar".
         $horario = self::horarioDelGrupo($grupo?->id);
 
+        // Modalidad y aula efectivas: si el grupo tiene su propio ambiente,
+        // se usa. Si no, se derivan de los ambientes de las asignaciones
+        // docente del grupo (Ciclo 2 ya las trae). Asi la boleta no muestra
+        // "Por asignar" cuando la info real esta en las asignaciones.
+        [$modalidadEfectiva, $aulaEfectiva] = self::resolverModalidadYAula($ambiente, $grupo?->id);
+
         return [
             'codigo_postulante' => $inscripcion->codigo_postulante,
             'nombre_completo'   => $persona->nombre_completo,
@@ -67,13 +73,73 @@ class BoletaService
             'horario' => $horario,
             'carrera_primera' => $postulacion->carreraPrimera?->nombre,
             'carrera_segunda' => $postulacion->carreraSegunda?->nombre,
-            'modalidad'       => $ambiente?->modalidad,
-            'aula_o_enlace'   => $ambiente?->modalidad === 'VIRTUAL'
-                ? $ambiente?->enlace
-                : trim(($ambiente?->nombre ?? '') . ' ' . ($ambiente?->ubicacion ?? '')),
+            'modalidad'       => $modalidadEfectiva,
+            'aula_o_enlace'   => $aulaEfectiva,
             'fecha_inscripcion'   => $inscripcion->fecha_inscripcion?->toIso8601String(),
             'confirmada_por'      => $inscripcion->confirmadaPor?->nombre_completo,
         ];
+    }
+
+    /**
+     * Devuelve [$modalidad, $aulaOEnlace] para la boleta.
+     * Prioridad:
+     *   1. Si el grupo tiene su propio ambiente -> usarlo.
+     *   2. Si no, derivar de las asignaciones docente del grupo:
+     *      - Si todas usan el mismo ambiente -> mostrar ese.
+     *      - Si usan ambientes distintos -> "Por materia (ver horario)".
+     *      - Si no hay asignaciones -> "Por asignar".
+     */
+    private static function resolverModalidadYAula($ambienteGrupo, ?int $grupoId): array
+    {
+        // Caso 1: el grupo ya tiene su ambiente principal.
+        if ($ambienteGrupo) {
+            $aula = $ambienteGrupo->modalidad === 'VIRTUAL'
+                ? ($ambienteGrupo->enlace ?: 'Por asignar')
+                : trim(($ambienteGrupo->nombre ?? '') . ' ' . ($ambienteGrupo->ubicacion ?? ''));
+            return [
+                $ambienteGrupo->modalidad ?: 'Por asignar',
+                $aula !== '' ? $aula : 'Por asignar',
+            ];
+        }
+
+        if (!$grupoId) {
+            return ['Por asignar', 'Por asignar'];
+        }
+
+        // Caso 2: derivar de las asignaciones docente del grupo.
+        $ambientes = AsignacionDocente::where('grupo_id', $grupoId)
+            ->with('ambiente:id,nombre,ubicacion,modalidad,enlace')
+            ->get()
+            ->pluck('ambiente')
+            ->filter()
+            ->unique('id')
+            ->values();
+
+        if ($ambientes->isEmpty()) {
+            return ['Por asignar', 'Por asignar'];
+        }
+
+        // Si todas las asignaciones usan el MISMO ambiente -> usarlo como
+        // ambiente efectivo del grupo en la boleta.
+        if ($ambientes->count() === 1) {
+            $a = $ambientes->first();
+            $aula = $a->modalidad === 'VIRTUAL'
+                ? ($a->enlace ?: 'Por asignar')
+                : trim(($a->nombre ?? '') . ' ' . ($a->ubicacion ?? ''));
+            return [
+                $a->modalidad ?: 'PRESENCIAL',
+                $aula !== '' ? $aula : 'Por asignar',
+            ];
+        }
+
+        // Varios ambientes distintos entre materias: la boleta ya lista cada
+        // aula en el horario, asi que aqui solo indicamos "ver horario".
+        $modalidades = $ambientes->pluck('modalidad')->unique();
+        $modalidadEfectiva = $modalidades->count() === 1
+            ? $modalidades->first()
+            : 'MIXTA';
+
+        return [$modalidadEfectiva, 'Por materia (ver horario)'];
     }
 
     /**

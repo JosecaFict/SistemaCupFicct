@@ -26,8 +26,8 @@ export function BoletaPreview({ data }: { data: BoletaPayload }) {
         <Item label="Gestion" value={`${data.gestion.codigo} - ${data.gestion.nombre}`} />
         <Item label="Turno" value={`${data.turno.nombre} (${data.turno.codigo})`} />
         <Item label="Grupo" value={data.grupo.codigo} />
-        <Item label="Modalidad" value={data.modalidad ?? "Por asignar"} />
-        <Item label="Aula / Enlace" value={data.aula_o_enlace ?? "Por asignar"} />
+        <Item label="Modalidad" value={data.modalidad || "Por asignar"} />
+        <Item label="Aula / Enlace" value={data.aula_o_enlace || "Por asignar"} />
         <Item label="Primera opcion" value={data.carrera_primera} />
         {data.carrera_segunda && <Item label="Segunda opcion" value={data.carrera_segunda} />}
       </div>
