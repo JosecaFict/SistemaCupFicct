@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\AsignacionDocente;
+use App\Models\GestionMateria;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 /*
 | AsignacionDocenteService
@@ -97,6 +99,77 @@ class AsignacionDocenteService
             }
         }
         return array_keys($ocupados);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ciclo 3 - Habilitacion docente <-> materia y carga maxima
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Verifica si un docente esta habilitado para dar una materia especifica.
+     * Consulta la tabla docente_materias (N:N).
+     */
+    public static function estaHabilitado(int $docenteUserId, int $materiaId): bool
+    {
+        return DB::table('docente_materias')
+            ->where('docente_user_id', $docenteUserId)
+            ->where('materia_id', $materiaId)
+            ->exists();
+    }
+
+    /**
+     * A partir del gestion_materia_id, resuelve el materia_id y verifica
+     * la habilitacion del docente. Es azucar sintactica para no obligar al
+     * controller a hacer el join manualmente.
+     */
+    public static function estaHabilitadoParaGestionMateria(int $docenteUserId, int $gestionMateriaId): bool
+    {
+        $materiaId = GestionMateria::whereKey($gestionMateriaId)->value('materia_id');
+        if (!$materiaId) {
+            return false;
+        }
+        return self::estaHabilitado($docenteUserId, (int) $materiaId);
+    }
+
+    /**
+     * Cuenta las asignaciones activas de un docente en una gestion. Sirve
+     * para chequear el limite MAX (config: cup.MAX_ASIGNACIONES_DOCENTE).
+     * En edicion, pasar $ignoreId para no contarse a si misma.
+     */
+    public static function contarAsignacionesActivas(int $docenteUserId, int $gestionCupId, ?int $ignoreId = null): int
+    {
+        return AsignacionDocente::where('docente_user_id', $docenteUserId)
+            ->where('gestion_cup_id', $gestionCupId)
+            ->when($ignoreId, fn (Builder $q) => $q->where('id', '!=', $ignoreId))
+            ->count();
+    }
+
+    /**
+     * Devuelve un mapa [docente_user_id => cantidad] con los contadores de
+     * asignaciones de todos los docentes en una gestion. Sirve para pintar
+     * "(2/4)" al lado del docente en la UI sin hacer N queries.
+     */
+    public static function contadoresPorDocente(int $gestionCupId, ?int $ignoreId = null): array
+    {
+        return AsignacionDocente::where('gestion_cup_id', $gestionCupId)
+            ->when($ignoreId, fn (Builder $q) => $q->where('id', '!=', $ignoreId))
+            ->select('docente_user_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('docente_user_id')
+            ->pluck('total', 'docente_user_id')
+            ->all();
+    }
+
+    /**
+     * Devuelve los docente_user_id que YA llegaron al maximo permitido en
+     * la gestion. Se usa para excluirlos del select del formulario.
+     */
+    public static function docentesAlMaximo(int $gestionCupId, ?int $ignoreId = null): array
+    {
+        $max = (int) config('cup.MAX_ASIGNACIONES_DOCENTE', 4);
+        $contadores = self::contadoresPorDocente($gestionCupId, $ignoreId);
+        return array_keys(array_filter($contadores, fn ($n) => $n >= $max));
     }
 
     /**

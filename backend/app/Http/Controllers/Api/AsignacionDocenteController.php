@@ -122,6 +122,10 @@ class AsignacionDocenteController extends Controller
         // El docente debe tener rol DOCENTE
         $this->verificarRolDocente($data['docente_user_id']);
 
+        // Ciclo 3: habilitacion + carga maxima
+        $this->verificarHabilitacion($data['docente_user_id'], (int) $gm->materia_id);
+        $this->verificarCargaMaxima($data['docente_user_id'], (int) $data['gestion_cup_id']);
+
         $conflictos = AsignacionDocenteService::detectarConflictos($data['gestion_cup_id'], $data);
         if (!empty($conflictos)) {
             throw ValidationException::withMessages([
@@ -139,6 +143,14 @@ class AsignacionDocenteController extends Controller
     {
         $data = $this->validar($request);
         $this->verificarRolDocente($data['docente_user_id']);
+
+        // Ciclo 3: habilitacion siempre; carga maxima solo si CAMBIA el docente
+        // (si es el mismo docente, no se suma carga adicional).
+        $gm = GestionMateria::findOrFail($data['gestion_materia_id']);
+        $this->verificarHabilitacion($data['docente_user_id'], (int) $gm->materia_id);
+        if ((int) $data['docente_user_id'] !== (int) $asignacion->docente_user_id) {
+            $this->verificarCargaMaxima($data['docente_user_id'], (int) $data['gestion_cup_id']);
+        }
 
         $conflictos = AsignacionDocenteService::detectarConflictos($data['gestion_cup_id'], $data, $asignacion->id);
         if (!empty($conflictos)) {
@@ -214,12 +226,13 @@ class AsignacionDocenteController extends Controller
     public function recursosDisponibles(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'gestion_id'  => ['required', 'exists:gestiones_cup,id'],
-            'dias_semana' => ['required', 'string', 'regex:/^[A-Z,]+$/'],
-            'hora_inicio' => ['required', 'date_format:H:i'],
-            'hora_fin'    => ['required', 'date_format:H:i', 'after:hora_inicio'],
-            'grupo_id'    => ['nullable', 'integer'],
-            'ignore_id'   => ['nullable', 'integer'], // para edicion
+            'gestion_id'         => ['required', 'exists:gestiones_cup,id'],
+            'dias_semana'        => ['required', 'string', 'regex:/^[A-Z,]+$/'],
+            'hora_inicio'        => ['required', 'date_format:H:i'],
+            'hora_fin'           => ['required', 'date_format:H:i', 'after:hora_inicio'],
+            'grupo_id'           => ['nullable', 'integer'],
+            'gestion_materia_id' => ['nullable', 'integer', 'exists:gestion_materias,id'],
+            'ignore_id'          => ['nullable', 'integer'], // para edicion
         ]);
 
         $gestionId = (int) $data['gestion_id'];
@@ -229,13 +242,39 @@ class AsignacionDocenteController extends Controller
         $ambientesOcupados  = AsignacionDocenteService::ambientesOcupados($gestionId, $data['dias_semana'], $data['hora_inicio'], $data['hora_fin'], $ignoreId);
         $gruposOcupados     = AsignacionDocenteService::gruposOcupados($gestionId, $data['dias_semana'], $data['hora_inicio'], $data['hora_fin'], $ignoreId);
 
+        // Ciclo 3: exclusiones por reglas de habilitacion + carga maxima
+        $docentesAlMaximo = AsignacionDocenteService::docentesAlMaximo($gestionId, $ignoreId);
+        $contadoresDocentes = AsignacionDocenteService::contadoresPorDocente($gestionId, $ignoreId);
+        $maxAsignaciones = (int) config('cup.MAX_ASIGNACIONES_DOCENTE', 4);
+
         $rolDocenteId = Rol::where('codigo', 'DOCENTE')->value('id');
-        $docentes = User::where('role_id', $rolDocenteId)
+        $docentesQuery = User::where('role_id', $rolDocenteId)
             ->where('activo', true)
             ->whereNotIn('id', $docentesOcupados)
+            ->whereNotIn('id', $docentesAlMaximo);
+
+        // Si el frontend manda la materia, filtramos por docentes habilitados.
+        // Si no la manda (retrocompat), devolvemos todos los que quedan.
+        if (!empty($data['gestion_materia_id'])
+            && config('cup.BLOQUEO_ESTRICTO_HABILITACION', true)) {
+            $materiaId = GestionMateria::whereKey($data['gestion_materia_id'])->value('materia_id');
+            if ($materiaId) {
+                $docentesQuery->whereHas('materiasHabilitadas',
+                    fn ($q) => $q->where('materias.id', $materiaId)
+                );
+            }
+        }
+
+        $docentes = $docentesQuery
             ->select('id', 'nombre', 'apellidos', 'email')
             ->orderBy('apellidos')
-            ->get();
+            ->get()
+            ->map(function ($u) use ($contadoresDocentes, $maxAsignaciones) {
+                $usados = (int) ($contadoresDocentes[$u->id] ?? 0);
+                $u->asignaciones_usadas = $usados;
+                $u->asignaciones_maximo = $maxAsignaciones;
+                return $u;
+            });
 
         $ambientes = Ambiente::where('activo', true)
             ->whereNotIn('id', $ambientesOcupados)
@@ -257,6 +296,7 @@ class AsignacionDocenteController extends Controller
             'ambientes_disponibles'          => $ambientes,
             'grupos_ocupados_en_franja'      => $gruposOcupados,
             'materias_ya_asignadas_al_grupo' => $materiasYaAsignadas,
+            'max_asignaciones_docente'       => $maxAsignaciones,
         ]);
     }
 
@@ -282,6 +322,34 @@ class AsignacionDocenteController extends Controller
         abort_if(!$user || !$user->activo, 422, 'El usuario seleccionado no esta activo.');
         abort_if($user->rol?->codigo !== 'DOCENTE', 422,
             'El usuario seleccionado no tiene rol DOCENTE.');
+    }
+
+    /**
+     * Ciclo 3: verifica que el docente este habilitado en la materia.
+     * Si BLOQUEO_ESTRICTO_HABILITACION es false, solo se registra warning.
+     */
+    private function verificarHabilitacion(int $docenteUserId, int $materiaId): void
+    {
+        if (!config('cup.BLOQUEO_ESTRICTO_HABILITACION', true)) {
+            return;
+        }
+        if (!AsignacionDocenteService::estaHabilitado($docenteUserId, $materiaId)) {
+            abort(422, 'El docente no esta habilitado para dar esta materia. '
+                . 'Edite su perfil para habilitarla o elija otro docente.');
+        }
+    }
+
+    /**
+     * Ciclo 3: verifica que el docente no supere MAX_ASIGNACIONES_DOCENTE
+     * en la gestion. En edicion, no cuenta la propia fila.
+     */
+    private function verificarCargaMaxima(int $docenteUserId, int $gestionCupId, ?int $ignoreId = null): void
+    {
+        $max = (int) config('cup.MAX_ASIGNACIONES_DOCENTE', 4);
+        $actual = AsignacionDocenteService::contarAsignacionesActivas($docenteUserId, $gestionCupId, $ignoreId);
+        abort_if($actual >= $max, 422,
+            "El docente ya tiene {$actual} asignaciones en esta gestion (maximo permitido: {$max})."
+        );
     }
 
     private function mensajesConflictos(array $conflictos): array

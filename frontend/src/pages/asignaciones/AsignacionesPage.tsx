@@ -273,6 +273,8 @@ function AsignacionFormModal({
   // Asignaciones existentes del grupo seleccionado, para filtrar materias
   // YA usadas en ese grupo apenas se elige el grupo (sin esperar dias/horario).
   const [asignacionesDelGrupo, setAsignacionesDelGrupo] = useState<AsignacionDocente[]>([]);
+  // Ciclo 3: si el usuario prefiere escribir horario a mano (Opcion B - escape)
+  const [horarioPersonalizado, setHorarioPersonalizado] = useState(false);
 
   const [form, setForm] = useState<FormState>(() =>
     asignacion
@@ -317,10 +319,11 @@ function AsignacionFormModal({
     return () => { vigente = false; };
   }, [form.grupo_id, gestionId]);
 
-  // Cuando hay franja completa (grupo + dias + horario), pedir recursos
-  // disponibles (docentes y ambientes que NO chocan).
+  // Cuando hay franja completa (grupo + materia + dias + horario), pedir
+  // recursos disponibles. Ciclo 3: enviamos gestion_materia_id para que el
+  // backend filtre por habilitacion docente<->materia.
   useEffect(() => {
-    if (form.grupo_id && form.dias_semana && form.hora_inicio && form.hora_fin) {
+    if (form.grupo_id && form.gestion_materia_id && form.dias_semana && form.hora_inicio && form.hora_fin) {
       let vigente = true;
       setCargandoRecursos(true);
       asignacionesService
@@ -330,6 +333,7 @@ function AsignacionFormModal({
           hora_inicio: form.hora_inicio,
           hora_fin: form.hora_fin,
           grupo_id: form.grupo_id as number,
+          gestion_materia_id: form.gestion_materia_id as number,
           ignore_id: asignacion?.id,
         })
         .then((r) => { if (vigente) setRecursos(r); })
@@ -339,7 +343,7 @@ function AsignacionFormModal({
       setRecursos(null);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.grupo_id, form.dias_semana, form.hora_inicio, form.hora_fin]);
+  }, [form.grupo_id, form.gestion_materia_id, form.dias_semana, form.hora_inicio, form.hora_fin]);
 
   function setField<K extends keyof FormState>(k: K, v: FormState[K]) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -482,41 +486,80 @@ function AsignacionFormModal({
             </Select>
           </div>
 
-          {/* Paso 4: horario (con bloques sugeridos del turno) */}
+          {/* Paso 4: horario -- Ciclo 3 Opcion B (tarjetas + escape personalizado) */}
           <div>
-            <label className="text-xs text-muted-500">
-              Horario {turnoCodigo && <span>(sugerencias del turno {turnoCodigo})</span>}
+            <label className="text-xs text-muted-500 block mb-1">
+              Horario del turno {turnoCodigo && <span className="text-institutional-600 font-medium">({turnoCodigo})</span>}
             </label>
-            <div className="flex gap-2 flex-wrap mb-2">
-              {bloquesSugeridos.map((b, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  className="border border-muted-200 rounded px-2 py-1 text-xs hover:bg-institutional-50"
-                  onClick={() => { setField("hora_inicio", b[0]); setField("hora_fin", b[1]); }}
-                >
-                  {b[0]} - {b[1]}
-                </button>
-              ))}
+            {bloquesSugeridos.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {bloquesSugeridos.map((b, i) => {
+                  const seleccionado = form.hora_inicio === b[0] && form.hora_fin === b[1];
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        setField("hora_inicio", b[0]);
+                        setField("hora_fin", b[1]);
+                        setHorarioPersonalizado(false);
+                      }}
+                      className={`rounded-md border-2 px-3 py-3 text-left transition ${
+                        seleccionado
+                          ? "border-institutional-500 bg-institutional-50 ring-1 ring-institutional-300"
+                          : "border-muted-200 bg-white hover:border-institutional-300 hover:bg-institutional-50/40"
+                      }`}
+                    >
+                      <div className="text-xs uppercase font-medium text-muted-500">
+                        Bloque {i + 1}
+                      </div>
+                      <div className="text-base font-mono font-semibold text-institutional-800">
+                        {b[0]} — {b[1]}
+                      </div>
+                      {seleccionado && (
+                        <div className="text-xs text-institutional-600 mt-1">✓ Seleccionado</div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-xs text-muted-500 border border-muted-200 rounded p-2">
+                Elige primero un grupo para ver los bloques sugeridos del turno.
+              </div>
+            )}
+
+            <div className="mt-2">
+              <button
+                type="button"
+                className="text-xs text-institutional-600 hover:underline"
+                onClick={() => setHorarioPersonalizado((v) => !v)}
+              >
+                {horarioPersonalizado ? "− Ocultar horario personalizado" : "+ Horario personalizado"}
+              </button>
             </div>
-            <div className="flex gap-2">
-              <input
-                type="time"
-                value={form.hora_inicio}
-                onChange={(e) => setField("hora_inicio", e.target.value)}
-                className="border border-muted-200 rounded px-2 py-1 text-sm"
-              />
-              <span className="self-center text-muted-500">a</span>
-              <input
-                type="time"
-                value={form.hora_fin}
-                onChange={(e) => setField("hora_fin", e.target.value)}
-                className="border border-muted-200 rounded px-2 py-1 text-sm"
-              />
-            </div>
+
+            {horarioPersonalizado && (
+              <div className="flex gap-2 mt-2 items-center bg-muted-50/60 border border-muted-200 rounded p-2">
+                <span className="text-xs text-muted-500">De</span>
+                <input
+                  type="time"
+                  value={form.hora_inicio}
+                  onChange={(e) => setField("hora_inicio", e.target.value)}
+                  className="border border-muted-200 rounded px-2 py-1 text-sm"
+                />
+                <span className="text-xs text-muted-500">a</span>
+                <input
+                  type="time"
+                  value={form.hora_fin}
+                  onChange={(e) => setField("hora_fin", e.target.value)}
+                  className="border border-muted-200 rounded px-2 py-1 text-sm"
+                />
+              </div>
+            )}
           </div>
 
-          {/* Paso 5: docente (filtrado por choque) */}
+          {/* Paso 5: docente (filtrado por choque + habilitacion + carga) */}
           <div>
             <label className="text-xs text-muted-500">
               Docente
@@ -528,17 +571,21 @@ function AsignacionFormModal({
               disabled={!recursos}
             >
               <option value="">
-                {recursos ? "Selecciona un docente disponible" : "Completa franja primero"}
+                {recursos ? "Selecciona un docente disponible" : "Completa grupo, materia, dias y horario"}
               </option>
-              {recursos?.docentes_disponibles.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.nombre} {d.apellidos}  {d.email}
-                </option>
-              ))}
+              {recursos?.docentes_disponibles.map((d) => {
+                const usadas = d.asignaciones_usadas ?? 0;
+                const max = d.asignaciones_maximo ?? recursos.max_asignaciones_docente ?? 4;
+                return (
+                  <option key={d.id} value={d.id}>
+                    {d.nombre} {d.apellidos} · ({usadas}/{max}) · {d.email}
+                  </option>
+                );
+              })}
             </Select>
             {recursos && recursos.docentes_disponibles.length === 0 && (
               <div className="text-xs text-warning-600 mt-1">
-                No hay docentes disponibles en esa franja. Probar otro horario.
+                No hay docentes disponibles: revisar habilitacion, carga (max 4) o horario.
               </div>
             )}
           </div>

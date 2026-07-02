@@ -10,6 +10,18 @@ export interface Rol {
   descripcion: string | null;
 }
 
+export interface PerfilDocente {
+  profesion: string | null;
+  experiencias: string[];
+  formacion_adicional: string | null;
+}
+
+export interface MateriaHabilitada {
+  id: number;
+  codigo: "MAT" | "FIS" | "ING" | "COMP";
+  nombre: string;
+}
+
 export interface User {
   id: number;
   role_id: number;
@@ -23,6 +35,11 @@ export interface User {
   activo: boolean;
   last_login_at: string | null;
   rol?: Rol;
+  // Ciclo 3: solo relevantes cuando rol=DOCENTE
+  materias_habilitadas?: MateriaHabilitada[];
+  perfil_docente?: PerfilDocente | null;
+  asignaciones_usadas?: number;
+  asignaciones_maximo?: number;
 }
 
 export interface Carrera {

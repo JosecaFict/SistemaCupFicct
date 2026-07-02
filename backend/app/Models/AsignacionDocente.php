@@ -53,6 +53,40 @@ class AsignacionDocente extends Model
     protected static function booted(): void
     {
         static::saving(function (self $a) {
+            $ignoreId = $a->exists ? $a->id : null;
+
+            // 1. Habilitacion docente <-> materia (Ciclo 3)
+            if (config('cup.BLOQUEO_ESTRICTO_HABILITACION', true)
+                && $a->docente_user_id
+                && $a->gestion_materia_id
+                && !AsignacionDocenteService::estaHabilitadoParaGestionMateria(
+                    (int) $a->docente_user_id,
+                    (int) $a->gestion_materia_id
+                )) {
+                throw new DomainException(
+                    'Asignacion docente invalida (docente no habilitado para esta materia).'
+                );
+            }
+
+            // 2. Carga maxima (Ciclo 3): solo cuando SE AÑADE carga al docente.
+            //    Es decir, en INSERT nuevo o en UPDATE que cambia el docente.
+            //    Un UPDATE que mantiene el mismo docente no agrega carga.
+            $sumaCarga = !$a->exists || $a->isDirty('docente_user_id');
+            $max = (int) config('cup.MAX_ASIGNACIONES_DOCENTE', 4);
+            if ($sumaCarga && $a->docente_user_id && $a->gestion_cup_id) {
+                $actual = AsignacionDocenteService::contarAsignacionesActivas(
+                    (int) $a->docente_user_id,
+                    (int) $a->gestion_cup_id,
+                    $a->exists ? $a->id : null
+                );
+                if ($actual >= $max) {
+                    throw new DomainException(
+                        "Asignacion docente invalida (el docente ya tiene {$actual} asignaciones, maximo permitido: {$max})."
+                    );
+                }
+            }
+
+            // 3. Choques de horario (existente)
             $payload = [
                 'grupo_id'        => $a->grupo_id,
                 'docente_user_id' => $a->docente_user_id,
@@ -64,7 +98,7 @@ class AsignacionDocente extends Model
             $conflictos = AsignacionDocenteService::detectarConflictos(
                 (int) $a->gestion_cup_id,
                 $payload,
-                $a->exists ? $a->id : null
+                $ignoreId
             );
             if (!empty($conflictos)) {
                 throw new DomainException(

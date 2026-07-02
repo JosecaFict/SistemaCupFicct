@@ -55,10 +55,19 @@ export interface DatosIniciales {
 }
 
 export interface RecursosDisponibles {
-  docentes_disponibles: Array<{ id: number; nombre: string; apellidos: string; email: string }>;
+  docentes_disponibles: Array<{
+    id: number;
+    nombre: string;
+    apellidos: string;
+    email: string;
+    // Ciclo 3: contador para pintar (X/4) al lado del docente
+    asignaciones_usadas?: number;
+    asignaciones_maximo?: number;
+  }>;
   ambientes_disponibles: Array<{ id: number; nombre: string; ubicacion: string | null; capacidad: number | null }>;
   grupos_ocupados_en_franja: number[];
   materias_ya_asignadas_al_grupo: number[];
+  max_asignaciones_docente?: number;
 }
 
 export interface FiltrosAsignaciones {
@@ -127,6 +136,7 @@ export const asignacionesService = {
     hora_inicio: string;
     hora_fin: string;
     grupo_id?: number;
+    gestion_materia_id?: number;
     ignore_id?: number;
   }) =>
     api

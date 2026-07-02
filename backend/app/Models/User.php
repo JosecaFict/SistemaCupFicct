@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -66,5 +67,21 @@ class User extends Authenticatable
     public function getNombreCompletoAttribute(): string
     {
         return trim("{$this->nombre} {$this->apellidos}");
+    }
+
+    /**
+     * Materias que el docente esta HABILITADO para dar en el CUP.
+     * Solo tiene sentido cuando el user tiene rol DOCENTE.
+     * Se usa en AsignacionDocenteController::recursosDisponibles para
+     * filtrar los docentes al asignar un grupo x materia.
+     */
+    public function materiasHabilitadas(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Materia::class,
+            'docente_materias',
+            'docente_user_id',
+            'materia_id'
+        )->withTimestamps();
     }
 }
